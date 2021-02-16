@@ -5,12 +5,12 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { Estatus, TipoCuenta, RespuestaGenerica, TokenDto } from '@comfeco/interfaces';
+import { RespuestaUtil } from '@comfeco/validator';
 
 import { AuthService } from '../auth.service';
 import { environment } from '../../../environments/environment';
 import { UsuarioEntidad } from '../../usuario/usuario.entity';
 import { UsuarioRepository } from '../../usuario//usuario.repository';
-import { RespuestaUtil } from '../../../util/general/respuestas.util';
 
 @Injectable()
 export class GoogleService {

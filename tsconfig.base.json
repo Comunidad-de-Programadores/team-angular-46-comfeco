@@ -16,7 +16,8 @@
     "baseUrl": ".",
     "paths": {
       "@comfeco/interfaces": ["libs/interfaces/src/index.ts"],
-      "@comfeco/api": ["libs/api/src/index.ts"]
+      "@comfeco/api": ["libs/api/src/index.ts"],
+      "@comfeco/validator": ["libs/validator/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

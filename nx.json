@@ -20,6 +20,7 @@
     "front-e2e": { "tags": [], "implicitDependencies": ["front"] },
     "back": { "tags": [] },
     "interfaces": { "tags": [] },
-    "api": { "tags": [] }
+    "api": { "tags": [] },
+    "validator": { "tags": [] }
   }
 }

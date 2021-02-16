@@ -35,7 +35,27 @@ export class UsuarioRepository {
         if(correosRegistrados.length==0) {
             return null;
         }
+        
+        return correosRegistrados[0];
+    }
 
+    async validarExistenciaTipoCorreo(correo:string): Promise<UsuarioEntidad> {
+        const db = admin.firestore();
+        const correoBase = await db.collection(this._coleccion)
+                                    .where('correo', '==', correo)
+                                    .where('tipo', '==', TipoCuenta.CORREO)
+                                    .get();
+
+        const correosRegistrados:any[] = [];
+        
+        correoBase.forEach(doc => {
+            correosRegistrados.push(doc.data());
+        });
+        
+        if(correosRegistrados.length==0) {
+            return null;
+        }
+        
         return correosRegistrados[0];
     }
 

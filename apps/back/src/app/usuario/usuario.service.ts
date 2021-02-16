@@ -1,7 +1,8 @@
 import { RespuestaGenerica, UsuarioDto } from '@comfeco/interfaces';
 import { HttpStatus, Injectable } from '@nestjs/common';
 
-import { RespuestaUtil } from '../../util/general/index';
+import { RespuestaUtil, ValidarServicio } from '@comfeco/validator';
+
 import { UsuarioEntidad } from './usuario.entity';
 import { UsuarioRepository } from './usuario.repository';
 
@@ -11,6 +12,11 @@ export class UsuarioService {
     constructor(private _usuarioRepository: UsuarioRepository){}
 
     async informacionUsuario(usuario:string): Promise<UsuarioDto | RespuestaGenerica> {
+        let validacion:RespuestaGenerica;
+        
+        validacion = ValidarServicio.usuario(usuario, validacion);
+        if(validacion!=null) return validacion;
+        
         const usuarioEntidad:UsuarioEntidad = await this._usuarioRepository.validarExistenciaUsuario(usuario);
 
         if(usuarioEntidad==null) {

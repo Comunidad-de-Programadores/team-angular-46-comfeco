@@ -1,9 +1,11 @@
-import { Injectable, HttpStatus } from '@nestjs/common';
+import { Injectable, HttpStatus, Logger } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
 import { Observable } from 'rxjs';
 import crypto from 'crypto';
+import jwt from 'jsonwebtoken';
 
-import { Estatus, TipoCuenta, RespuestaGenerica, RegistroDto, TokenDto, InicioDto, RecuperarCuentaDto, CambioContraseniaDto } from '@comfeco/interfaces';
+import { Estatus, TipoCuenta, RespuestaGenerica, RegistroDto, TokenDto, InicioDto, RecuperarCuentaDto, CambioContraseniaDto, ExpresionRegex } from '@comfeco/interfaces';
+import { RespuestaUtil, ValidarServicio } from '@comfeco/validator';
 
 import { AuthService } from '../auth.service';
 import { CorreoService } from '../../../config/correo/correo.service';
@@ -11,12 +13,15 @@ import { FacebookService } from '../facebook/facebook.service';
 import { GoogleService } from '../google/google.service';
 import { UsuarioEntidad } from './../../usuario/usuario.entity';
 import { UsuarioRepository } from './../../usuario/usuario.repository';
-import { RespuestaUtil } from '../../../util/general/respuestas.util';
+import { ConfigService } from '../../../config/config.service';
+import { Configuracion } from '../../../config/config.keys';
 
 @Injectable()
 export class BasicoService {
+    private readonly logger = new Logger(BasicoService.name);
 
     constructor(
+        private _configService: ConfigService,
         private _usuarioRepository: UsuarioRepository,
         private _googleService: GoogleService,
         private _facebookService: FacebookService,
@@ -25,11 +30,17 @@ export class BasicoService {
     ) {}
     
     async registro(registroDto:RegistroDto): Promise<TokenDto | RespuestaGenerica> {
-        const { usuario, correo, terminos } = registroDto;
-
+        const { usuario, correo, contrasenia, terminos } = registroDto;
+        let validacion:RespuestaGenerica;
+        
         if(!terminos) {
             return RespuestaUtil.respuestaGenerica('',['Es necesario aceptar las políticas de privacidad, así como los términos y condiciones'], HttpStatus.BAD_REQUEST);
         }
+
+        validacion = ValidarServicio.usuario(usuario, validacion);
+        validacion = ValidarServicio.correo(correo, validacion);
+        validacion = ValidarServicio.contrasenia(contrasenia, validacion);
+        if(validacion!=null) return validacion;
 
         let mensajeError:string;
         let usuarioBase:UsuarioEntidad = await this._usuarioRepository.validarExistenciaUsuario(usuario);
@@ -37,7 +48,7 @@ export class BasicoService {
         if(usuarioBase!=null) {
             mensajeError = 'El usuario ya se encuentra registrado';
         } else {
-            usuarioBase = await this._usuarioRepository.validarExistenciaCorreo(correo);
+            usuarioBase = await this._usuarioRepository.validarExistenciaTipoCorreo(correo);
 
             if(usuarioBase!=null) {
                 mensajeError = 'El correo ya se encuentra registrado';
@@ -57,10 +68,18 @@ export class BasicoService {
 
     async existeUsuario(inicioDto:InicioDto): Promise<TokenDto | RespuestaGenerica> {
         const { usuario, correo, contrasenia } = inicioDto;
-
+        let validacion:RespuestaGenerica;
+        
         if(!usuario && !correo) {
             return RespuestaUtil.respuestaGenerica('',['Es necesario enviar el usuario o el correo para poder validar las credenciales'], HttpStatus.UNAUTHORIZED);
         }
+        
+        if(correo) {
+            validacion = ValidarServicio.correo(correo, validacion);
+        }
+
+        validacion = ValidarServicio.contrasenia(contrasenia, validacion);
+        if(validacion!=null) return validacion;
 
         const usuarioEntidad:UsuarioEntidad = await this._validarExistenciaUsuarioCorreo(usuario, correo);
         
@@ -93,7 +112,7 @@ export class BasicoService {
         if(usuario) {
             usuarioEntidad = await this._usuarioRepository.validarExistenciaUsuario(usuario);
         } else if(correo) {
-            usuarioEntidad = await this._usuarioRepository.validarExistenciaCorreo(correo);
+            usuarioEntidad = await this._usuarioRepository.validarExistenciaTipoCorreo(correo);
         } else {
             return null;
         }
@@ -122,6 +141,12 @@ export class BasicoService {
     }
 
     async renovarToken(usuario:string, token:string): Promise<TokenDto | RespuestaGenerica> {
+        let validacion:RespuestaGenerica;
+        
+        validacion = ValidarServicio.usuario(usuario, validacion);
+        validacion = ValidarServicio.token(token, validacion);
+        if(validacion!=null) return validacion;
+
         const usuarioBase:UsuarioEntidad = await this._usuarioRepository.validarExistenciaUsuario(usuario);
 
         if(usuarioBase==null || usuarioBase.tokenApi!==token) {
@@ -139,30 +164,39 @@ export class BasicoService {
     
     async recuperarCuenta(recuperarContraseniaDto:RecuperarCuentaDto): Promise<RespuestaGenerica> {
         const { usuario, correo } = recuperarContraseniaDto;
-
+        let validacion:RespuestaGenerica;
+        
         let usuarioBase:UsuarioEntidad;
 
         if(usuario) {
+            validacion = ValidarServicio.usuario(usuario, validacion);
+            if(validacion!=null) return validacion;
+            
             usuarioBase = await this._usuarioRepository.validarExistenciaUsuario(usuario);
         } else {
-            usuarioBase = await this._usuarioRepository.validarExistenciaCorreo(correo);
-        }
-
-        if(usuarioBase && usuarioBase.tipo==TipoCuenta.CORREO) {
-            const nuevoToken = (
-                longitud = 200,
-                caracteresValidos = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz~!@-#$_.*%&()=[]+'
-            ) =>
-                Array.from(crypto.randomFillSync(new Uint32Array(longitud)))
-                    .map((x) => caracteresValidos[x % caracteresValidos.length])
-                    .join('');
+            validacion = ValidarServicio.correo(correo, validacion);
+            if(validacion!=null) return validacion;
             
-            usuarioBase.tokenApi=nuevoToken();
+            usuarioBase = await this._usuarioRepository.validarExistenciaTipoCorreo(correo);
+        }
+        
+        if(usuarioBase!==null) {
+            const nuevoToken = jwt.sign({id:Math.floor(Math.random()*100)}, this._configService.get(Configuracion.JWT_SECRETO), {
+                algorithm: "HS256",
+                expiresIn: this._configService.get(Configuracion.JWT_TIEMPO_EXPIRACION_CORREO),
+            });
+
+            usuarioBase.tokenApi=nuevoToken;
             await this._usuarioRepository.actualizarTokenUsuario(usuarioBase);
-            await this._correoService.recuperarCuenta(usuarioBase);
+
+            try {
+                await this._correoService.recuperarCuenta(usuarioBase);
+            } catch(err) {
+                return RespuestaUtil.respuestaGenerica('',['No es posible enviar el correo electrónico, favor de intentar más tarde'], HttpStatus.BAD_REQUEST);    
+            }
         }
 
-        if(!usuarioBase || usuarioBase.tipo!=TipoCuenta.CORREO) {
+        if(!usuarioBase) {
             return RespuestaUtil.respuestaGenerica('',['No existe una cuenta con los datos proporcionados'], HttpStatus.BAD_REQUEST);
         } else {
             return RespuestaUtil.respuestaGenerica('Se envió un correo electrónico para recuperar su cuenta. Revisar en la carpeta de correos no deseados',[], HttpStatus.OK);
@@ -171,6 +205,23 @@ export class BasicoService {
 
     async cambioContrasenia(cambioContrasenia:CambioContraseniaDto): Promise<RespuestaGenerica> {
         const { contrasenia, token } = cambioContrasenia;
+        let validacion:RespuestaGenerica;
+        let tokenCaducado:boolean = false;
+
+        validacion = ValidarServicio.contrasenia(contrasenia, validacion);
+        validacion = ValidarServicio.token(token, validacion);
+        if(validacion!=null) return validacion;
+
+        try {
+            jwt.verify(token, this._configService.get(Configuracion.JWT_SECRETO));
+        } catch(err) {
+            this.logger.debug(err.message);
+            tokenCaducado = true;
+        }
+
+        if(!contrasenia || !ExpresionRegex.PASSWORD.test(contrasenia) || tokenCaducado) {
+            return RespuestaUtil.respuestaGenerica('',['No es posible modificar la contraseña de la cuenta'], HttpStatus.BAD_REQUEST);
+        }
 
         let usuarioBase:UsuarioEntidad;
 
@@ -188,6 +239,11 @@ export class BasicoService {
     }
 
     async salir(correo:string): Promise<RespuestaGenerica> {
+        let validacion:RespuestaGenerica;
+
+        validacion = ValidarServicio.correo(correo, validacion);
+        if(validacion!=null) return validacion;
+
         const usuarioEntidad:UsuarioEntidad = await this._usuarioRepository.validarExistenciaCorreo(correo);
         let respuesta:RespuestaGenerica;
 
@@ -221,5 +277,5 @@ export class BasicoService {
         
         return respuesta;
     }
-    
+
 }

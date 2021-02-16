@@ -4,5 +4,6 @@ module.exports = {
     '<rootDir>/apps/back',
     '<rootDir>/libs/interfaces',
     '<rootDir>/libs/api',
+    '<rootDir>/libs/validator',
   ],
 };
