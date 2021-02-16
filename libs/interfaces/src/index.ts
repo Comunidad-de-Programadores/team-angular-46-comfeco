@@ -1,6 +1,8 @@
 // Parametros
+export * from './lib/cambio_contrasenia.dto';
 export * from './lib/interfaces';
 export * from './lib/inicio.dto';
+export * from './lib/recuperar_cuenta.dto';
 export * from './lib/registro.dto';
 
 // Respuestas

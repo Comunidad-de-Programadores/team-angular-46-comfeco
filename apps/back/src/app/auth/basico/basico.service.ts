@@ -1,10 +1,12 @@
 import { Injectable, HttpStatus } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
 import { Observable } from 'rxjs';
+import crypto from 'crypto';
 
-import { Estatus, TipoCuenta, RespuestaGenerica, RegistroDto, TokenDto, InicioDto } from '@comfeco/interfaces';
+import { Estatus, TipoCuenta, RespuestaGenerica, RegistroDto, TokenDto, InicioDto, RecuperarCuentaDto, CambioContraseniaDto } from '@comfeco/interfaces';
 
 import { AuthService } from '../auth.service';
+import { CorreoService } from '../../../config/correo/correo.service';
 import { FacebookService } from '../facebook/facebook.service';
 import { GoogleService } from '../google/google.service';
 import { UsuarioEntidad } from './../../usuario/usuario.entity';
@@ -18,7 +20,8 @@ export class BasicoService {
         private _usuarioRepository: UsuarioRepository,
         private _googleService: GoogleService,
         private _facebookService: FacebookService,
-        private _authService: AuthService
+        private _authService: AuthService,
+        private _correoService: CorreoService
     ) {}
     
     async registro(registroDto:RegistroDto): Promise<TokenDto | RespuestaGenerica> {
@@ -134,6 +137,56 @@ export class BasicoService {
         return tokenNuevo;
     }
     
+    async recuperarCuenta(recuperarContraseniaDto:RecuperarCuentaDto): Promise<RespuestaGenerica> {
+        const { usuario, correo } = recuperarContraseniaDto;
+
+        let usuarioBase:UsuarioEntidad;
+
+        if(usuario) {
+            usuarioBase = await this._usuarioRepository.validarExistenciaUsuario(usuario);
+        } else {
+            usuarioBase = await this._usuarioRepository.validarExistenciaCorreo(correo);
+        }
+
+        if(usuarioBase && usuarioBase.tipo==TipoCuenta.CORREO) {
+            const nuevoToken = (
+                longitud = 200,
+                caracteresValidos = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz~!@-#$_.*%&()=[]+'
+            ) =>
+                Array.from(crypto.randomFillSync(new Uint32Array(longitud)))
+                    .map((x) => caracteresValidos[x % caracteresValidos.length])
+                    .join('');
+            
+            usuarioBase.tokenApi=nuevoToken();
+            await this._usuarioRepository.actualizarTokenUsuario(usuarioBase);
+            await this._correoService.recuperarCuenta(usuarioBase);
+        }
+
+        if(!usuarioBase || usuarioBase.tipo!=TipoCuenta.CORREO) {
+            return RespuestaUtil.respuestaGenerica('',['No existe una cuenta con los datos proporcionados'], HttpStatus.BAD_REQUEST);
+        } else {
+            return RespuestaUtil.respuestaGenerica('Se envió un correo electrónico para recuperar su cuenta. Revisar en la carpeta de correos no deseados',[], HttpStatus.OK);
+        }
+    }
+
+    async cambioContrasenia(cambioContrasenia:CambioContraseniaDto): Promise<RespuestaGenerica> {
+        const { contrasenia, token } = cambioContrasenia;
+
+        let usuarioBase:UsuarioEntidad;
+
+        usuarioBase = await this._usuarioRepository.validarExistenciaTokenCambioContrasenia(token);
+
+        if(!usuarioBase || usuarioBase.tipo!=TipoCuenta.CORREO) {
+            return RespuestaUtil.respuestaGenerica('',['No es posible modificar la contraseña de la cuenta'], HttpStatus.BAD_REQUEST);
+        } else {
+            usuarioBase.contrasenia = await bcrypt.hash(contrasenia, 10);
+            usuarioBase.tokenApi = '';
+            await this._usuarioRepository.actualizarTokenUsuario(usuarioBase);
+
+            return RespuestaUtil.respuestaGenerica('Se cambio satisfactoriamente la contraseña de la cuenta',[], HttpStatus.ACCEPTED);
+        }
+    }
+
     async salir(correo:string): Promise<RespuestaGenerica> {
         const usuarioEntidad:UsuarioEntidad = await this._usuarioRepository.validarExistenciaCorreo(correo);
         let respuesta:RespuestaGenerica;

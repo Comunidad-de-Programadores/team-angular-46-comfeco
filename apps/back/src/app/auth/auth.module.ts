@@ -7,6 +7,7 @@ import { JwtStrategy } from '../../config/guard/jwt.strategy';
 import { ConfigModule } from '../../config/config.module';
 import { ConfigService } from '../../config/config.service';
 import { Configuracion } from '../../config/config.keys';
+import { CorreoModule } from '../../config/correo/correo.module';
 import { UsuarioModule } from '../usuario/usuario.module';
 import { BasicoController } from './basico/basico.controller';
 import { BasicoService } from './basico/basico.service';
@@ -51,6 +52,7 @@ const jwtModule: DynamicModule = JwtModule.registerAsync({
         passportModule,
         jwtModule,
         HttpModule,
+        CorreoModule,
         UsuarioModule
     ],
     exports: [
