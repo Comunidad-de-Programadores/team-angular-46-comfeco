@@ -1,10 +1,9 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { IsNotEmpty, IsString, Matches } from 'class-validator';
 
-import { ExpresionRegex } from '../regexp/expresiones.regexp';
-import { RecuperarCuentaDto } from './recuperar_cuenta.dto';
+import { ExpresionRegex } from './../regexp/expresiones.regexp';
 
-export class InicioDto extends RecuperarCuentaDto {
+export class CambioContraseniaDto {
     
     @IsString()
     @IsNotEmpty({message: 'La contraseña es requerida'})
@@ -17,4 +16,12 @@ export class InicioDto extends RecuperarCuentaDto {
     })
     readonly contrasenia: string;
     
+    @IsString({message: 'El campo token es necesario que se envíe'})
+    @ApiProperty({
+        description: 'Token generado para poder realizar la restauración de la contraseña',
+        example: "4a!%ds6=54ad*]_561ca3s15#$*-_",
+    })
+    @ApiPropertyOptional()
+    readonly token: string;
+
 }

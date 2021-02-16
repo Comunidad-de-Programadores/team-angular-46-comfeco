@@ -1,8 +1,8 @@
-import { Body, Controller, Get, HttpStatus, Post, Res, UseGuards, Req } from '@nestjs/common';
-import { ApiBadRequestResponse, ApiBearerAuth, ApiCreatedResponse, ApiForbiddenResponse, ApiOkResponse, ApiOperation,  ApiTags, ApiUnauthorizedResponse } from '@nestjs/swagger';
+import { Body, Controller, Get, HttpStatus, Post, Res, UseGuards, Patch, Req, Put } from '@nestjs/common';
+import { ApiAcceptedResponse, ApiBadRequestResponse, ApiBearerAuth, ApiCreatedResponse, ApiForbiddenResponse, ApiOkResponse, ApiOperation,  ApiTags, ApiUnauthorizedResponse } from '@nestjs/swagger';
 import { Response } from 'express';
 
-import { RespuestaGenerica, RegistroDto, InicioDto, TokenDto } from '@comfeco/interfaces';
+import { RespuestaGenerica, RegistroDto, InicioDto, TokenDto, RecuperarCuentaDto, CambioContraseniaDto } from '@comfeco/interfaces';
 
 import { BasicoService } from './basico.service';
 import { ParametroToken } from '../../../config/guard/usuario.decorator';
@@ -85,6 +85,44 @@ export class BasicoController {
             res.status(HttpStatus.OK).send(tokenNuevo);
         }
     }
+
+
+    @ApiOperation({
+        summary: 'Recuperación de cuenta',
+        description: 'El servicio manda un correo electrónico con las indicaciones para recuperar la cuenta'
+    })
+    @ApiOkResponse({
+        description: 'Correo enviado para recuperación de cuenta',
+        type: RespuestaGenerica,
+    })
+    @ApiForbiddenResponse({
+        description: 'No se puede recuperar la cuenta',
+        type: RespuestaGenerica,
+    })
+    @Patch('/recuperar_cuenta_usuario')
+	async recuperarCuenta(@Res() res:Response, @Body() recuperarContrasenia:RecuperarCuentaDto): Promise<void> {
+        const usuario = await this._basicoService.recuperarCuenta(recuperarContrasenia);
+        res.status(usuario.codigo).send(usuario);
+	}
+
+
+    @ApiOperation({
+        summary: 'Cambio de contraseña',
+        description: 'El servicio realiza el cambio de la contraseña del usuario'
+    })
+    @ApiAcceptedResponse({
+        description: 'La contraseña se modificó satisfactoriamente',
+        type: RespuestaGenerica,
+    })
+    @ApiBadRequestResponse({
+        description: 'No se puede cambiar la contraseña',
+        type: RespuestaGenerica,
+    })
+    @Put('/cambio_contrasenia')
+	async cambioContrasenia(@Res() res:Response, @Body() cambioContrasenia:CambioContraseniaDto): Promise<void> {
+        const usuario:RespuestaGenerica = await this._basicoService.cambioContrasenia(cambioContrasenia);
+        res.status(usuario.codigo).send(usuario);
+	}
 
 
     @ApiOperation({
