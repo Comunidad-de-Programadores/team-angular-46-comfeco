@@ -212,6 +212,27 @@
           }
         }
       }
+    },
+    "validator": {
+      "root": "libs/validator",
+      "sourceRoot": "libs/validator/src",
+      "projectType": "library",
+      "architect": {
+        "lint": {
+          "builder": "@nrwl/linter:eslint",
+          "options": {
+            "lintFilePatterns": ["libs/validator/**/*.ts"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "outputs": ["coverage/libs/validator"],
+          "options": {
+            "jestConfig": "libs/validator/jest.config.js",
+            "passWithNoTests": true
+          }
+        }
+      }
     }
   },
   "cli": {
