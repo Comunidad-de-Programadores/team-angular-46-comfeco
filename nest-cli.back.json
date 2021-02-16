@@ -1,0 +1,23 @@
+{
+  "language": "ts",
+  "collection": "@nestjs/schematics",
+  "root": "apps/back",
+  "sourceRoot": "apps/back/src",
+  "compilerOptions": {
+    "plugins": ["@nestjs/swagger/plugin"],
+    "tsConfigPath": "apps/back/tsconfig.app.json",
+    "webpack": true
+  },
+  "monorepo": true,
+  "projects": {
+    "back": {
+      "type": "application",
+      "root": "apps/back",
+      "entryFile": "main",
+      "sourceRoot": "apps/back/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/back/tsconfig.app.json"
+      }
+    }
+  }
+}

@@ -1,0 +1,7 @@
+export enum Configuracion {
+    PORT='PORT',
+    LOCAL='LOCAL',
+    DOMAIN='DOMAIN',
+    JWT_SECRETO='JWT_SECRETO',
+    JWT_TIEMPO_EXPIRACION='JWT_TIEMPO_EXPIRACION',
+};
