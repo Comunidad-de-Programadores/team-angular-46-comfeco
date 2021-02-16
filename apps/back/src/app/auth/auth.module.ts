@@ -10,6 +10,12 @@ import { Configuracion } from '../../config/config.keys';
 import { UsuarioModule } from '../usuario/usuario.module';
 import { BasicoController } from './basico/basico.controller';
 import { BasicoService } from './basico/basico.service';
+import { GoogleController } from './google/google.controller';
+import { GoogleService } from './google/google.service';
+import { GoogleStrategy } from './google/google.strategy';
+import { FacebookController } from './facebook/facebook.controller';
+import { FacebookService } from './facebook/facebook.service';
+import { FacebookStrategy } from './facebook/facebook.strategy';
 
 const passportModule: DynamicModule = PassportModule.register({
     defaultStrategy: 'jwt'
@@ -30,12 +36,15 @@ const jwtModule: DynamicModule = JwtModule.registerAsync({
 
 @Module({
     controllers: [
-        BasicoController
-    ],
+        BasicoController,
+        GoogleController,
+        FacebookController],
     providers: [
         JwtStrategy,
         ConfigService,
         BasicoService,
+        GoogleService, GoogleStrategy,
+        FacebookService, FacebookStrategy,
         AuthService
     ],
     imports: [
