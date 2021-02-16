@@ -1,9 +1,12 @@
 import { Injectable, HttpStatus } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
+import { Observable } from 'rxjs';
 
-import { Estatus, RespuestaGenerica, RegistroDto, TokenDto, InicioDto } from '@comfeco/interfaces';
+import { Estatus, TipoCuenta, RespuestaGenerica, RegistroDto, TokenDto, InicioDto } from '@comfeco/interfaces';
 
 import { AuthService } from '../auth.service';
+import { FacebookService } from '../facebook/facebook.service';
+import { GoogleService } from '../google/google.service';
 import { UsuarioEntidad } from './../../usuario/usuario.entity';
 import { UsuarioRepository } from './../../usuario/usuario.repository';
 import { RespuestaUtil } from '../../../util/general/respuestas.util';
@@ -13,6 +16,8 @@ export class BasicoService {
 
     constructor(
         private _usuarioRepository: UsuarioRepository,
+        private _googleService: GoogleService,
+        private _facebookService: FacebookService,
         private _authService: AuthService
     ) {}
     
@@ -131,13 +136,37 @@ export class BasicoService {
     
     async salir(correo:string): Promise<RespuestaGenerica> {
         const usuarioEntidad:UsuarioEntidad = await this._usuarioRepository.validarExistenciaCorreo(correo);
-        
+        let respuesta:RespuestaGenerica;
+
+        if(usuarioEntidad.tipo==TipoCuenta.GOOGLE) {
+            const salirGoogle$ = this._googleService.salir(usuarioEntidad.tokenGoogle);
+            respuesta = this._respuestaSalirRedSocial(salirGoogle$);
+        }
+
+        if(usuarioEntidad.tipo==TipoCuenta.FACEBOOK) {
+            const salirFacebook$ = this._facebookService.salir(usuarioEntidad.idFacebook, usuarioEntidad.tokenFaceook);respuesta = this._respuestaSalirRedSocial(salirFacebook$);
+        }
+
+        if(respuesta==undefined) {
+            respuesta = await RespuestaUtil.respuestaGenerica('El usuario salió exitosamente del aplicativo',[], HttpStatus.OK);
+        }
+
         usuarioEntidad.tokenApi = '';
 
         this._usuarioRepository.actualizarTokenUsuario(usuarioEntidad);
 
-        return RespuestaUtil.respuestaGenerica('El usuario salió exitosamente del aplicativo',[], HttpStatus.OK);
+        return respuesta;
     }
 
+    private _respuestaSalirRedSocial(observableServicio$:Observable<RespuestaGenerica>): RespuestaGenerica {
+        let respuesta:RespuestaGenerica;
+        const salirRespuesta = observableServicio$.subscribe(
+            resp => respuesta = resp
+        );
+        
+        salirRespuesta.unsubscribe();
+        
+        return respuesta;
+    }
     
 }
