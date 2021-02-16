@@ -29,8 +29,10 @@ const routes: Routes = [
       { path: 'login', component: ViewLoginComponent }, // login/login
       { path: 'recoverypassword', component: RecoveryPasswordComponent  }, // login/recoverypassword
       { path: 'setpassword', component: SetPasswordComponent }, // // login/setpassword
+      { path: '', redirectTo: 'login', pathMatch: 'full' },
+      { path: '**', redirectTo: 'login' },
     ],
-  }
+  },
 ];
 
 @NgModule({

@@ -5,9 +5,9 @@ import { NgModule } from '@angular/core';
 const routes: Routes = [
   {
     path: 'login',
-    pathMatch: 'full',
     loadChildren: () => import('./login/login.module').then(m => m.LoginModule),
   },
+  { path: '', redirectTo: 'login', pathMatch: 'full' },
   { path: '**', redirectTo: 'login' },
 ];
 
