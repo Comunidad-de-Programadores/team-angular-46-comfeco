@@ -3,19 +3,20 @@ import { PassportStrategy } from "@nestjs/passport";
 import { Profile, Strategy } from "passport-facebook";
 
 import { ConfigService } from '../../../config/config.service';
-import { Configuracion } from '../../../config/config.keys';
+import { Configuration } from '../../../config/config.keys';
 import { environment } from '../../../environments/environment';
 
 @Injectable()
 export class FacebookStrategy extends PassportStrategy(Strategy, "facebook") {
+    
     constructor(private readonly _configService: ConfigService) {
         super({
-            clientID: _configService.get(Configuracion.FACEBOOK_ID),
-            clientSecret: _configService.get(Configuracion.FACEBOOK_SECRET),
+            clientID: _configService.get(Configuration.FACEBOOK_ID),
+            clientSecret: _configService.get(Configuration.FACEBOOK_SECRET),
             callbackURL: environment.produccion
-                            ? _configService.get(Configuracion.DOMAIN)
-                            : _configService.get(Configuracion.LOCAL)+_configService.get(Configuracion.PORT)
-                            + `/${environment.prefijo_api}/auth/facebook/respuesta`,
+                            ? _configService.get(Configuration.DOMAIN)
+                            : _configService.get(Configuration.LOCAL)+_configService.get(Configuration.PORT)
+                            + `/${environment.prefix_api}/auth/facebook/respuesta`,
             scope: "email",
             profileFields: ["emails", "name"],
         });
@@ -28,7 +29,7 @@ export class FacebookStrategy extends PassportStrategy(Strategy, "facebook") {
         done: (err: any, user: any, info?: any) => void
     ): Promise<any> {
         const { id, name, emails } = profile;
-        const usuario = {
+        const userValid = {
             id,
             email: emails[0].value,
             firstName: name.givenName,
@@ -36,7 +37,7 @@ export class FacebookStrategy extends PassportStrategy(Strategy, "facebook") {
             accessToken,
         };
         
-        done(null, usuario);
+        done(null, userValid);
     }
     
 }

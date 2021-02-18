@@ -4,13 +4,13 @@ import { Observable } from 'rxjs';
 import { AxiosResponse } from 'axios';
 import { map } from 'rxjs/operators';
 
-import { Estatus, TipoCuenta, RespuestaGenerica, TokenDto } from '@comfeco/interfaces';
-import { RespuestaUtil } from '@comfeco/validator';
+import { Status, GenericResponse, TokenDto, AccountType } from '@comfeco/interfaces';
+import { UtilResponse } from '@comfeco/validator';
 
 import { AuthService } from '../auth.service';
 import { environment } from '../../../environments/environment';
-import { UsuarioEntidad } from '../../usuario/usuario.entity';
-import { UsuarioRepository } from '../../usuario/usuario.repository';
+import { UserEntity } from '../../user/user.entity';
+import { UserRepository } from '../../user/user.repository';
 
 @Injectable()
 export class FacebookService {
@@ -18,77 +18,77 @@ export class FacebookService {
     constructor(
         private _httpService: HttpService,
         private _authService: AuthService,
-        private _usuarioRepository: UsuarioRepository
+        private _userRepository: UserRepository
     ){}
     
-    async ingresar(req: Request): Promise<TokenDto | RespuestaGenerica> {
+    async login(req: Request): Promise<TokenDto | GenericResponse> {
         if (!req.user) {
-            return RespuestaUtil.respuestaGenerica('',['No se logro iniciar sesión con su cuenta de facebook'], HttpStatus.BAD_REQUEST);
+            return UtilResponse.genericResponse('',['No se logro iniciar sesión con su cuenta de facebook'], HttpStatus.BAD_REQUEST);
         }
 
-        const usuarioFacebook:any = req.user;
-        const { firstName:nombre, lastName:apellido_paterno, email:correo, id:idFacebook , accessToken:tokenFaceook } = usuarioFacebook;
-        const usuario = correo.substring(0, correo.indexOf('@'));
+        const userFacebook:any = req.user;
+        const { firstName:name, lastName:lastname, email, id:idFacebook , accessToken:tokenFaceook } = userFacebook;
+        const user = email.substring(0, email.indexOf('@'));
 
-        const cuenta:UsuarioEntidad = {
-            tipo: TipoCuenta.FACEBOOK,
-            nombre,
-            apellido_paterno,
-            correo,
+        const account:UserEntity = {
+            type: AccountType.FACEBOOK,
+            name,
+            lastname,
+            email,
             idFacebook,
             tokenFaceook,
-            usuario
+            user
         };
 
-        const usuarioExiste:UsuarioEntidad = await this._usuarioRepository.validarExistenciaUsuario(usuario);
-        let crearToken:boolean = false;
+        const userExists:UserEntity = await this._userRepository.userExists(user);
+        let createToken:boolean = false;
 
-        if(usuarioExiste!==null) {
-            if(usuarioExiste.estatus===Estatus.ACTIVO) {
-                crearToken = true;
+        if(userExists!==null) {
+            if(userExists.status===Status.ACTIVE) {
+                createToken = true;
             } else {
-                this.salir(idFacebook, tokenFaceook);
+                this.logout(idFacebook, tokenFaceook);
             }
         } else {
-            crearToken = true;
+            createToken = true;
         }
         
-        await this._usuarioRepository.registrarUsuarioRedSocial(cuenta);
+        await this._userRepository.registerUserSocialNetwork(account);
         
-        if(crearToken) {
-            return this._authService.crearTokenAcceso(usuario, correo, HttpStatus.OK);
+        if(createToken) {
+            return this._authService.createAccessToken(user, email, HttpStatus.OK);
         } else {
-            return RespuestaUtil.respuestaGenerica('',['El usuario se encuentra inactivo'], HttpStatus.UNAUTHORIZED);
+            return UtilResponse.genericResponse('',['El usuario se encuentra inactivo'], HttpStatus.UNAUTHORIZED);
         }
     }
 
-    salir(userid:string, token:string): Observable<RespuestaGenerica> {
+    logout(userid:string, token:string): Observable<GenericResponse> {
         const headersRequest = {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}`,
         };
-        console.log(`cerrando sesion con facebook ${userid} token: ${token}`);
-        const url:string = environment.url_logout_facebook.replace(':userid', userid);
-        const respuesta$:Observable<AxiosResponse> = this._httpService.delete(url, { headers: headersRequest });
         
-        return respuesta$
+        const url:string = environment.url_logout_facebook.replace(':userid', userid);
+        const response$:Observable<AxiosResponse> = this._httpService.delete(url, { headers: headersRequest });
+        
+        return response$
             .pipe(
                 map(resp => {
-                    let resultadoGoogle:RespuestaGenerica;
+                    let responseFacebook:GenericResponse;
 
                     if(resp.status==HttpStatus.OK) {
-                        resultadoGoogle = {
-                            codigo: resp.status,
-                            mensaje: 'Sesión cerrada con éxito'
+                        responseFacebook = {
+                            code: resp.status,
+                            message: 'Sesión cerrada con éxito'
                         }
                     } else {
-                        resultadoGoogle = {
-                            codigo: resp.status,
-                            errores: [ 'La sesión no se pudo cerrar' ]
+                        responseFacebook = {
+                            code: resp.status,
+                            errors: [ 'La sesión no se pudo cerrar' ]
                         }
                     }
                     
-                    return resultadoGoogle;
+                    return responseFacebook;
                 })
             );
     }

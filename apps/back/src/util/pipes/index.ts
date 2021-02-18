@@ -1,1 +1,1 @@
-export * from './validar_servicio.pipe';
+export * from './validate_service.pipe';

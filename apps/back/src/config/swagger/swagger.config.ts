@@ -5,10 +5,10 @@ import { environment } from './../../environments/environment';
 
 export class SwaggerConfiguracion {
 
-    publicar(app:INestApplication): void {
-        const configuracion = new DocumentBuilder()
-            .setDescription(environment.descripcion)
-            .setTitle(environment.nombre_app)
+    publish(app:INestApplication): void {
+        const configuration = new DocumentBuilder()
+            .setDescription(environment.description)
+            .setTitle(environment.name_app)
             .setVersion(environment.version_app)
             .addBearerAuth( 
                 { type: 'http', scheme: 'bearer', bearerFormat: 'JWT', in: 'header' },
@@ -16,17 +16,17 @@ export class SwaggerConfiguracion {
             )
             .build();
         
-        const opciones:SwaggerDocumentOptions =  {
+        const options:SwaggerDocumentOptions =  {
             operationIdFactory: (
                 controllerKey: string,
                 methodKey: string
             ) => methodKey
         };
 
-        const documento = SwaggerModule.createDocument(app, configuracion, opciones);
+        const document = SwaggerModule.createDocument(app, configuration, options);
 
-        SwaggerModule.setup(environment.prefijo_api_doc, app, documento,{
-            customSiteTitle: environment.titulo,
+        SwaggerModule.setup(environment.prefix_api_doc, app, document,{
+            customSiteTitle: environment.title,
         });
     }
     

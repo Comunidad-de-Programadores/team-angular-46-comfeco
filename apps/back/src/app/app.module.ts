@@ -5,14 +5,14 @@ import { AuthModule } from './auth/auth.module';
 import { environment } from '../environments/environment';
 import { ConfigModule } from '../config/config.module';
 import { ConfigService } from '../config/config.service';
-import { Configuracion } from '../config/config.keys';
-import { UsuarioModule } from './usuario/usuario.module';
+import { Configuration } from '../config/config.keys';
+import { UserModule } from './user/user.module';
 
 @Module({
     imports: [
         ConfigModule,
         AuthModule,
-        UsuarioModule,
+        UserModule,
     ],
     providers: [
         ConfigService,
@@ -21,18 +21,18 @@ import { UsuarioModule } from './usuario/usuario.module';
 export class AppModule {
     private readonly logger = new Logger(AppModule.name);
     
-    public static puerto: number | string;
+    public static port: number | string;
     
     constructor( private readonly _configService: ConfigService ) {
-        AppModule.puerto = this._configService.get( Configuracion.PORT );
-        const local:string = _configService.get(Configuracion.LOCAL);
-        const dominio:string = _configService.get(Configuracion.DOMAIN);
-        const url:string = environment.produccion ? dominio : `${local}${AppModule.puerto}`;
+        AppModule.port = this._configService.get( Configuration.PORT );
+        const local:string = _configService.get(Configuration.LOCAL);
+        const dominio:string = _configService.get(Configuration.DOMAIN);
+        const url:string = environment.produccion ? dominio : `${local}${AppModule.port}`;
         
-        _configService.parametrosServidor(AppModule.puerto, url);
+        _configService.parametersServer(AppModule.port, url);
 
         this.logger.debug(`Servidor listo en el puerto: ${url}`);
-        this.logger.debug(`Documentación del api en: ${url}/${environment.prefijo_api_doc}`);
+        this.logger.debug(`Documentación del api en: ${url}/${environment.prefix_api_doc}`);
     }
     
 }

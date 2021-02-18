@@ -1,1 +1,1 @@
-export * from './error_parametros.exception';
+export * from './parameters_error.exception';

@@ -1,11 +1,11 @@
 import { Module } from '@nestjs/common';
 
 import { ConfigService } from './config.service';
-import { CorreoModule } from './correo/correo.module';
+import { EmailModule } from './email/email.module';
 
 @Module({
     providers: [ ConfigService ],
     exports: [ ConfigService ],
-    imports: [ CorreoModule ],
+    imports: [ EmailModule ],
 })
 export class ConfigModule {}

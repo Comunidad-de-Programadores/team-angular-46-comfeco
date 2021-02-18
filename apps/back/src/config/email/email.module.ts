@@ -3,9 +3,9 @@ import { MailerModule } from '@nestjs-modules/mailer';
 import { PugAdapter } from '@nestjs-modules/mailer/dist/adapters/pug.adapter';
 
 import { ConfigService } from '../config.service';
-import { CorreoService } from './correo.service';
+import { EmailService } from './email.service';
 
-const moduloCorreo:DynamicModule = MailerModule.forRoot({
+const moduleEmail:DynamicModule = MailerModule.forRoot({
     transport: {
         service: process.env.GOOGLE_SERVICE,
         auth: {
@@ -30,8 +30,8 @@ const moduloCorreo:DynamicModule = MailerModule.forRoot({
 });
 
 @Module({
-    imports: [ moduloCorreo ],
-    providers: [ ConfigService, CorreoService ],
-    exports: [ CorreoService ],
+    imports: [ moduleEmail ],
+    providers: [ ConfigService, EmailService ],
+    exports: [ EmailService ],
 })
-export class CorreoModule {}
+export class EmailModule {}

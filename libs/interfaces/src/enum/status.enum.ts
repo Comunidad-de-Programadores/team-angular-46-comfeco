@@ -1,0 +1,6 @@
+export const enum Status {
+    ACTIVE='ACTIVE',
+    INACTIVE='INACTIVE',
+    LOCKED='LOCKED',
+    UNSUBSCRIBED='UNSUBSCRIBED'
+}
