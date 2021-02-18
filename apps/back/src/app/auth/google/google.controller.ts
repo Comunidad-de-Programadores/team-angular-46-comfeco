@@ -19,7 +19,7 @@ export class GoogleController {
     })
     @Get()
     @UseGuards(AuthGuard('google'))
-    pantallaIngreso(@Res() resp:Response): void {
+    pageLogin(@Res() resp:Response): void {
         resp.status(HttpStatus.OK);
     }
 
@@ -27,10 +27,10 @@ export class GoogleController {
     @Get('respuesta')
     @ApiExcludeEndpoint()
     @UseGuards(AuthGuard('google'))
-    async respuestaAutenticacion(@Req() req:Request, @Res() res:Response): Promise<void> {
-        const usuario = await this._googleService.ingresar(req)
+    async login(@Req() req:Request, @Res() res:Response): Promise<void> {
+        const user = await this._googleService.login(req)
 
-        res.status(usuario.errores ? usuario.codigo : HttpStatus.OK).send(usuario);
+        res.status(user.code).send(user);
     }
     
 }

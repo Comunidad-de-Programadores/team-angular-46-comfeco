@@ -1,11 +1,11 @@
 import { ExceptionFilter } from '@nestjs/common';
-import { ErrorInternoFilter } from './error_interno.filter';
 
-import { NoAutorizadoFilter } from './sin_autorizacion.filter';
-import { ParametrosFilter } from './parametros_error.filter';
+import { InternalErrorFilter } from './internal_error.filter';
+import { UnauthorizedFilter } from './unauthorized.filter';
+import { ParametersFilter } from './parameters_error.filter';
 
-export const filtrosGlobalesError:ExceptionFilter[] = [
-    new ParametrosFilter(),
-    new NoAutorizadoFilter(),
-    new ErrorInternoFilter()
+export const filtersGlobal:ExceptionFilter[] = [
+    new ParametersFilter(),
+    new UnauthorizedFilter(),
+    new InternalErrorFilter()
 ];

@@ -1,19 +1,19 @@
 import { HttpStatus } from "@nestjs/common";
 
-import { RespuestaGenerica } from "@comfeco/interfaces";
+import { GenericResponse } from "@comfeco/interfaces";
 
-export class RespuestaUtil {
+export class UtilResponse {
 
-    static respuestaGenerica(mensaje:string, errores:string[], codigo:HttpStatus): RespuestaGenerica {
-        if(mensaje!='') {
+    static genericResponse(message:string, errors:string[], code:HttpStatus): GenericResponse {
+        if(message!='') {
             return {
-                codigo,
-                mensaje
+                code,
+                message
             };
         } else {
             return {
-                codigo,
-                errores
+                code,
+                errors
             };
         }
     }

@@ -18,7 +18,7 @@ export class FacebookController {
     })
     @Get()
     @UseGuards(AuthGuard("facebook"))
-    pantallaIngreso() {
+    pageLogin() {
         return HttpStatus.OK;
     }
     
@@ -26,10 +26,10 @@ export class FacebookController {
     @Get("respuesta")
     @ApiExcludeEndpoint()
     @UseGuards(AuthGuard("facebook"))
-    async facebookLoginRedirect(@Req() req: Request, @Res() res:Response): Promise<any> {
-        const usuario = await this._facebookService.ingresar(req);
+    async login(@Req() req: Request, @Res() res:Response): Promise<any> {
+        const user = await this._facebookService.login(req);
 
-        res.status(usuario.errores ? usuario.codigo : HttpStatus.OK).send(usuario);
+        res.status(user.code).send(user);
     }
     
 }

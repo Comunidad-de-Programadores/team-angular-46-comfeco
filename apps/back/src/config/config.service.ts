@@ -4,15 +4,15 @@ import { Injectable } from '@nestjs/common';
 export class ConfigService {
     private readonly variables: { [key: string]: string };
     
-    private _puerto: number | string;
+    private _port: number | string;
     private _urlApi: string;
 
     constructor() {
         this.variables = {...process.env};
     }
 
-    parametrosServidor(puerto:number|string, urlApi:string) {
-        this._puerto = puerto;
+    parametersServer(puerto:number|string, urlApi:string) {
+        this._port = puerto;
         this._urlApi = urlApi;
     }
 
@@ -21,7 +21,7 @@ export class ConfigService {
     }
 
     get puerto() {
-        return this._puerto;
+        return this._port;
     }
 
     get urlApi() {
