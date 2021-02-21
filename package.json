@@ -45,6 +45,7 @@
     "@nestjs/platform-express": "^7.0.0",
     "@nestjs/swagger": "^4.7.12",
     "@nrwl/angular": "11.2.11",
+    "angularx-social-login": "^3.5.4",
     "bcrypt": "^5.0.0",
     "bcryptjs": "^2.4.3",
     "class-transformer": "^0.3.2",

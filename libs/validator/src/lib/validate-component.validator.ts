@@ -67,8 +67,6 @@ export class ValidateComponent {
                 return {
                     error: respuesta.errors
                 };
-            } else {
-                return null;
             }
         }
 

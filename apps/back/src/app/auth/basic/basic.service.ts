@@ -1,6 +1,5 @@
 import { Injectable, HttpStatus, Logger } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
-import { Observable } from 'rxjs';
 import jwt from 'jsonwebtoken';
 
 import { Status, AccountType, GenericResponse, RegisterDto, TokenDto, LoginDto, RecoverAccountDto, ChangePasswordDto, ExpresionRegex } from '@comfeco/interfaces';
@@ -8,22 +7,20 @@ import { UtilResponse, ValidatorService } from '@comfeco/validator';
 
 import { AuthService } from '../auth.service';
 import { EmailService } from '../../../config/email/email.service';
-import { FacebookService } from '../facebook/facebook.service';
-import { GoogleService } from '../google/google.service';
 import { UserEntity } from './../../user/user.entity';
 import { UserRepository } from './../../user/user.repository';
 import { ConfigService } from '../../../config/config.service';
 import { Configuration } from '../../../config/config.keys';
+import { JwtUtil } from '../../../util/jwt/jwt.util';
 
 @Injectable()
 export class BasicService {
     private readonly logger = new Logger(BasicService.name);
 
     constructor(
+        private _jwtUtil: JwtUtil,
         private _configService: ConfigService,
         private _userRepository: UserRepository,
-        private _googleService: GoogleService,
-        private _facebookService: FacebookService,
         private _authService: AuthService,
         private _emailService: EmailService
     ) {}
@@ -44,7 +41,7 @@ export class BasicService {
         let mensajeError:string;
         let baseUser:UserEntity = await this._userRepository.userExists(user);
 
-        if(baseUser!=null) {
+        if(baseUser!=null && baseUser.type.includes(AccountType.EMAIL)) {
             mensajeError = 'El usuario ya se encuentra registrado';
         } else {
             baseUser = await this._userRepository.emaiTypeExists(email);
@@ -58,7 +55,7 @@ export class BasicService {
             return UtilResponse.genericResponse('',[mensajeError], HttpStatus.BAD_REQUEST);
         }
 
-        const token:TokenDto = this._authService.createAccessToken(user, email, HttpStatus.CREATED);
+        const token:TokenDto = this._authService.createAccessToken(user, email, AccountType.EMAIL, HttpStatus.CREATED);
 
         await this._userRepository.registerUserEmail(registerDto, token.token);
 
@@ -96,7 +93,7 @@ export class BasicService {
             return UtilResponse.genericResponse('',[message], HttpStatus.UNAUTHORIZED);
         }
 
-        const token:TokenDto = this._authService.createAccessToken(baseUser.user, baseUser.email, HttpStatus.OK);
+        const token:TokenDto = this._authService.createAccessToken(baseUser.user, baseUser.email, AccountType.EMAIL, HttpStatus.OK);
 
         baseUser.tokenApi = token.token;
 
@@ -139,20 +136,21 @@ export class BasicService {
         });
     }
 
-    async renewToken(usuario:string, token:string): Promise<TokenDto | GenericResponse> {
+    async renewToken(user:string, token:string): Promise<TokenDto | GenericResponse> {
         let validation:GenericResponse;
         
-        validation = ValidatorService.user(usuario, validation);
+        validation = ValidatorService.user(user, validation);
         validation = ValidatorService.token(token, validation);
         if(validation!=null) return validation;
 
-        const baseUser:UserEntity = await this._userRepository.userExists(usuario);
+        const baseUser:UserEntity = await this._userRepository.userExists(user);
 
         if(baseUser==null || baseUser.tokenApi!==token) {
             return UtilResponse.genericResponse('',['Usuario invalido'], HttpStatus.UNAUTHORIZED);
         }
-
-        const newToken:TokenDto = this._authService.createAccessToken(usuario, baseUser.email, HttpStatus.OK);
+        
+        const type:AccountType = this._jwtUtil.accessType(token);
+        const newToken:TokenDto = this._authService.createAccessToken(user, baseUser.email, type, HttpStatus.OK);
         
         baseUser.tokenApi = newToken.token;
 
@@ -191,6 +189,7 @@ export class BasicService {
             try {
                 await this._emailService.recoverAccount(baseUser);
             } catch(err) {
+                this.logger.error('No se puede enviar el correo', err);
                 return UtilResponse.genericResponse('',['No es posible enviar el correo electrónico, favor de intentar más tarde'], HttpStatus.BAD_REQUEST);    
             }
         }
@@ -226,7 +225,7 @@ export class BasicService {
 
         baseUser = await this._userRepository.tokenChangePasswordExists(token);
 
-        if(!baseUser || baseUser.type!=AccountType.EMAIL) {
+        if(!baseUser || !baseUser.type.includes(AccountType.EMAIL)) {
             return UtilResponse.genericResponse('',['No es posible modificar la contraseña de la cuenta'], HttpStatus.BAD_REQUEST);
         } else {
             baseUser.password = await bcrypt.hash(password, 10);
@@ -244,37 +243,16 @@ export class BasicService {
         if(validation!=null) return validation;
 
         const baseUser:UserEntity = await this._userRepository.emailExists(email);
-        let response:GenericResponse;
 
-        if(baseUser.type==AccountType.GOOGLE) {
-            const salirGoogle$ = this._googleService.logout(baseUser.tokenGoogle);
-            response = this._responseLogoutSocialNetwork(salirGoogle$);
-        }
-
-        if(baseUser.type==AccountType.FACEBOOK) {
-            const salirFacebook$ = this._facebookService.logout(baseUser.idFacebook, baseUser.tokenFaceook);response = this._responseLogoutSocialNetwork(salirFacebook$);
-        }
-
-        if(response==undefined) {
-            response = await UtilResponse.genericResponse('El usuario salió exitosamente del aplicativo',[], HttpStatus.OK);
+        if(baseUser==null || !baseUser || baseUser.status!=Status.ACTIVE) {
+            return await UtilResponse.genericResponse('',['El usuario salió del aplicativo'], HttpStatus.BAD_REQUEST);
         }
 
         baseUser.tokenApi = '';
 
         this._userRepository.updateTokenUser(baseUser);
 
-        return response;
-    }
-
-    private _responseLogoutSocialNetwork(observableService$:Observable<GenericResponse>): GenericResponse {
-        let response:GenericResponse;
-        const logoutResponse = observableService$.subscribe(
-            resp => response = resp
-        );
-        
-        logoutResponse.unsubscribe();
-        
-        return response;
+        return await UtilResponse.genericResponse('El usuario salió exitosamente del aplicativo',[], HttpStatus.OK);
     }
 
 }

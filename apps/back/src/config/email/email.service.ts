@@ -15,8 +15,8 @@ export class EmailService {
         private readonly _mailerService: MailerService) {}
     
     async recoverAccount(baseUser:UserEntity): Promise<SentMessageInfo> {
-        const { email, user, name, lastname='', lastname_m='', tokenApi } = baseUser;
-        const username = name ? `${name} ${lastname} ${lastname_m}` : user;
+        const { email, user, name, lastname='', tokenApi } = baseUser;
+        const username = name ? `${name} ${lastname}` : user;
         
         return await this._mailerService.sendMail({
             to: email,

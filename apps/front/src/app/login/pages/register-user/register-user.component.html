@@ -1,1 +1,30 @@
-<p>register-user works!</p>
+<form autocomplete="off" [formGroup]="registerForm">
+  <div>
+    <label for="user">Usuario</label>
+    <input type="text" id="user" placeholder="Usuario" formControlName="user">
+    <span>{{errorUser}}</span>
+  </div>
+  <div>
+    <label for="email">Correo</label>
+    <input type="email" id="email" placeholder="Correo" formControlName="email">
+    <span>{{errorEmail}}</span>
+  </div>
+  <div>
+    <label for="password">Contraseña</label>
+    <input type="password" id="password" placeholder="Contraseña" formControlName="password">
+    <span>{{errorPassword}}</span>
+  </div>
+  <div>
+    <label for="confirm">Repetir contraseña</label>
+    <input type="password" id="confirm" placeholder="Repetir Contraseña" formControlName="confirm">
+    <span>{{errorConfirm}}</span>
+  </div>
+
+  <span>{{ errorResponse }}</span>
+
+  <div>
+    <button type="button" (click)="register()" [disabled]="procesingRequest">Crear una cuenta</button>
+    <button type="button" (click)="registerFacebook()" [disabled]="procesingRequest">Ingresar con facebook</button>
+    <button type="button" (click)="registerGoogle()" [disabled]="procesingRequest">Ingresar con google</button>
+  </div>
+</form>

@@ -1,16 +1,13 @@
 import { HttpService, HttpStatus, Injectable } from '@nestjs/common';
-import { Request } from "express";
-import { AxiosResponse } from 'axios';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
 
-import { Status, AccountType, GenericResponse, TokenDto } from '@comfeco/interfaces';
+import { Status, AccountType, GenericResponse, TokenDto, GoogleLoginDto } from '@comfeco/interfaces';
 import { UtilResponse } from '@comfeco/validator';
 
 import { AuthService } from '../auth.service';
 import { environment } from '../../../environments/environment';
 import { UserEntity } from '../../user/user.entity';
 import { UserRepository } from '../../user/user.repository';
+import { VerifyGoogle } from './verify.model';
 
 @Injectable()
 export class GoogleService {
@@ -21,70 +18,75 @@ export class GoogleService {
         private _userRepository: UserRepository
     ){}
     
-    async login(req:Request): Promise<TokenDto | GenericResponse> {
-        if (!req.user) {
+    async login(googleDto:GoogleLoginDto): Promise<TokenDto | GenericResponse> {
+        if (!googleDto) {
             return UtilResponse.genericResponse('',['No se logro iniciar sesión con su cuenta de google'], HttpStatus.BAD_REQUEST);
         }
 
-        const userGoogle:any = req.user;
-        const { firstName:name, lastName:lastname, email, accessToken:tokenGoogle } = userGoogle;
-        const user = email.substring(0, email.indexOf('@'));
+        const { email, id, idToken } = googleDto;
 
-        const account:UserEntity = {
-            type: AccountType.GOOGLE,
+        const verify:VerifyGoogle = await this.verify(idToken);
+        if(!verify.data.sub || verify.data.sub!==id || verify.data.email!==email) {
+            return UtilResponse.genericResponse('',['Credenciales incorrectas'], HttpStatus.BAD_REQUEST);
+        }
+
+        return await this.createToken(googleDto, verify.data.picture);
+    }
+
+    async createToken(googleDto:GoogleLoginDto, photoUrl:string) {
+        const { firstName:name, lastName:lastname, email, authToken, idToken } = googleDto;
+        
+        let user = email.substring(0, email.indexOf('@'));
+
+        let account:UserEntity = {
+            type: [ AccountType.GOOGLE ],
             name,
             lastname,
             email,
-            tokenGoogle,
+            photoUrl,
+            google: {
+                authToken,
+                idToken,
+                photoUrl
+            },
             user
         };
 
-        const userExists:UserEntity = await this._userRepository.userExists(user);
-        let createToken:boolean = false;
+        const baseEmail:UserEntity = await this._userRepository.emailExists(email);
+        let createToken:boolean = true;
+        
+        if(baseEmail!==null) {
+            const type:AccountType[] = [...new Set([...baseEmail.type, AccountType.GOOGLE])];
+            user = baseEmail.user;
 
-        if(userExists!==null) {
-            if(userExists.status===Status.ACTIVE) {
-                createToken = true;
-            } else {
-                this.logout(tokenGoogle);
+            account = {
+                ...baseEmail,
+                type,
+                google: {
+                    authToken,
+                    idToken,
+                    photoUrl
+                },
+            };
+            
+            if(baseEmail.status!==Status.ACTIVE) {
+                createToken = false;
             }
-        } else {
-            createToken = true;
         }
 
         await this._userRepository.registerUserSocialNetwork(account);
         
         if(createToken) {
-            return this._authService.createAccessToken(user, email, HttpStatus.OK);
+            return this._authService.createAccessToken(user, email, AccountType.GOOGLE, HttpStatus.OK);
         } else {
             return UtilResponse.genericResponse('',['El usuario se encuentra inactivo'], HttpStatus.UNAUTHORIZED);
         }
     }
 
-    logout(token:string): Observable<GenericResponse> {
-        const url:string = environment.url_logout_google+token;
-        const response$:Observable<AxiosResponse> = this._httpService.post(url);
-        
-        return response$
-            .pipe(
-                map(resp => {
-                    let responseGoogle:GenericResponse;
+    verify(token:string): Promise<VerifyGoogle> {
+        const url:string = environment.url_verify_google+token;
 
-                    if(resp.status==HttpStatus.OK) {
-                        responseGoogle = {
-                            code: resp.status,
-                            message: 'Sesión cerrada con éxito'
-                        }
-                    } else {
-                        responseGoogle = {
-                            code: resp.status,
-                            errors: [ 'La sesión no se pudo cerrar' ]
-                        }
-                    }
-                    
-                    return responseGoogle;
-                })
-            );
+        return this._httpService.get(url).toPromise();
     }
-    
+
 }
