@@ -1,23 +1,19 @@
-import { Controller, Get, UseGuards, Res, Req } from '@nestjs/common';
+import { Controller, Get, UseGuards, Res } from '@nestjs/common';
 import { ApiBadRequestResponse, ApiBearerAuth, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
-import { Request, Response } from 'express';
+import { Response } from 'express';
 
 import { GenericResponse, UserDto } from '@comfeco/interfaces';
 
 import { UserGuard } from '../../config/guard/user.guard';
 import { UserService } from './user.service';
 import { ParameterToken } from '../../config/guard/user.decorator';
-import { JwtUtil } from '../../util/jwt/jwt.util';
 
 @ApiTags('Usuario')
 @Controller('user')
 @ApiBearerAuth('access-token-service')
 export class UserController {
 
-    constructor(
-        private _jwtUtil: JwtUtil,
-        private _userService: UserService
-    ){}
+    constructor( private _userService: UserService ){}
 
     
     @ApiOperation({
@@ -34,9 +30,8 @@ export class UserController {
     })
     @Get()
     @UseGuards(UserGuard)
-	async information(@Req() req:Request, @Res() res:Response, @ParameterToken('user') user:string): Promise<void> {
-        const token = this._jwtUtil.getToken(req);
-        const userInformation = await this._userService.information(user, token);
+	async information(@Res() res:Response, @ParameterToken('user') user:string): Promise<void> {
+        const userInformation = await this._userService.information(user);
 
         res.status(userInformation.code).send(userInformation);
 	}
