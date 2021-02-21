@@ -25,6 +25,13 @@ export class AuthService {
     private authService: SocialAuthService,
   ) { }
 
+  register(user, email, password) {
+    const url:string = `${this.urlAuth}/register`;
+    const registerUser:RegisterDto = { user, email, password, terms:true };
+    
+    return this.http.post<TokenDto | GenericResponse>(url, registerUser).pipe(ValidatorService.changeErrorAuthResponse());
+  }
+
   public accessGoogle() {
     const url:string = `${this.urlAuth}/google/verify`;
 
