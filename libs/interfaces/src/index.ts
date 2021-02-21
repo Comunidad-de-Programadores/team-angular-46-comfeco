@@ -1,17 +1,18 @@
 // Parametros
-export * from './lib/cambio_contrasenia.dto';
+export * from './lib/change_password.dto';
 export * from './lib/interfaces';
-export * from './lib/inicio.dto';
-export * from './lib/recuperar_cuenta.dto';
-export * from './lib/registro.dto';
+export * from './lib/login.dto';
+export * from './lib/recover_account.dto';
+export * from './lib/register.dto';
 
 // Respuestas
-export * from './lib/respuesta_generica.dto';
-export * from './lib/token_respuesta.dto';
-export * from './lib/usuario_respuesta.dto';
+export * from './lib/generic_response.dto';
+export * from './lib/token_response.dto';
+export * from './lib/user_response.dto';
+export * from './lib/response_service.dto';
 
-export * from './enum/estatus.enum';
+export * from './enum/account_type.enum';
 export * from './enum/roles.enum';
-export * from './enum/tipo_cuenta.enum';
+export * from './enum/status.enum';
 
-export * from './regexp/expresiones.regexp';
+export * from './regexp/expresions.regexp';

@@ -6,11 +6,11 @@ import { AuthService } from './auth.service';
 import { JwtStrategy } from '../../config/guard/jwt.strategy';
 import { ConfigModule } from '../../config/config.module';
 import { ConfigService } from '../../config/config.service';
-import { Configuracion } from '../../config/config.keys';
-import { CorreoModule } from '../../config/correo/correo.module';
-import { UsuarioModule } from '../usuario/usuario.module';
-import { BasicoController } from './basico/basico.controller';
-import { BasicoService } from './basico/basico.service';
+import { Configuration } from '../../config/config.keys';
+import { EmailModule } from '../../config/email/email.module';
+import { UserModule } from '../user/user.module';
+import { BasicController } from './basic/basic.controller';
+import { BasicService } from './basic/basic.service';
 import { GoogleController } from './google/google.controller';
 import { GoogleService } from './google/google.service';
 import { GoogleStrategy } from './google/google.strategy';
@@ -27,9 +27,9 @@ const jwtModule: DynamicModule = JwtModule.registerAsync({
     inject: [ ConfigService ],
     useFactory(config: ConfigService) {
         return {
-            secret: config.get(Configuracion.JWT_SECRETO),
+            secret: config.get(Configuration.JWT_SECRET),
             signOptions: {
-                expiresIn: config.get(Configuracion.JWT_TIEMPO_EXPIRACION)
+                expiresIn: config.get(Configuration.JWT_TIME_EXPIRATION)
             }
         };
     }
@@ -37,13 +37,13 @@ const jwtModule: DynamicModule = JwtModule.registerAsync({
 
 @Module({
     controllers: [
-        BasicoController,
+        BasicController,
         GoogleController,
         FacebookController],
     providers: [
         JwtStrategy,
         ConfigService,
-        BasicoService,
+        BasicService,
         GoogleService, GoogleStrategy,
         FacebookService, FacebookStrategy,
         AuthService
@@ -52,8 +52,8 @@ const jwtModule: DynamicModule = JwtModule.registerAsync({
         passportModule,
         jwtModule,
         HttpModule,
-        CorreoModule,
-        UsuarioModule
+        EmailModule,
+        UserModule
     ],
     exports: [
         JwtStrategy,

@@ -1,81 +1,81 @@
-import { ExpresionRegex, RespuestaGenerica } from "@comfeco/interfaces";
+import { ExpresionRegex, GenericResponse } from "@comfeco/interfaces";
 
-import { RespuestaUtil } from "./respuestas.util";
+import { UtilResponse } from "./respuestas.util";
 
-export class ValidarServicio {
+export class ValidatorService {
 
-    static correo(correo:string, respuesta:RespuestaGenerica): RespuestaGenerica {
-        let mensaje:string;
+    static email(email:string, response:GenericResponse): GenericResponse {
+        let message:string;
 
-        if(this._esVacio(correo)) {
-            mensaje = 'El correo es un campo requerido';
+        if(this._isEmpty(email)) {
+            message = 'El correo es un campo requerido';
         }
 
-        if(!ExpresionRegex.EMAIL.test(correo)) {
-            mensaje = 'El correo debe de tener un formato válido';
+        if(!ExpresionRegex.EMAIL.test(email)) {
+            message = 'El correo debe de tener un formato válido';
         }
 
-        return this._rellenarErrores(mensaje, respuesta);
+        return this._fillErrors(message, response);
     }
 
-    static usuario(usuario:string, respuesta:RespuestaGenerica): RespuestaGenerica {
-        let mensaje:string;
+    static user(user:string, response:GenericResponse): GenericResponse {
+        let message:string;
 
-        if(this._esVacio(usuario)) {
-            mensaje = 'El usuario es necesario enviarlo';
+        if(this._isEmpty(user)) {
+            message = 'El usuario es necesario enviarlo';
         }
 
-        return this._rellenarErrores(mensaje, respuesta);
+        return this._fillErrors(message, response);
     }
 
-    static contrasenia(contrasenia:string, respuesta:RespuestaGenerica): RespuestaGenerica {
-        let mensaje:string;
+    static password(contrasenia:string, response:GenericResponse): GenericResponse {
+        let message:string;
 
-        if(this._esVacio(contrasenia)) {
-            mensaje = 'La contraseña es requerida';
+        if(this._isEmpty(contrasenia)) {
+            message = 'La contraseña es requerida';
         }
 
         if(!ExpresionRegex.PASSWORD.test(contrasenia)) {
-            mensaje = 'La contrasenia debe de contener letras mayúsculas, minúsculas, números y caracteres';
+            message = 'La contraseña debe de contener letras mayúsculas, minúsculas, números y caracteres';
         }
 
-        return this._rellenarErrores(mensaje, respuesta);
+        return this._fillErrors(message, response);
     }
 
-    static token(token:string, respuesta:RespuestaGenerica): RespuestaGenerica {
-        let mensaje:string;
+    static token(token:string, response:GenericResponse): GenericResponse {
+        let message:string;
 
-        if(this._esVacio(token)) {
-            mensaje = 'El campo token es necesario que se envíe';
+        if(this._isEmpty(token)) {
+            message = 'El campo token es necesario que se envíe';
         }
 
-        return this._rellenarErrores(mensaje, respuesta);
+        return this._fillErrors(message, response);
     }
 
-    private static _esVacio(cadena:string): boolean {
-        if(cadena === null) return true;
-        if(cadena === undefined) return true;
-        if(cadena.trim() === '') return true;
+    private static _isEmpty(field:string): boolean {
+        if(field === null) return true;
+        if(field === undefined) return true;
+        if(field.trim() === '') return true;
         return false;
     }
 
-    private static _rellenarErrores(mensaje:string, respuesta:RespuestaGenerica): RespuestaGenerica {
-        let errores:string[] = [];
+    private static _fillErrors(message:string, response:GenericResponse): GenericResponse {
+        let errors:string[] = [];
             
-        if(respuesta!=null && respuesta!=undefined) {
-            errores = [...respuesta.errores];
+        if(response!=null && response!=undefined) {
+            errors = [...response.errors];
         }
         
-        if(mensaje!=null) {
-            if(errores.length>0) {
-                errores.push(mensaje);
+        if(message!=null) {
+            if(errors.length>0) {
+                errors.push(message);
             } else {
-                errores = [mensaje];
+                errors = [message];
             }
         }
 
-        if(errores.length>0) {
-            return RespuestaUtil.respuestaGenerica('', errores, 400);
+        if(errors.length>0) {
+            return UtilResponse.genericResponse('', errors, 400);
         } else {
             return null;
         }

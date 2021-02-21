@@ -10,16 +10,16 @@ export class AuthService {
 
     constructor(private readonly _jwtService: JwtService){}
 
-    crearTokenAcceso(usuario:string, correo:string, codigo:number) {
+    createAccessToken(user:string, email:string, code:number) {
         const payload:JwtPayload = {
-            usuario,
-            correo,
+            user,
+            email,
             iat: Date.now(),
         };
         
         const token = this._jwtService.sign( payload );
 
-        return { token, codigo, usuario } as TokenDto;
+        return { token, code, user } as TokenDto;
     }
     
 }
