@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 
-import { TokenDto } from '@comfeco/interfaces';
+import { AccountType, TokenDto } from '@comfeco/interfaces';
 
 import { JwtPayload } from '../../config/guard/jwt_payload.interface';
 
@@ -10,10 +10,11 @@ export class AuthService {
 
     constructor(private readonly _jwtService: JwtService){}
 
-    createAccessToken(user:string, email:string, code:number) {
+    createAccessToken(user:string, email:string, type:AccountType, code:number) {
         const payload:JwtPayload = {
             user,
             email,
+            type,
             iat: Date.now(),
         };
         

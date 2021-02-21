@@ -1,7 +1,9 @@
-import { Controller, Get, HttpStatus, Req, Res, UseGuards } from '@nestjs/common';
-import { AuthGuard } from '@nestjs/passport';
-import { ApiExcludeEndpoint, ApiOperation, ApiTags } from '@nestjs/swagger';
-import { Request, Response } from "express";
+import { Body, Post } from '@nestjs/common';
+import { Controller, Res } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
+import { Response } from "express";
+
+import { FacebookLoginDto } from '@comfeco/interfaces';
 
 import { FacebookService } from './facebook.service';
 
@@ -12,24 +14,11 @@ export class FacebookController {
     constructor( private _facebookService: FacebookService ){}
 
 
-    @ApiOperation({
-        summary: 'Ingresar con facebook',
-        description: 'Muestra la pantalla para ingresar con una cuenta de facebook'
-    })
-    @Get()
-    @UseGuards(AuthGuard("facebook"))
-    pageLogin() {
-        return HttpStatus.OK;
-    }
-    
-    
-    @Get("respuesta")
-    @ApiExcludeEndpoint()
-    @UseGuards(AuthGuard("facebook"))
-    async login(@Req() req: Request, @Res() res:Response): Promise<any> {
-        const user = await this._facebookService.login(req);
+    @Post("verify")
+    async verify(@Res() res:Response, @Body() facebookDto:FacebookLoginDto): Promise<any> {
+        const user = await this._facebookService.login(facebookDto);
 
         res.status(user.code).send(user);
     }
-    
+
 }
