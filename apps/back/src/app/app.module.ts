@@ -16,7 +16,7 @@ import { UserModule } from './user/user.module';
     ],
     providers: [
         ConfigService,
-    ]
+    ],
 })
 export class AppModule {
     private readonly logger = new Logger(AppModule.name);

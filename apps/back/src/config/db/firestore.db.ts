@@ -1,12 +1,13 @@
 import * as admin from 'firebase-admin';
 
-export class FirebaseDataBase {
+export class FirestoreDataBase {
     
     connect(): void {
         const params = {
             clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
             projectId: process.env.FIREBASE_PROJECT_ID,
             privateKey: process.env.FIREBASE_PRIVATE_KEY.replace(/\\n/g, '\n'),
+            
         };
 
         if(!admin.apps.length) {
@@ -14,7 +15,9 @@ export class FirebaseDataBase {
                 credential: admin.credential.cert(params),
                 databaseURL: process.env.FIREBASE_DATABASE
             });
+
+            admin.firestore().settings({ignoreUndefinedProperties: true});
         }
     }
-    
+ 
 }
