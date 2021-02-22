@@ -6,6 +6,8 @@ export * from './lib/recover_account.dto';
 export * from './lib/register.dto';
 export * from './lib/google_verify.dto';
 export * from './lib/facebook_verify.dto';
+export * from './lib/menu.dto';
+export * from './lib/menu_option.dto';
 
 // Respuestas
 export * from './lib/generic_response.dto';
