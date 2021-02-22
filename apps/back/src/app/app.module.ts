@@ -7,12 +7,14 @@ import { ConfigModule } from '../config/config.module';
 import { ConfigService } from '../config/config.service';
 import { Configuration } from '../config/config.keys';
 import { UserModule } from './user/user.module';
+import { MenuModule } from './menu/menu.module';
 
 @Module({
     imports: [
         ConfigModule,
         AuthModule,
         UserModule,
+        MenuModule,
     ],
     providers: [
         ConfigService,
