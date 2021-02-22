@@ -44,7 +44,7 @@ export class FirestoreRepository {
         return Promise.all(
             refDocument.docs.map(async(children:admin.firestore.QueryDocumentSnapshot) => {
                 let finalData:admin.firestore.DocumentData | null = {};
-
+                
                 for (const [key, value] of Object.entries(children.data())) {
                     finalData[key] = await this.childrenData(value);
                 }
@@ -74,13 +74,18 @@ export class FirestoreRepository {
 
     async dataSimple(dataRef:any): Promise<admin.firestore.DocumentData | null> {
         const segments: string[] = dataRef._path.segments;
-
+        
         if(segments.length>0) {
             const registers: admin.firestore.DocumentSnapshot = await this.db.collection(segments[0]).doc(segments[1]).get();
             const data: admin.firestore.DocumentData = registers.data();
-
+            
             if(data!==null && data!==undefined) {
                 const responses: admin.firestore.DocumentData[] = Object.values(data);
+                
+                if(responses.length>1) {
+                    return data;
+                }
+
                 return responses.length>0 ? responses[0] : null;
             }
         }
@@ -92,6 +97,7 @@ export class FirestoreRepository {
         return Promise.all(
             dataDocs.map(async (registers:any) => {
                 const segments = registers._path.segments;
+                
                 return await this.dataSimple(registers);
             }));
     }

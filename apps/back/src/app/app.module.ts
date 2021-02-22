@@ -8,6 +8,7 @@ import { ConfigService } from '../config/config.service';
 import { Configuration } from '../config/config.keys';
 import { UserModule } from './user/user.module';
 import { MenuModule } from './menu/menu.module';
+import { ExhibitorsModule } from './exhibitors/exhibitors.module';
 
 @Module({
     imports: [
@@ -15,6 +16,7 @@ import { MenuModule } from './menu/menu.module';
         AuthModule,
         UserModule,
         MenuModule,
+        ExhibitorsModule,
     ],
     providers: [
         ConfigService,

@@ -8,6 +8,9 @@ export * from './lib/google_verify.dto';
 export * from './lib/facebook_verify.dto';
 export * from './lib/menu.dto';
 export * from './lib/menu_option.dto';
+export * from './lib/exhibitor.dto';
+export * from './lib/exhibitors.dto';
+export * from './lib/technologie.dto';
 
 // Respuestas
 export * from './lib/generic_response.dto';
