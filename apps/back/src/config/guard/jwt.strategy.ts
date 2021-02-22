@@ -25,14 +25,14 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     async validate(payload:JwtPayload) {
         const { email } = payload;
         let validation:GenericResponse;
-
+        
         if(ValidatorService.email(email, validation)!=null) {
             throw new UnauthorizedException();
         }
         
         const baseUser = await this._userRepository.emailExists(email);
-
-        if(baseUser==null || !baseUser || baseUser.status!=Status.ACTIVE) {
+        
+        if(baseUser==null || !baseUser || baseUser.status!=Status.ACTIVE || baseUser.tokenApi==='') {
             throw new UnauthorizedException();
         }
 

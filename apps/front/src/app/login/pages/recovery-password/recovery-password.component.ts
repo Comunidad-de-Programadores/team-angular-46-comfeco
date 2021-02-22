@@ -1,4 +1,9 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, ViewEncapsulation } from '@angular/core';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { Router } from '@angular/router';
+
+import { ValidateComponent } from '@comfeco/validator';
+import { AuthService } from '../../@core/services/auth.service';
 
 @Component({
   selector: 'comfeco-recovery-password',
@@ -6,11 +11,50 @@ import { Component, OnInit, ViewEncapsulation } from '@angular/core';
   styleUrls: ['./recovery-password.component.scss'],
   encapsulation: ViewEncapsulation.Emulated
 })
-export class RecoveryPasswordComponent implements OnInit {
+export class RecoveryPasswordComponent {
 
-  constructor() { }
+  recoveryPasswordForm:FormGroup = this.fb.group({
+    email: [ , [ ValidateComponent.email ] ],
+  });
 
-  ngOnInit(): void {
+  procesingRequest:boolean = false;
+  errorResponse:string;
+  errorEmail:string;
+
+  constructor(
+    private fb: FormBuilder,
+    private router: Router,
+    private _service: AuthService ) { }
+
+  sendEmailChangePassword() {
+    this.cleanErrors();
+
+    if(this.recoveryPasswordForm.invalid) {
+      this.errorEmail = this.recoveryPasswordForm.controls?.email.errors?.error;
+      console.log(this.errorEmail);
+      return;
+    }
+    
+    this.procesingRequest = true;
+    const { email } = this.recoveryPasswordForm.value;
+
+    this._service.emailChangePassword(email)
+      .subscribe(
+        resp => {
+          this.errorResponse = resp.message;
+          this.procesingRequest = false;
+
+          if(resp.success) {
+            this.router.navigateByUrl('/login/login');
+          }
+        }
+      );
+  }
+
+  cleanErrors() {
+    this.errorEmail = '';
+    this.errorResponse = '';
+    this.procesingRequest = false;
   }
 
 }

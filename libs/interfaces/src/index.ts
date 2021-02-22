@@ -4,6 +4,8 @@ export * from './lib/interfaces';
 export * from './lib/login.dto';
 export * from './lib/recover_account.dto';
 export * from './lib/register.dto';
+export * from './lib/google_verify.dto';
+export * from './lib/facebook_verify.dto';
 
 // Respuestas
 export * from './lib/generic_response.dto';
