@@ -9,6 +9,7 @@ import { Configuration } from '../config/config.keys';
 import { UserModule } from './user/user.module';
 import { MenuModule } from './menu/menu.module';
 import { ExhibitorsModule } from './exhibitors/exhibitors.module';
+import { SponsorsModule } from './sponsors/sponsors.module';
 
 @Module({
     imports: [
@@ -17,6 +18,7 @@ import { ExhibitorsModule } from './exhibitors/exhibitors.module';
         UserModule,
         MenuModule,
         ExhibitorsModule,
+        SponsorsModule,
     ],
     providers: [
         ConfigService,
