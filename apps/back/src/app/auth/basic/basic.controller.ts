@@ -1,22 +1,18 @@
-import { Body, Controller, Get, Post, Res, UseGuards, Patch, Req, Put, HttpStatus } from '@nestjs/common';
+import { Body, Controller, Get, HttpStatus, Post, Res, UseGuards, Patch, Req, Put, InternalServerErrorException } from '@nestjs/common';
 import { ApiAcceptedResponse, ApiBadRequestResponse, ApiBearerAuth, ApiCreatedResponse, ApiForbiddenResponse, ApiOkResponse, ApiOperation,  ApiTags, ApiUnauthorizedResponse } from '@nestjs/swagger';
-import { Request, Response } from 'express';
+import { Response } from 'express';
 
 import { GenericResponse, RegisterDto, LoginDto, TokenDto, RecoverAccountDto, ChangePasswordDto } from '@comfeco/interfaces';
 
 import { BasicService } from './basic.service';
 import { ParameterToken } from '../../../config/guard/user.decorator';
 import { UserGuard } from '../../../config/guard/user.guard';
-import { JwtUtil } from '../../../util/jwt/jwt.util';
 
 @ApiTags('Autenticación')
 @Controller('auth')
 export class BasicController {
 
-    constructor(
-        private _jwtUtil: JwtUtil,
-        private _basicService: BasicService
-    ){}
+    constructor(private _basicService: BasicService){}
     
 
     @ApiOperation({
@@ -75,7 +71,8 @@ export class BasicController {
     @UseGuards(UserGuard)
     @ApiBearerAuth('access-token-service')
 	async validateRefreshToken(@Req() req:Request, @Res() res:Response, @ParameterToken('user') user:string): Promise<void> {
-        const token = this._jwtUtil.getToken(req);
+        const headers:any = req.headers;
+        const token = headers.authorization.substring(7);
         const newToken = await this._basicService.renewToken(user, token);
 
         res.status(newToken.code).send(newToken);
@@ -142,5 +139,5 @@ export class BasicController {
 
         res.status(response.code).send(response);
 	}
-
+    
 }

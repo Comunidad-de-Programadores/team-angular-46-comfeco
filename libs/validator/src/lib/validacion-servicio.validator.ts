@@ -1,111 +1,84 @@
-import { ExpresionRegex, GenericResponse, ResponseService, TokenDto } from '@comfeco/interfaces';
-import { pipe, of, UnaryFunction, Observable } from 'rxjs';
-import { map, catchError } from 'rxjs/operators';
+import { ExpresionRegex, GenericResponse } from "@comfeco/interfaces";
 
 import { UtilResponse } from "./respuestas.util";
 
 export class ValidatorService {
 
-  static changeBasicResponse(): UnaryFunction<Observable<GenericResponse>, Observable<ResponseService>> {
-    return pipe(
-      catchError(({error}) => of({ code: error.code, errors: error.errors, success: false })),
-      map((resp:GenericResponse) => ({
-        success: resp?.message ? true : false,
-        message: resp?.message ? resp.message : resp.errors.join(' ')
-      }))
-    )
-  };
+    static email(email:string, response:GenericResponse): GenericResponse {
+        let message:string;
 
-  static changeErrorAuthResponse(): UnaryFunction<Observable<GenericResponse | TokenDto>, Observable<ResponseService | TokenDto>> {
-    return pipe(
-      catchError(({error}) => of({ code: error.code, errors: error.errors, success: false })),
-      map((resp:GenericResponse | TokenDto) => ({
-        success: resp?.errors ? false : true,
-        message: resp?.errors ? resp.errors.join(' ') : resp.message,
-        ...resp
-      }))
-    )
-  };
+        if(this._isEmpty(email)) {
+            message = 'El correo es un campo requerido';
+        }
 
-  static email(email:string, response:GenericResponse): GenericResponse {
-    let message:string;
+        if(!ExpresionRegex.EMAIL.test(email)) {
+            message = 'El correo debe de tener un formato válido';
+        }
 
-    if(this._isEmpty(email)) {
-      message = 'El correo es un campo requerido';
+        return this._fillErrors(message, response);
     }
 
-    if(message==undefined && !ExpresionRegex.EMAIL.test(email)) {
-      message = 'El correo debe de tener un formato válido';
+    static user(user:string, response:GenericResponse): GenericResponse {
+        let message:string;
+
+        if(this._isEmpty(user)) {
+            message = 'El usuario es necesario enviarlo';
+        }
+
+        return this._fillErrors(message, response);
     }
 
-    return this._fillErrors(message, response);
-  }
+    static password(contrasenia:string, response:GenericResponse): GenericResponse {
+        let message:string;
 
-  static user(user:string, response:GenericResponse): GenericResponse {
-    let message:string;
+        if(this._isEmpty(contrasenia)) {
+            message = 'La contraseña es requerida';
+        }
 
-    if(this._isEmpty(user)) {
-      message = 'El usuario es necesario enviarlo';
+        if(!ExpresionRegex.PASSWORD.test(contrasenia)) {
+            message = 'La contraseña debe de contener letras mayúsculas, minúsculas, números y caracteres';
+        }
+
+        return this._fillErrors(message, response);
     }
 
-    return this._fillErrors(message, response);
-  }
+    static token(token:string, response:GenericResponse): GenericResponse {
+        let message:string;
 
-  static password(contrasenia:string, response:GenericResponse): GenericResponse {
-    let message:string;
+        if(this._isEmpty(token)) {
+            message = 'El campo token es necesario que se envíe';
+        }
 
-    if(this._isEmpty(contrasenia)) {
-      message = 'La contraseña es requerida';
+        return this._fillErrors(message, response);
     }
 
-    if(message==undefined && contrasenia.length<8) {
-      message = 'La contraseña debe de contener minimo 8 caracteres';
+    private static _isEmpty(field:string): boolean {
+        if(field === null) return true;
+        if(field === undefined) return true;
+        if(field.trim() === '') return true;
+        return false;
     }
 
-    if(message==undefined && !ExpresionRegex.PASSWORD.test(contrasenia)) {
-      message = 'La contraseña debe de contener letras mayúsculas, minúsculas, números y caracteres especiales';
-    }
-
-    return this._fillErrors(message, response);
-  }
-
-  static token(token:string, response:GenericResponse): GenericResponse {
-    let message:string;
-
-    if(this._isEmpty(token)) {
-      message = 'El campo token es necesario que se envíe';
-    }
-
-    return this._fillErrors(message, response);
-  }
-
-  private static _isEmpty(field:string): boolean {
-    if(field === null) return true;
-    if(field === undefined) return true;
-    if(field.trim() === '') return true;
-    return false;
-  }
-
-  private static _fillErrors(message:string, response:GenericResponse): GenericResponse {
-    let errors:string[] = [];
+    private static _fillErrors(message:string, response:GenericResponse): GenericResponse {
+        let errors:string[] = [];
+            
+        if(response!=null && response!=undefined) {
+            errors = [...response.errors];
+        }
         
-    if(response!=null && response!=undefined) {
-      errors = [...response.errors];
-    }
-    
-    if(message!=null) {
-      if(errors.length>0) {
-        errors.push(message);
-      } else {
-        errors = [message];
-      }
-    }
+        if(message!=null) {
+            if(errors.length>0) {
+                errors.push(message);
+            } else {
+                errors = [message];
+            }
+        }
 
-    if(errors.length>0) {
-      return UtilResponse.genericResponse('', errors, 400);
-    } else {
-      return null;
+        if(errors.length>0) {
+            return UtilResponse.genericResponse('', errors, 400);
+        } else {
+            return null;
+        }
     }
-  }
 
 }

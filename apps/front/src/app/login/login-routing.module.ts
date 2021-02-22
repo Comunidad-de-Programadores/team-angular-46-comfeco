@@ -28,7 +28,7 @@ const routes: Routes = [
   { path: '', component: LoginComponent, children: [
       { path: 'login', component: ViewLoginComponent }, // login/login
       { path: 'recoverypassword', component: RecoveryPasswordComponent  }, // login/recoverypassword
-      { path: 'setpassword/:token', component: SetPasswordComponent }, // // login/setpassword
+      { path: 'setpassword', component: SetPasswordComponent }, // // login/setpassword
       { path: '', redirectTo: 'login', pathMatch: 'full' },
       { path: '**', redirectTo: 'login' },
     ],

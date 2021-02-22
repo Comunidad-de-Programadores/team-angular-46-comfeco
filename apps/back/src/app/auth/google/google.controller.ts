@@ -1,7 +1,7 @@
-import { GoogleLoginDto } from '@comfeco/interfaces';
-import { Body, Controller, Post, Res } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
-import { Response } from "express";
+import { Controller, Get, HttpStatus, Req, Res, UseGuards } from '@nestjs/common';
+import { ApiExcludeEndpoint, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { AuthGuard } from '@nestjs/passport';
+import { Request, Response } from "express";
 
 import { GoogleService } from './google.service';
 
@@ -12,12 +12,25 @@ export class GoogleController {
 
     constructor( private _googleService: GoogleService ){}
 
-    @Post("verify")
-    async verify(@Res() res:Response, @Body() googleDto:GoogleLoginDto): Promise<any> {
-        const user = await this._googleService.login(googleDto);
+
+    @ApiOperation({
+        summary: 'Ingresar con google',
+        description: 'Muestra la pantalla para ingresar con una cuenta de google'
+    })
+    @Get()
+    @UseGuards(AuthGuard('google'))
+    pageLogin(@Res() resp:Response): void {
+        resp.status(HttpStatus.OK);
+    }
+
+    
+    @Get('respuesta')
+    @ApiExcludeEndpoint()
+    @UseGuards(AuthGuard('google'))
+    async login(@Req() req:Request, @Res() res:Response): Promise<void> {
+        const user = await this._googleService.login(req)
 
         res.status(user.code).send(user);
     }
-
+    
 }
-
