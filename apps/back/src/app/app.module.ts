@@ -10,6 +10,7 @@ import { UserModule } from './user/user.module';
 import { MenuModule } from './menu/menu.module';
 import { ExhibitorsModule } from './exhibitors/exhibitors.module';
 import { SponsorsModule } from './sponsors/sponsors.module';
+import { CommunitiesModule } from './communities/communities.module';
 
 @Module({
     imports: [
@@ -19,6 +20,7 @@ import { SponsorsModule } from './sponsors/sponsors.module';
         MenuModule,
         ExhibitorsModule,
         SponsorsModule,
+        CommunitiesModule,
     ],
     providers: [
         ConfigService,

@@ -13,6 +13,8 @@ export * from './lib/exhibitors.dto';
 export * from './lib/technologie.dto';
 export * from './lib/sponsors.dto';
 export * from './lib/sponsor.dto';
+export * from './lib/community.dto';
+export * from './lib/communities.dto';
 
 // Respuestas
 export * from './lib/generic_response.dto';
