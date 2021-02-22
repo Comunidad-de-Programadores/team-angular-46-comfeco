@@ -11,6 +11,8 @@ export * from './lib/menu_option.dto';
 export * from './lib/exhibitor.dto';
 export * from './lib/exhibitors.dto';
 export * from './lib/technologie.dto';
+export * from './lib/sponsors.dto';
+export * from './lib/sponsor.dto';
 
 // Respuestas
 export * from './lib/generic_response.dto';
