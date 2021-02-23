@@ -26,6 +26,7 @@ export * from './lib/knowledge_area_response.dto';
 export * from './lib/area_workshop_response.dto';
 export * from './lib/workshop_area_response.dto';
 export * from './lib/workshops_area_response.dto';
+export * from './lib/event_response.dto';
 
 export * from './enum/account_type.enum';
 export * from './enum/roles.enum';
