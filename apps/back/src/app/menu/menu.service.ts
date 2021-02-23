@@ -1,6 +1,8 @@
-import { GenericResponse, MenuDto, MenuOptionDto } from '@comfeco/interfaces';
 import { HttpStatus, Injectable } from '@nestjs/common';
-import { UtilResponse } from 'libs/validator/src/lib/respuestas.util';
+
+import { GenericResponse, MenuDto, MenuOptionDto } from '@comfeco/interfaces';
+import { UtilResponse } from '@comfeco/validator';
+
 import { MenuRepository } from './menu.respository';
 
 @Injectable()
@@ -11,7 +13,7 @@ export class MenuService {
     async menu(): Promise<MenuDto | GenericResponse> {
         const menuEntity = await this._menuRepository.menu();
         
-        if(menuEntity==null) {
+        if(menuEntity.length==0) {
             return UtilResponse.genericResponse('',['No hay información del menú en la base de datos'], HttpStatus.NOT_FOUND);
         }
         

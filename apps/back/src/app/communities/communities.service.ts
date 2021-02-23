@@ -1,6 +1,8 @@
+import { HttpStatus, Injectable } from '@nestjs/common';
+
 import { CommunitiesDto, CommunityDto, GenericResponse } from '@comfeco/interfaces';
 import { UtilResponse } from '@comfeco/validator';
-import { HttpStatus, Injectable } from '@nestjs/common';
+
 import { CommunitiesRepository } from './communities.repository';
 
 @Injectable()

@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+
 import { FirestoreModule } from '../../config/db/firestore.module';
 import { ExhibitorsController } from './exhibitors.controller';
 import { ExhibitorsRepository } from './exhibitors.repository';

@@ -1,4 +1,4 @@
-import { TechnologieDto } from './technologie.dto';
+import { TechnologieDto } from './technologie_response.dto';
 
 export class ExhibitorDto {
     readonly technologies: TechnologieDto[];

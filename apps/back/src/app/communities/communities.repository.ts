@@ -1,5 +1,7 @@
-import { CommunityDto } from '@comfeco/interfaces';
 import { Injectable } from '@nestjs/common';
+
+import { CommunityDto } from '@comfeco/interfaces';
+
 import { FirestoreRepository } from '../../config/db/firestore.repository';
 
 @Injectable()
@@ -29,7 +31,7 @@ export class CommunitiesRepository {
     private async _collectionFiltering(communitiesBase:any) {
         const communitiesDocuments = await this.db.returnDocuments(communitiesBase);
 
-        if(communitiesDocuments===null) {
+        if(communitiesDocuments.length==0) {
             return null;
         }
 

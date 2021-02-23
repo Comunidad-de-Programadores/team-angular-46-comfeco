@@ -27,7 +27,7 @@ export class GoogleService {
 
         const verify:VerifyGoogle = await this.verify(idToken);
         if(!verify.data.sub || verify.data.sub!==id || verify.data.email!==email) {
-            return UtilResponse.genericResponse('',['Credenciales incorrectas'], HttpStatus.BAD_REQUEST);
+            return UtilResponse.genericResponse('',['Credenciales incorrectas'], HttpStatus.UNAUTHORIZED);
         }
 
         return await this.createToken(googleDto, verify.data.picture);

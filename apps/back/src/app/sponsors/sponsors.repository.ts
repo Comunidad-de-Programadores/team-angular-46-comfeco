@@ -1,5 +1,7 @@
-import { SponsorDto, Status } from '@comfeco/interfaces';
 import { Injectable } from '@nestjs/common';
+
+import { SponsorDto, Status } from '@comfeco/interfaces';
+
 import { FirestoreRepository } from '../../config/db/firestore.repository';
 
 @Injectable()
@@ -14,7 +16,7 @@ export class SponsorsRepository {
         const sponsorsBase = await this.db.collection(this._coleccion).where('status', '==', statusReferences).get();
         const sponsorsDocuments = await this.db.returnDocuments(sponsorsBase);
 
-        if(sponsorsDocuments===null) {
+        if(sponsorsDocuments.length==0) {
             return null;
         }
 

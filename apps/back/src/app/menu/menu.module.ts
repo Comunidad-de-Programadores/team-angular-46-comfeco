@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
-import { FirestoreModule } from '../../config/db/firestore.module';
 
+import { FirestoreModule } from '../../config/db/firestore.module';
 import { MenuController } from './menu.controller';
 import { MenuRepository } from './menu.respository';
 import { MenuService } from './menu.service';

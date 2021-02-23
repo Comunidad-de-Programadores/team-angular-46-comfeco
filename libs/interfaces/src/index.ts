@@ -6,21 +6,26 @@ export * from './lib/recover_account.dto';
 export * from './lib/register.dto';
 export * from './lib/google_verify.dto';
 export * from './lib/facebook_verify.dto';
-export * from './lib/menu.dto';
-export * from './lib/menu_option.dto';
-export * from './lib/exhibitor.dto';
-export * from './lib/exhibitors.dto';
-export * from './lib/technologie.dto';
-export * from './lib/sponsors.dto';
-export * from './lib/sponsor.dto';
-export * from './lib/community.dto';
-export * from './lib/communities.dto';
 
 // Respuestas
 export * from './lib/generic_response.dto';
 export * from './lib/token_response.dto';
 export * from './lib/user_response.dto';
 export * from './lib/response_service.dto';
+export * from './lib/menu_response.dto';
+export * from './lib/menu_option_response.dto';
+export * from './lib/exhibitor_response.dto';
+export * from './lib/exhibitors_response.dto';
+export * from './lib/technologie_response.dto';
+export * from './lib/sponsors_response.dto';
+export * from './lib/sponsor_response.dto';
+export * from './lib/community_response.dto';
+export * from './lib/communities_response.dto';
+export * from './lib/areas_response.dto';
+export * from './lib/knowledge_area_response.dto';
+export * from './lib/area_workshop_response.dto';
+export * from './lib/workshop_area_response.dto';
+export * from './lib/workshops_area_response.dto';
 
 export * from './enum/account_type.enum';
 export * from './enum/roles.enum';
