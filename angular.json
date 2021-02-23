@@ -128,8 +128,7 @@
           "options": {
             "outputPath": "dist/apps/back",
             "main": "apps/back/src/main.ts",
-            "tsConfig": "apps/back/tsconfig.app.json",
-            "assets": ["apps/back/src/assets"]
+            "tsConfig": "apps/back/tsconfig.app.json"
           },
           "configurations": {
             "production": {
