@@ -1,5 +1,7 @@
-import { ExhibitorDto, Status, TechnologieDto } from '@comfeco/interfaces';
 import { Injectable } from '@nestjs/common';
+
+import { ExhibitorDto, Status, TechnologieDto } from '@comfeco/interfaces';
+
 import { FirestoreRepository } from '../../config/db/firestore.repository';
 
 @Injectable()
@@ -14,7 +16,7 @@ export class ExhibitorsRepository {
         const exhibitorsBase = await this.db.collection(this._coleccion).where('status', '==', statusReferences).get();
         const exhibitorsDocuments = await this.db.returnDocuments(exhibitorsBase);
 
-        if(exhibitorsDocuments===null) {
+        if(exhibitorsDocuments.length==0) {
             return null;
         }
 

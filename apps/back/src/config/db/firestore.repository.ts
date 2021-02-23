@@ -16,6 +16,27 @@ export class FirestoreRepository {
         return admin.firestore().doc(document);
     }
 
+    timestampToDate(date:number) {
+        return new Date(date * 1000);
+    }
+
+    async now(): Promise<FirebaseFirestore.Timestamp> {
+        return await admin.firestore.Timestamp.now();
+    }
+
+    async todaysRank() {
+        const currentTime:any = await this.now();
+        const start = new Date(currentTime._seconds * 1000);
+        start.setHours(0);
+        start.setMinutes(0);
+        start.setSeconds(0);
+        const end = new Date(currentTime._seconds * 1000);
+        end.setHours(23);
+        end.setMinutes(59);
+        end.setSeconds(59);
+        return [ start, end ];
+    }
+
     async referenceDocumentKey(collection:string, keyReference:string, value:string): Promise<admin.firestore.DocumentReference> {
         const document:admin.firestore.QuerySnapshot = await this.collection(collection).where(keyReference, '==', value).get();
         const id:string = await this.idDocument(document);
@@ -42,15 +63,18 @@ export class FirestoreRepository {
 
     async returnDocuments(refDocument:admin.firestore.QuerySnapshot): Promise<admin.firestore.DocumentData | null> {
         return Promise.all(
-            refDocument.docs.map(async(children:admin.firestore.QueryDocumentSnapshot) => {
+            !refDocument.empty
+            ? refDocument.docs.map(async(children:admin.firestore.QueryDocumentSnapshot) => {
                 let finalData:admin.firestore.DocumentData | null = {};
-                
+                finalData.id = children.id;
+
                 for (const [key, value] of Object.entries(children.data())) {
                     finalData[key] = await this.childrenData(value);
                 }
 
                 return finalData;
             })
+            : []
         );
     }
     

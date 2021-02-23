@@ -30,7 +30,7 @@ export class FacebookService {
         
         const verify:VerifyFacebook = await this.verify(authToken);
         if(!verify.data.data || !verify.data.data.is_valid || verify.data.data.user_id!==id) {
-            return UtilResponse.genericResponse('',['Credenciales incorrectas'], HttpStatus.BAD_REQUEST);
+            return UtilResponse.genericResponse('',['Credenciales incorrectas'], HttpStatus.UNAUTHORIZED);
         }
 
         const photoUrl:any = await this.getProfilePicture(id);

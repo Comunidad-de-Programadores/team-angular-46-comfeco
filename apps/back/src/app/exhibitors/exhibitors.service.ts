@@ -1,6 +1,8 @@
+import { HttpStatus, Injectable } from '@nestjs/common';
+
 import { ExhibitorDto, ExhibitorsDto, GenericResponse } from '@comfeco/interfaces';
 import { UtilResponse } from '@comfeco/validator';
-import { HttpStatus, Injectable } from '@nestjs/common';
+
 import { ExhibitorsRepository } from './exhibitors.repository';
 
 @Injectable()

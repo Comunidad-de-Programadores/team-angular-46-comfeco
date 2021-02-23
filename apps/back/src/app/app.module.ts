@@ -11,6 +11,7 @@ import { MenuModule } from './menu/menu.module';
 import { ExhibitorsModule } from './exhibitors/exhibitors.module';
 import { SponsorsModule } from './sponsors/sponsors.module';
 import { CommunitiesModule } from './communities/communities.module';
+import { WorkshopsModule } from './workshops/workshops.module';
 
 @Module({
     imports: [
@@ -21,6 +22,7 @@ import { CommunitiesModule } from './communities/communities.module';
         ExhibitorsModule,
         SponsorsModule,
         CommunitiesModule,
+        WorkshopsModule,
     ],
     providers: [
         ConfigService,
