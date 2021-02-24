@@ -1,2 +1,21 @@
-<h1>view-login works!  H1</h1>
-<h2>Si es igual al texto de arriba en tamaño sirve tailwind  H2</h2>
+<div class="bg-white shadow overflow-hidden sm:rounded-lg max-w-2xl mx-auto my-20">
+    <div class="sm:px-6 text-center">
+        <div class="bg-white">
+            <nav class="flex justify-center">
+                <button (click)="changeViewInicioRegistro(true)" class="w-1/2 text-gray-600 py-4 px-12 block hover:text-blue-500 focus:outline-none text-blue-500 border-b-2 font-medium border-blue-500">
+                    Iniciar sesión
+                </button>
+                <button (click)="changeViewInicioRegistro(false)" class="w-1/2 text-gray-600 py-4 px-12 block hover:text-blue-500 focus:outline-none">
+                    Regístrate
+                </button>
+            </nav>
+        </div>
+    </div>
+    <div class="border-t border-gray-200">
+        <div class="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+            <dt class="text-sm font-medium text-gray-500">
+                {{ body }}
+            </dt>
+        </div>
+    </div>
+</div>
