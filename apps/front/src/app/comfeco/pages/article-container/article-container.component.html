@@ -1,0 +1,23 @@
+<article class="article-component">
+  <div class="article-container">
+    <div class="header">
+      <h3 class="header_title">{{title}}</h3>
+      <span
+        class="link"
+        [routerLink]="viewMore"
+      >Ver más</span>
+    </div>
+
+    <div [hidden]="!comboBox">
+      <comfeco-combo
+        [titleDefault]="comboTitleDefault"
+        [data]="comboData"
+        (onOptionSelected)="onOptionSelected($event)"></comfeco-combo>
+    </div>
+
+    <div class="scrollbar">
+      <ng-content></ng-content>
+    </div>
+
+  </div>
+</article>

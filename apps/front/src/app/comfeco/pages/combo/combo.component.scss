@@ -1,0 +1,64 @@
+:host {
+  display: block;
+}
+
+.combo {
+  @apply mt-1 relative;
+}
+
+.btn {
+  @apply relative w-full border rounded-md shadow-sm pl-3 pr-10 py-2 text-left focus:outline-none sm:text-sm cursor-pointer;
+  background-color: var(--color-white);
+  border-color: var(--color-gray-light);
+
+  & .principal {
+    @apply flex items-center;
+  }
+
+  & .description {
+    @apply ml-3 block truncate;
+  }
+
+  & .icon {
+    @apply ml-3 absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none;
+
+    & i {
+      @apply h-5 w-5;
+      color: var(--color-icon);
+    }
+  }
+}
+
+.container {
+  @apply absolute mt-1 w-full rounded-md shadow-lg;
+  background-color: var(--color-white);
+}
+
+.options {
+  @apply max-h-56 rounded-md py-1 text-base ring-1 ring-black ring-opacity-5 overflow-auto focus:outline-none sm:text-sm;
+}
+
+.option {
+  @apply cursor-pointer select-none relative py-2 pl-3 pr-9;
+  color: var(--color-gray);
+
+  &:hover {
+    background-color: var(--color-secondary-hover-light);
+    color: var(--color-black);
+  }
+
+  .description {
+    @apply flex items-center;
+  }
+  
+  .text {
+    @apply ml-3 block truncate;
+  }
+  
+  .icon {
+    @apply absolute inset-y-0 right-0 flex items-center pr-4;
+    color: var(--color-primary);
+  }
+}
+
+
