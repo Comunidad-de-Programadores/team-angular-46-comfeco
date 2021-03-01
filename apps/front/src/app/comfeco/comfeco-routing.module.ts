@@ -5,6 +5,7 @@ import { ComfecoComponent } from './comfeco.component';
 import { ArticleContainerComponent } from './pages/article-container/article-container.component';
 import { ComboComponent } from './pages/combo/combo.component';
 import { CommunityComponent } from './pages/community/community.component';
+import { CounterdownComponent } from './pages/counterdown/counterdown.component';
 import { PageDashboardComponent } from './pages/page-dashboard/page-dashboard.component';
 import { WorkshopListComponent } from './pages/workshop-list/workshop-list.component';
 import { WorkshopComponent } from './pages/workshop/workshop.component';
@@ -15,6 +16,7 @@ export const Components = [
   
   ArticleContainerComponent,
   CommunityComponent,
+  CounterdownComponent,
   WorkshopComponent,
   WorkshopListComponent,
 
