@@ -1,7 +1,7 @@
 import { UtilResponse } from '@comfeco/validator';
 import { HttpStatus, Injectable } from '@nestjs/common';
 
-import { AreasDto, AreaWorkshopDto, GenericResponse, KnowledgeAreaDto, WorkshopsAreaDto } from '@comfeco/interfaces';
+import { AreasDto, AreaWorkshopDto, GenericResponse, KnowledgeAreaDto, StatusWorkshop, WorkshopAreaDto, WorkshopsAreaDto } from '@comfeco/interfaces';
 
 import { WorkshopsRepository } from './workshops.repository';
 
@@ -42,9 +42,43 @@ export class WorkshopsService {
             return UtilResponse.genericResponse('',[message], HttpStatus.NOT_FOUND);
         }
         
+        const timestamp:FirebaseFirestore.Timestamp = await this._workshopsRepository.sysdate();
+        const sysdate = timestamp.toDate();
+        
+        const areasWorkshops:AreaWorkshopDto[] = [];
+
+        workshopsEntity.forEach(
+            data => {
+                const workshopsData:WorkshopAreaDto[] = [];
+
+                data.workshops.forEach(
+                    (workshop:WorkshopAreaDto) => {
+                        let status;
+                        if(workshop.startTime.getTime() > sysdate.getTime()) {
+                            status = StatusWorkshop.PENDING;
+                        } else if(workshop.endTime.getTime() > sysdate.getTime()) {
+                            status = StatusWorkshop.IN_PROGRESS;
+                        } else {
+                            status = StatusWorkshop.FINISHED;
+                        }
+
+                        workshopsData.push({
+                            status,
+                            ...workshop
+                        });
+                    }
+                );
+
+                areasWorkshops.push({
+                    area: data.area,
+                    workshops: workshopsData
+                });
+            }
+        )
+
         const workshops:WorkshopsAreaDto = {
             code: HttpStatus.OK,
-            areas: workshopsEntity
+            areas: areasWorkshops
         }
 
         return workshops;

@@ -12,6 +12,10 @@ export class WorkshopsRepository {
 
     constructor(private readonly db: FirestoreRepository) {}
     
+    async sysdate(): Promise<FirebaseFirestore.Timestamp> {
+        return await this.db.now();
+    }
+
     async knowledgeArea(): Promise<KnowledgeAreaDto[] | null> {
         const knowledgesBase = await this.db.collection(this._coleccionArea)
                     .orderBy('area', 'asc').get();
@@ -33,9 +37,9 @@ export class WorkshopsRepository {
         const [ start ] = await this.db.todaysRank();
         const areaReferences = await this.db.collection(this._coleccionArea).doc(area);
         const workshopsBase = await this.db.collection(this._coleccionWorkshops)
-                    .where('startTime', '>=', start)
+                    //.where('startTime', '>=', start)
                     .where('area', '==', areaReferences)
-                    .orderBy('startTime', 'asc')
+                    .orderBy('startTime', 'desc')
                     .orderBy('author', 'asc')
                     .get();
         

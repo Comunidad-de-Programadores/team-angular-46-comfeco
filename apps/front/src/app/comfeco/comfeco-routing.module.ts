@@ -6,6 +6,8 @@ import { ArticleContainerComponent } from './pages/article-container/article-con
 import { ComboComponent } from './pages/combo/combo.component';
 import { CommunityComponent } from './pages/community/community.component';
 import { PageDashboardComponent } from './pages/page-dashboard/page-dashboard.component';
+import { WorkshopListComponent } from './pages/workshop-list/workshop-list.component';
+import { WorkshopComponent } from './pages/workshop/workshop.component';
 
 export const Components = [
   ComfecoComponent,
@@ -13,7 +15,9 @@ export const Components = [
   
   ArticleContainerComponent,
   CommunityComponent,
-  
+  WorkshopComponent,
+  WorkshopListComponent,
+
   PageDashboardComponent
 ];
 

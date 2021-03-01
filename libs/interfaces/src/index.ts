@@ -33,6 +33,7 @@ export * from './lib/event_response.dto';
 
 export * from './enum/account_type.enum';
 export * from './enum/roles.enum';
+export * from './enum/status_workshop.enum';
 export * from './enum/status.enum';
 
 export * from './regexp/expresions.regexp';

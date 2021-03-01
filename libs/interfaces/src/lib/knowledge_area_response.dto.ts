@@ -1,4 +1,4 @@
 export class KnowledgeAreaDto {
-    readonly id: number;
+    readonly id: string;
     readonly area: string;
 }

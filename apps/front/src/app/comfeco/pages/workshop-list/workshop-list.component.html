@@ -1,0 +1,16 @@
+<div class="message" [ngClass]="{'hidden' : !message}">{{message}}</div>
+
+<div class="section" [ngClass]="{'hidden' : !workshopsToday?.length}">Hoy</div>
+<div *ngFor="let workshop of workshopsToday">
+    <comfeco-workshop [workshop]="workshop"></comfeco-workshop>
+</div>
+
+<div class="section" [ngClass]="{'hidden' : !futureWorkshops?.length}">Próximos Talleres</div>
+<div *ngFor="let workshop of futureWorkshops">
+    <comfeco-workshop [workshop]="workshop"></comfeco-workshop>
+</div>
+
+<div class="section" [ngClass]="{'hidden' : !pastWorkshops?.length}">Talleres Anteriores</div>
+<div *ngFor="let workshop of pastWorkshops">
+    <comfeco-workshop [workshop]="workshop"></comfeco-workshop>
+</div>
