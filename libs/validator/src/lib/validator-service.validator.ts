@@ -1,17 +1,26 @@
-import { ExpresionRegex, GenericResponse, ResponseService, TokenDto } from '@comfeco/interfaces';
+import { HttpHeaders } from '@angular/common/http';
 import { pipe, of, UnaryFunction, Observable } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 
-import { UtilResponse } from "./respuestas.util";
+import { ExpresionRegex, GenericResponse, ResponseService, TokenDto } from '@comfeco/interfaces';
+
+import { UtilResponse } from "./answers.util";
 
 export class ValidatorService {
+
+  static authHeader(): HttpHeaders {
+    //const token:string = '';
+    const token:string = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoicnViZW5fc2FsZ2FkbyIsImVtYWlsIjoiY2hvcm9zdG9zdG9zY2FAaG90bWFpbC5jb20iLCJ0eXBlIjoiRU1BSUwiLCJpYXQiOjE2MTQzNjE4MTkwNDIsImV4cCI6MTYxNDM2MTgxOTA0NX0.gSrUfLK8fALr2AtWUdJoRl7ynIfjs4CWuyKr_9nYIiY';
+    return new HttpHeaders({'Authorization':`Bearer ${token}`});
+  }
 
   static changeBasicResponse(): UnaryFunction<Observable<GenericResponse>, Observable<ResponseService>> {
     return pipe(
       catchError(({error}) => of({ code: error.code, errors: error.errors, success: false })),
       map((resp:GenericResponse) => ({
-        success: resp?.message ? true : false,
-        message: resp?.message ? resp.message : resp.errors.join(' ')
+        success: resp?.errors ? false : true,
+        message: resp?.message ? resp.message : resp?.errors ? resp.errors.join(' ') : '',
+        ...resp
       }))
     )
   };

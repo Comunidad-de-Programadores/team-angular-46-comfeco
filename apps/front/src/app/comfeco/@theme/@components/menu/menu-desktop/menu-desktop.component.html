@@ -1,0 +1,28 @@
+<div class="menu-mobile">
+  <button type="button" class="btn" aria-controls="mobile-menu" aria-expanded="false" (click)="toggleMenu()">
+    <i class="btn__icon icon-comfeco-menu"></i>
+  </button>
+</div>
+
+<div class="menu-desktop">
+  <div class="logo">
+    <img class="big" src="../../../../../assets/img/logo_font.svg" alt="Workflow">
+    <img class="small" src="../../../../../assets/img/logo_white.svg" alt="Workflow">
+  </div>
+
+  <div class="section">
+    <div class="options">
+      <a *ngFor="let option of options; index as i"
+        [routerLink]="option.link"
+        class="option"
+        [ngClass]="{'active' : i==0}"
+      >
+        <i
+          class="icon"
+          [ngClass]="option.icon"
+        ></i>
+        <span>{{option.option}}</span>
+      </a>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,33 @@
+:host {
+  display: block;
+}
+
+.manu {
+  @apply sm:hidden;
+}
+
+.options {
+  @apply px-2 pt-2 pb-3 space-y-1;
+}
+
+.option {
+  @apply block px-3 py-2 text-base font-medium;
+  color: var(--color-icon);
+
+  &:hover {
+    color: var(--color-white);
+    background-color: var(--color-primary-hover);
+  }
+
+  & .icon {
+    @apply pr-2;
+  }
+
+  &.active,
+  &.active:hover {
+    color: var(--color-primary-hover-light);
+    border-bottom: 2px solid var(--color-primary-hover-light);
+    background-color: var(--color-primary);
+    cursor: default;
+  }
+}

@@ -1,3 +1,10 @@
 :host {
   display: block;
 }
+
+footer {
+  background-color: var(--color-primary);
+  @apply hidden fixed bottom-0 w-full;
+  @apply mx-auto px-5 h-14 md:flex items-center;
+  @apply justify-center lg:px-8;
+}

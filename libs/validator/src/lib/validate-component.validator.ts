@@ -4,7 +4,7 @@ import { map } from 'rxjs/operators';
 
 import { GenericResponse } from "@comfeco/interfaces";
 
-import { ValidatorService } from './validacion-servicio.validator';
+import { ValidatorService } from './validator-service.validator';
 
 export class ValidateComponent {
 
