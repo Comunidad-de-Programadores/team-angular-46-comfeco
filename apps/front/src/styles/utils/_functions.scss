@@ -1,0 +1,13 @@
+@charset 'utf-8';
+
+@use 'sass:map';
+
+
+
+@function mapGet($map, $list...) {
+  @each $key in $list {
+    $map: map-get($map, $key);
+  }
+
+  @return $map;
+}

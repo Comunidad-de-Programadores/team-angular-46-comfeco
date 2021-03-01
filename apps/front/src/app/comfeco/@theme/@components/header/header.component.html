@@ -1,0 +1,31 @@
+<nav class="header">
+  <div class="header-principal">
+    <div class="section">
+      <comfeco-menu-desktop (onShowMenu)="toggleMenu($event)" [options]="options"></comfeco-menu-desktop>
+      <div class="header-options">
+        <button class="notification btn-icon">
+          <i class="icon-comfeco-bell"></i>
+        </button>
+
+        <div class="menu_profile">
+          <div>
+            <button class="user__btn" id="user-menu" (click)="toggleProfileOptions()">
+              <img class="user__picture" [src]="!!photoUrl ? photoUrl : '../../../../../assets/img/avatar_user.svg'" alt="avatar-default">
+              <span class="user__nickname">{{user}}</span>
+              <i class="user__btn_options icon-comfeco-arrow_down"></i>
+            </button>
+          </div>
+          
+          <div [ngClass]="!showProfileOptions ? 'hidde_options' : 'show_options'" class="user__menu">
+            <a href="#" class="user__menu-option" role="menuitem">
+              <i class="user__btn-close icon-comfeco-sign-out"></i>
+              <span>Cerrar Sesión</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <comfeco-menu-mobile [showMenu]="showMenu" [options]="options"></comfeco-menu-mobile>
+</nav>

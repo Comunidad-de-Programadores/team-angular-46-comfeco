@@ -1,0 +1,69 @@
+@charset 'utf-8';
+
+// Procesador base
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
+// Fuentes
+@import 'https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200;0,300;0,400;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,600;1,700;1,800;1,900&display=swap';
+@import 'https://fonts.googleapis.com/css2?family=Dosis:wght@200;300;400;600;700;800;900&display=swap';
+
+
+
+
+
+// Propiedades generales
+$map: ();
+
+
+// Tipografia
+$font: 'Nunito', Arial, Helvetica, sans-serif;
+$font-sentence: 'Dosis', Arial, Helvetica, sans-serif;
+
+
+// Colores
+$base: (
+  gray-1: #2E2E2F,
+  gray-2: #565555,
+  gray-3: #76787A,
+  gray-4: #C5C3C3,
+  gray-5: #E3E3E2,
+  gray-6: #F2F3F2,
+  gray-7: #FFFFFF,
+
+  primary-1: #652368,
+  primary-2: #832584,
+  primary-3: #944392,
+  primary-4: #A1559D,
+  primary-5: #C084B9,
+  primary-6: #D6ADD1,
+  primary-7: #f9def6,
+
+  secondary-1: #37265F,
+  secondary-2: #4F2680,
+  secondary-3: #634193,
+  secondary-4: #6C4F9B,
+  secondary-5: #9884BC,
+  secondary-6: #C9B5D9,
+  secondary-7: #dfd5f3,
+
+  tertiary-1: #D09A09,
+  tertiary-2: #EFB212,
+  tertiary-3: #FDC326,
+  tertiary-4: #FDC83A,
+  tertiary-5: #FFD766,
+  tertiary-6: #FFE59A,
+);
+
+$colors: (
+  primary: #{mapGet($base, primary-2)},
+  primary-hover: #{mapGet($base, primary-1)},
+  primary-hover-light: #{mapGet($base, primary-7)},
+  secondary-hover-light: #{mapGet($base, secondary-7)},
+  
+  tertiary: #{mapGet($base, tertiary-5)},
+
+  link: #586ae6,
+  error: #ef4444
+);

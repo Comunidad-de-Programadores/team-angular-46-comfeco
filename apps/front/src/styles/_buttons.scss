@@ -1,0 +1,40 @@
+@charset 'utf-8';
+
+
+.buttonSocialNetwork {
+  transition-property: color;
+  transition-duration: 0.5s, 1s;
+  font-size: 1.2rem;
+  color: var(--color-icon);
+  @apply cursor-pointer m-3 focus:outline-none;
+
+  &:hover {
+    color: var(--color-white);
+  }
+}
+
+.icon-comfeco-twitter,
+.icon-comfeco-facebook,
+.icon-comfeco-discord,
+.icon-comfeco-youtube,
+.icon-comfeco-github,
+.icon-comfeco-bell {
+  @extend .buttonSocialNetwork;
+}
+
+.btn-icon {
+  @apply cursor-pointer focus:outline-none;
+}
+
+// Botones aplicativo
+.btn {
+  @apply rounded-md shadow;
+
+  & button {
+    @apply w-full flex items-center justify-center px-5 py-2 border border-transparent text-base font-medium rounded-md text-white;
+  }
+
+  & span {
+    @apply ml-2;
+  }
+}

@@ -20,8 +20,8 @@ export class MenuService {
         let options: MenuOptionDto[] = [];
         
         menuEntity.forEach((optionMenu:any) => {
-            const {link, option, order} = optionMenu;
-            options.push({link, option, order});
+            const {link, option, order, icon} = optionMenu;
+            options.push({link, option, order, icon});
         });
         
         const menu:MenuDto = {

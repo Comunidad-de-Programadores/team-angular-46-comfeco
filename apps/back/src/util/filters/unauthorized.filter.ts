@@ -13,7 +13,7 @@ export class UnauthorizedFilter implements ExceptionFilter {
 
         const error: GenericResponse = {
             code: HttpStatus.UNAUTHORIZED,
-            message: 'Usuario no autenticado'
+            errors: ['Usuario no autenticado']
         };
 
         response
