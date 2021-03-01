@@ -6,7 +6,10 @@ import { ArticleContainerComponent } from './pages/article-container/article-con
 import { ComboComponent } from './pages/combo/combo.component';
 import { CommunityComponent } from './pages/community/community.component';
 import { CounterdownComponent } from './pages/counterdown/counterdown.component';
+import { ExhibitorComponent } from './pages/exhibitor/exhibitor.component';
 import { PageDashboardComponent } from './pages/page-dashboard/page-dashboard.component';
+import { SliderComponent } from './pages/slider/slider.component';
+import { SponsorComponent } from './pages/sponsor/sponsor.component';
 import { WorkshopListComponent } from './pages/workshop-list/workshop-list.component';
 import { WorkshopComponent } from './pages/workshop/workshop.component';
 
@@ -17,6 +20,9 @@ export const Components = [
   ArticleContainerComponent,
   CommunityComponent,
   CounterdownComponent,
+  ExhibitorComponent,
+  SliderComponent,
+  SponsorComponent,
   WorkshopComponent,
   WorkshopListComponent,
 

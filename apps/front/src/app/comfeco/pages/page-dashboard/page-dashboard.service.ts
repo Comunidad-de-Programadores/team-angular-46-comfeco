@@ -1,10 +1,10 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { ValidatorService } from '@comfeco/validator';
 import { timer } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { AreasDto, CommunitiesDto, DayEvent, EventDto, GenericResponse, WorkshopsAreaDto } from '@comfeco/interfaces';
+import { ValidatorService } from '@comfeco/validator';
 
 import { environment } from '../../../../environments/environment';
 
