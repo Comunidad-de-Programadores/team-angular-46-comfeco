@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input, ViewEncapsulation } from '@angular/core';
+
 import { ComponentConfeco } from '../../@core/utils.component';
 
 @Component({

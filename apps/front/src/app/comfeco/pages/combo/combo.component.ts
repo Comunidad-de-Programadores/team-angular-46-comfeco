@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewEncapsulation } from '@angular/core';
+
 import { ComboInterface } from '@comfeco/interfaces';
 
 @Component({
@@ -65,6 +66,7 @@ export class ComboComponent implements OnInit {
   private _deselectAll(element) {
     const parent = element.parentNode;
     const childrens = parent.childNodes;
+    
     for (let i=0; i<childrens.length; i++) {
       if(childrens[i].children) {
         const elementOption = childrens[i].children[0];

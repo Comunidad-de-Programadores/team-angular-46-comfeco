@@ -1,8 +1,10 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+
 import { GenericResponse, MenuDto, UserDto } from '@comfeco/interfaces';
 import { ValidatorService } from '@comfeco/validator';
-import { environment } from 'apps/front/src/environments/environment';
+
+import { environment } from '../../../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'

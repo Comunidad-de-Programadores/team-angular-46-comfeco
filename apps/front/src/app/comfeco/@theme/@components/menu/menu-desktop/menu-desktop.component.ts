@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output, ViewEncapsulation } from '@angular/core';
+
 import { MenuDto } from '@comfeco/interfaces';
 
 @Component({

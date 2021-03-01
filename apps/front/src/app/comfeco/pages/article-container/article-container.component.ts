@@ -1,4 +1,5 @@
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnChanges, Output, SimpleChanges, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, ViewEncapsulation } from '@angular/core';
+
 import { ComboInterface } from '@comfeco/interfaces';
 
 @Component({
