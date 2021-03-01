@@ -1,4 +1,5 @@
 import { Component, ViewEncapsulation } from '@angular/core';
+import { ComponentConfeco } from '../../../@core/utils.component';
 
 @Component({
   selector: 'comfeco-footer',
@@ -29,7 +30,7 @@ export class FooterComponent {
   }
 
   openWindow(url:string) {
-    window.open(url, "_blank");
+    ComponentConfeco.goToLink(url);
   }
 
 }

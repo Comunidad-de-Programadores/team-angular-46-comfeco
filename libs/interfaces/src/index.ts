@@ -1,3 +1,6 @@
+// Interfaces
+export * from './lib/combo.interface';
+
 // Parametros
 export * from './lib/change_password.dto';
 export * from './lib/interfaces';

@@ -1,0 +1,30 @@
+<div class="combo">
+  <button type="button" class="btn" (click)="toggleOptions()">
+    <span class="principal">
+      <span class="description">
+        {{optionSelected}}
+      </span>
+    </span>
+    <span class="icon">
+      <i class="icon-comfeco-arrows_direction"></i>
+    </span>
+  </button>
+
+  <div [ngClass]="{'hidden' : !showOptions}" class="container">
+    <ul class="options scrollbar">
+      
+      <li *ngFor="let combo of data" class="option" (click)="selectOption($event)" [id]="combo.id">
+        <div class="description">
+          <span class="text font-normal">
+            {{combo.value}}
+          </span>
+        </div>
+
+        <span class="icon">
+          <i class="invisible icon-comfeco-check"></i>
+        </span>
+      </li>
+
+    </ul>
+  </div>
+</div>

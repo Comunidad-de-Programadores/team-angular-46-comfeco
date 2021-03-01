@@ -2,10 +2,16 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
 import { ComfecoComponent } from './comfeco.component';
+import { ArticleContainerComponent } from './pages/article-container/article-container.component';
+import { ComboComponent } from './pages/combo/combo.component';
 import { PageDashboardComponent } from './pages/page-dashboard/page-dashboard.component';
 
 export const Components = [
   ComfecoComponent,
+  ComboComponent,
+  
+  ArticleContainerComponent,
+
   PageDashboardComponent
 ];
 
