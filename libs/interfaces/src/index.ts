@@ -1,5 +1,6 @@
 // Interfaces
 export * from './lib/combo.interface';
+export * from './lib/day-event.interface';
 
 // Parametros
 export * from './lib/change_password.dto';

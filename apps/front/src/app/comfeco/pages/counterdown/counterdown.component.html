@@ -1,0 +1,29 @@
+<div
+  *ngIf="dayEvent?.timeOut"
+  class="finish">
+    El evento ha concluido
+</div>
+<div
+  class="container"
+  [ngClass]="{'timeout-no-finish' : !dayEvent?.timeOut}"
+>
+  <span class="card-time">
+    <p class="data">{{dayEvent?.days}}</p>
+    <span class="description">Días</span>
+  </span>
+  <span class="separator">:</span>
+  <span class="card-time">
+    <p class="data">{{dayEvent?.hours | number:'2.0'}}</p>
+    <span class="description">Horas</span>
+  </span>
+  <span class="separator">:</span>
+  <span class="card-time">
+    <p class="data">{{dayEvent?.minutes | number:'2.0'}}</p>
+    <span class="description">Minutos</span>
+  </span>
+  <span class="separator">:</span>
+  <span class="card-time">
+    <p class="data">{{dayEvent?.seconds | number:'2.0'}}</p>
+    <span class="description">Segundos</span>
+  </span>
+</div>
