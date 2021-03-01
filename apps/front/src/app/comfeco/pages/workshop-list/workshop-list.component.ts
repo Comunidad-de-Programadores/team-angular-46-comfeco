@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges, ViewEncapsulation } from '@angular/core';
+
 import { WorkshopAreaDto } from '@comfeco/interfaces';
 
 @Component({

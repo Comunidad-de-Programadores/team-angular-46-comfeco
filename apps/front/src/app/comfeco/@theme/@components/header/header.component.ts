@@ -1,6 +1,7 @@
-import { Component, ViewEncapsulation, OnInit, OnDestroy, ElementRef } from '@angular/core';
+import { Component, ViewEncapsulation, OnInit, ElementRef } from '@angular/core';
+
 import { MenuDto } from '@comfeco/interfaces';
-import { Subscription } from 'rxjs/internal/Subscription';
+
 import { HeaderService } from './header.service';
 
 @Component({
@@ -12,7 +13,7 @@ import { HeaderService } from './header.service';
   },
   encapsulation: ViewEncapsulation.Emulated
 })
-export class HeaderComponent implements OnInit, OnDestroy {
+export class HeaderComponent implements OnInit {
 
   showMenu = false;
   showProfileOptions = false;
@@ -20,9 +21,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
   options:MenuDto[] = [];
   user:string;
   photoUrl:string;
-
-  subscriptionMenu$:Subscription;
-  subscriptionUser$:Subscription;
 
   constructor(
     private _service: HeaderService,
@@ -35,7 +33,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.subscriptionMenu$ = this._service.optionsMenu()
+    this._service.optionsMenu()
       .subscribe(
         (resp:any) => {
           if(resp.success) {
@@ -46,7 +44,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
         }
       );
     
-    this.subscriptionUser$ = this._service.user()
+    this._service.user()
       .subscribe(
         (resp:any) => {
           if(resp.success) {
@@ -60,11 +58,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
       );
   }
   
-  ngOnDestroy(): void {
-    this.subscriptionMenu$.unsubscribe();
-    this.subscriptionUser$.unsubscribe();
-  }
-
   toggleProfileOptions() {
     this.showProfileOptions = !this.showProfileOptions;
   }
