@@ -1,0 +1,31 @@
+:host {
+  display: block;
+}
+
+.community {
+  @apply p-2 rounded mt-1 border-b cursor-pointer;
+  background-color: var(--color-white);
+  border-color: var(--color-gray-light);
+
+  &:hover {
+    background-color: var(--color-secondary-hover-light);
+  }
+}
+
+.container {
+  @apply flex items-center justify-between;
+}
+
+.info {
+  @apply flex items-center;
+  color: var(--color-black);
+  width: calc(100% - 3rem);
+
+  & .image {
+    @apply h-10 rounded-full;
+  }
+
+  & .description {
+    @apply text-sm text-sm pl-2 truncate;
+  }
+}

@@ -4,6 +4,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { ComfecoComponent } from './comfeco.component';
 import { ArticleContainerComponent } from './pages/article-container/article-container.component';
 import { ComboComponent } from './pages/combo/combo.component';
+import { CommunityComponent } from './pages/community/community.component';
 import { PageDashboardComponent } from './pages/page-dashboard/page-dashboard.component';
 
 export const Components = [
@@ -11,7 +12,8 @@ export const Components = [
   ComboComponent,
   
   ArticleContainerComponent,
-
+  CommunityComponent,
+  
   PageDashboardComponent
 ];
 

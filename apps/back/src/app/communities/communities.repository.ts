@@ -41,7 +41,8 @@ export class CommunitiesRepository {
             communities.push({
                 order: community.order,
                 name: community.name,
-                link: community.link
+                link: community.link,
+                iconUrl: community.iconUrl
             });
         });
 
