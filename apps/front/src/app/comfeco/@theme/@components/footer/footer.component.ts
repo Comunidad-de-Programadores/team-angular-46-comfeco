@@ -10,27 +10,23 @@ import { ComponentConfeco } from '../../../@core/utils.component';
 export class FooterComponent {
 
   twitter() {
-    this.openWindow('https://twitter.com/comfeco');
+    ComponentConfeco.goToLink('https://twitter.com/comfeco');
   }
 
   facebook() {
-    this.openWindow('https://www.facebook.com/groups/2637132626546045');
+    ComponentConfeco.goToLink('https://www.facebook.com/groups/2637132626546045');
   }
 
   discord() {
-    this.openWindow('https://discord.com/invite/5Bb5yvzNPr');
+    ComponentConfeco.goToLink('https://discord.com/invite/5Bb5yvzNPr');
   }
 
   youtube() {
-    this.openWindow('https://www.youtube.com/channel/UC0oi8uH1vxDcyt7b_3iByew');
+    ComponentConfeco.goToLink('https://www.youtube.com/channel/UC0oi8uH1vxDcyt7b_3iByew');
   }
 
   github() {
-    this.openWindow('https://github.com/Comunidad-de-Programadores');
-  }
-
-  openWindow(url:string) {
-    ComponentConfeco.goToLink(url);
+    ComponentConfeco.goToLink('https://github.com/Comunidad-de-Programadores');
   }
 
 }

@@ -1,0 +1,20 @@
+<div class="workshop">
+  <div class="container">
+    <div class="info">
+      <i [ngClass]="'icon-comfeco-'+workshop.status+' '+workshop.status"></i>
+      <div>
+        <div
+          class="description"
+          (click)="goToWorkshop()"
+          >{{workshop.topic}}
+        </div>
+        <div class="hour">{{workshop.startTime | date: 'dd/MM/yyyy h:mm a'}}</div>
+        <a 
+          class="author"
+          (click)="goToSocialNetwork()">
+          Por {{workshop.author}}
+        </a>
+      </div>
+    </div>
+  </div>
+</div>

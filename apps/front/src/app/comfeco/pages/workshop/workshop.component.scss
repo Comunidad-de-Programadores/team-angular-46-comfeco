@@ -1,0 +1,56 @@
+:host {
+  display: block;
+}
+
+.workshop {
+  @apply p-2 rounded mt-1 border-b cursor-pointer;
+  border-color: var(--color-gray-light);
+  background-color: var(--color-white);
+
+  &:hover {
+    background-color: var(--color-secondary-hover-light);
+  }
+}
+
+.container {
+  @apply flex items-center justify-between;
+}
+
+.info {
+  @apply flex items-center;
+  color: var(--color-black);
+
+  & i {
+    @apply text-xl mr-2;
+  }
+
+  & .pending {
+    @apply text-blue-700;
+  }
+
+  & .in-progress {
+    @apply text-yellow-700;
+  }
+
+  & .finished {
+    @apply text-green-700;
+  }
+
+  & .description {
+    @apply overflow-hidden text-sm pl-2;
+  }
+
+  & .hour {
+    @apply text-xs pl-2 mb-2;
+    color: var(--color-gray);
+  }
+
+  & .author {
+    @apply text-sm pl-2 truncate h-4 fill-current text-xs cursor-pointer hover:underline;
+    color: var(--color-link);
+
+    &:hover {
+      color: var(--color-primary-hover);
+    }
+  }
+}
