@@ -1,39 +1,40 @@
-import { HttpService, HttpStatus, Injectable } from '@nestjs/common';
+import { HttpService, HttpStatus, Injectable, UnauthorizedException } from '@nestjs/common';
 
-import { Status, AccountType, GenericResponse, TokenDto, GoogleLoginDto } from '@comfeco/interfaces';
-import { UtilResponse } from '@comfeco/validator';
+import { Status, AccountType, GoogleLoginDto } from '@comfeco/interfaces';
 
-import { AuthService } from '../auth.service';
 import { environment } from '../../../environments/environment';
-import { UserEntity } from '../../user/user.entity';
-import { UserRepository } from '../../user/user.repository';
+import { UserRepository } from '../../inner/user/user.repository';
 import { VerifyGoogle } from './verify.model';
+import { UserEntity } from '../../inner/user/model/user.entity';
+import { ParametersExcepcion } from '../../../util';
+import { BasicService } from '../basic/basic.service';
+import { TokenResponseDto } from '../tokensResponse';
 
 @Injectable()
 export class GoogleService {
 
     constructor(
-        private _httpService: HttpService,
-        private _authService: AuthService,
-        private _userRepository: UserRepository
+        private readonly _httpService: HttpService,
+        private readonly _basicService: BasicService,
+        private readonly _userRepository: UserRepository
     ){}
     
-    async login(googleDto:GoogleLoginDto): Promise<TokenDto | GenericResponse> {
-        if (!googleDto) {
-            return UtilResponse.genericResponse('',['No se logro iniciar sesión con su cuenta de google'], HttpStatus.BAD_REQUEST);
+    async login(googleDto:GoogleLoginDto): Promise<TokenResponseDto> {
+        if (!googleDto || !googleDto.id) {
+            throw new ParametersExcepcion({ code: HttpStatus.BAD_REQUEST, errors: ['No se logro iniciar sesión con su cuenta de google'] });
         }
-
+        
         const { email, id, idToken } = googleDto;
 
         const verify:VerifyGoogle = await this.verify(idToken);
         if(!verify.data.sub || verify.data.sub!==id || verify.data.email!==email) {
-            return UtilResponse.genericResponse('',['Credenciales incorrectas'], HttpStatus.UNAUTHORIZED);
+            throw new UnauthorizedException();
         }
 
         return await this.createToken(googleDto, verify.data.picture);
     }
 
-    async createToken(googleDto:GoogleLoginDto, photoUrl:string) {
+    async createToken(googleDto:GoogleLoginDto, photoUrl:string): Promise<TokenResponseDto> {
         const { firstName:name, lastName:lastname, email, authToken, idToken } = googleDto;
         
         let user = email.substring(0, email.indexOf('@'));
@@ -61,6 +62,7 @@ export class GoogleService {
 
             account = {
                 ...baseEmail,
+                user,
                 type,
                 google: {
                     authToken,
@@ -75,11 +77,12 @@ export class GoogleService {
         }
 
         await this._userRepository.registerUserSocialNetwork(account);
-        
+        const baseUser:UserEntity = await this._userRepository.userExists(account.user);
+
         if(createToken) {
-            return this._authService.createAccessToken(user, email, AccountType.GOOGLE, HttpStatus.OK);
+            return await this._basicService.updateAndCreateToken(baseUser, AccountType.GOOGLE);
         } else {
-            return UtilResponse.genericResponse('',['El usuario se encuentra inactivo'], HttpStatus.UNAUTHORIZED);
+            throw new ParametersExcepcion({ code: HttpStatus.UNAUTHORIZED, errors: ['El usuario se encuentra inactivo'] });
         }
     }
 

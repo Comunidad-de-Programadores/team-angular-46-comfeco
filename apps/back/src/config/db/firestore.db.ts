@@ -13,7 +13,8 @@ export class FirestoreDataBase {
         if(!admin.apps.length) {
             admin.initializeApp({
                 credential: admin.credential.cert(params),
-                databaseURL: process.env.FIREBASE_DATABASE
+                databaseURL: process.env.FIREBASE_DATABASE,
+                storageBucket: 'angular-46.appspot.com'
             });
 
             admin.firestore().settings({ignoreUndefinedProperties: true});

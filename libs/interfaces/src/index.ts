@@ -10,6 +10,7 @@ export * from './lib/recover_account.dto';
 export * from './lib/register.dto';
 export * from './lib/google_verify.dto';
 export * from './lib/facebook_verify.dto';
+export * from './lib/user_change_information.dto';
 
 // Respuestas
 export * from './lib/generic_response.dto';
@@ -31,10 +32,22 @@ export * from './lib/area_workshop_response.dto';
 export * from './lib/workshop_area_response.dto';
 export * from './lib/workshops_area_response.dto';
 export * from './lib/event_response.dto';
+export * from './lib/submenu_option_user_profile_response.dto';
+export * from './lib/submenu_user_profile_response.dto';
+export * from './lib/user_social_networks_response.dto';
+export * from './lib/insignias_response.dto';
+export * from './lib/insignia_response.dto';
+export * from './lib/event_day_response.dto';
+export * from './lib/events_day_response.dto';
+export * from './lib/genders_response.dto';
+export * from './lib/gender_response.dto';
+export * from './lib/countrys_response.dto';
+export * from './lib/country_response.dto';
 
 export * from './enum/account_type.enum';
 export * from './enum/roles.enum';
 export * from './enum/status_workshop.enum';
 export * from './enum/status.enum';
+export * from './enum/gender.enum';
 
 export * from './regexp/expresions.regexp';

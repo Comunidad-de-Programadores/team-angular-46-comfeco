@@ -50,6 +50,16 @@ export class ValidatorService {
     return this._fillErrors(message, response);
   }
 
+  static id(id:string, response:GenericResponse): GenericResponse {
+    let message:string;
+
+    if(this._isEmpty(id)) {
+      message = 'El id es necesario enviarlo';
+    }
+
+    return this._fillErrors(message, response);
+  }
+
   static user(user:string, response:GenericResponse): GenericResponse {
     let message:string;
 

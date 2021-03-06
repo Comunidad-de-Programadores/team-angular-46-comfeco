@@ -1,36 +1,37 @@
-import { HttpService, HttpStatus, Injectable } from '@nestjs/common';
+import { HttpService, HttpStatus, Injectable, UnauthorizedException } from '@nestjs/common';
 
-import { Status, GenericResponse, TokenDto, AccountType, FacebookLoginDto } from '@comfeco/interfaces';
-import { UtilResponse } from '@comfeco/validator';
+import { Status, AccountType, FacebookLoginDto } from '@comfeco/interfaces';
 
-import { AuthService } from '../auth.service';
 import { environment } from '../../../environments/environment';
-import { UserEntity } from '../../user/user.entity';
-import { UserRepository } from '../../user/user.repository';
+import { UserRepository } from '../../inner/user/user.repository';
 import { ConfigService } from '../../../config/config.service';
 import { Configuration } from '../../../config/config.keys';
 import { VerifyFacebook } from './verify.model';
+import { UserEntity } from '../../inner/user/model/user.entity';
+import { ParametersExcepcion } from '../../../util';
+import { TokenResponseDto } from '../tokensResponse';
+import { BasicService } from '../basic/basic.service';
 
 @Injectable()
 export class FacebookService {
 
     constructor(
         private readonly _httpService: HttpService,
-        private readonly _authService: AuthService,
         private readonly _configService: ConfigService,
+        private readonly _basicService: BasicService,
         private readonly _userRepository: UserRepository
     ){}
     
-    async login(facebookDto:FacebookLoginDto): Promise<TokenDto | GenericResponse> {
-        if (!facebookDto) {
-            return UtilResponse.genericResponse('',['No se logro iniciar sesión con su cuenta de facebook'], HttpStatus.BAD_REQUEST);
+    async login(facebookDto:FacebookLoginDto): Promise<TokenResponseDto> {
+        if (!facebookDto || !facebookDto.id) {
+            throw new ParametersExcepcion({ code: HttpStatus.BAD_REQUEST, errors: ['No se logro iniciar sesión con su cuenta de facebook'] });
         }
 
         const { id , authToken } = facebookDto;
         
         const verify:VerifyFacebook = await this.verify(authToken);
         if(!verify.data.data || !verify.data.data.is_valid || verify.data.data.user_id!==id) {
-            return UtilResponse.genericResponse('',['Credenciales incorrectas'], HttpStatus.UNAUTHORIZED);
+            throw new UnauthorizedException();
         }
 
         const photoUrl:any = await this.getProfilePicture(id);
@@ -38,11 +39,11 @@ export class FacebookService {
         return await this.createToken(facebookDto, verify, photoUrl.data.picture.data.url);
     }
 
-    async createToken(facebookDto:FacebookLoginDto, resp:VerifyFacebook, photoUrl:string): Promise<TokenDto | GenericResponse> {
+    async createToken(facebookDto:FacebookLoginDto, resp:VerifyFacebook, photoUrl:string): Promise<TokenResponseDto> {
         const { firstName:name, lastName:lastname, email, id , authToken } = facebookDto;
 
         if(!resp.data.data.is_valid) {
-            return UtilResponse.genericResponse('',['Credenciales incorrectas'], HttpStatus.UNAUTHORIZED);
+            throw new UnauthorizedException();
         }
 
         let user = email.substring(0, email.indexOf('@'));
@@ -69,6 +70,7 @@ export class FacebookService {
 
             account = {
                 ...baseEmail,
+                user,
                 type,
                 facebook: {
                     id,
@@ -83,11 +85,12 @@ export class FacebookService {
         }
 
         await this._userRepository.registerUserSocialNetwork(account);
-        
+        const baseUser:UserEntity = await this._userRepository.userExists(account.user);
+
         if(createToken) {
-            return this._authService.createAccessToken(user, email, AccountType.FACEBOOK, HttpStatus.OK);
+            return await this._basicService.updateAndCreateToken(baseUser, AccountType.FACEBOOK);
         } else {
-            return UtilResponse.genericResponse('',['El usuario se encuentra inactivo'], HttpStatus.UNAUTHORIZED);
+            throw new ParametersExcepcion({ code: HttpStatus.UNAUTHORIZED, errors: ['El usuario se encuentra inactivo'] });
         }
     }
 

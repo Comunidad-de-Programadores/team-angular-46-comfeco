@@ -5,7 +5,7 @@ import { SentMessageInfo } from 'nodemailer';
 import { environment } from './../../environments/environment';
 import { ConfigService } from '../config.service';
 import { Configuration } from '../config.keys';
-import { UserEntity } from '../../app/user/user.entity';
+import { UserEntity } from '../../app/inner/user/model/user.entity';
 
 @Injectable()
 export class EmailService {

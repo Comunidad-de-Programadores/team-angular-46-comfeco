@@ -1,4 +1,4 @@
-import { Body, Post } from '@nestjs/common';
+import { Body, HttpCode, HttpStatus, Post } from '@nestjs/common';
 import { Controller, Res } from '@nestjs/common';
 import { ApiOkResponse, ApiOperation, ApiTags, ApiUnauthorizedResponse } from '@nestjs/swagger';
 import { Response } from "express";
@@ -6,12 +6,17 @@ import { Response } from "express";
 import { FacebookLoginDto, GenericResponse, TokenDto } from '@comfeco/interfaces';
 
 import { FacebookService } from './facebook.service';
+import { TokenResponseDto } from '../tokensResponse';
+import { AuthService } from '../auth.service';
 
 @ApiTags('Autenticación')
 @Controller('auth/facebook')
 export class FacebookController {
 
-    constructor( private _facebookService: FacebookService ){}
+    constructor(
+        private readonly _facebookService: FacebookService,
+        private readonly _authService: AuthService
+    ){}
 
     @ApiOperation({
         summary: 'Verificación de autenticación con facebook',
@@ -26,10 +31,10 @@ export class FacebookController {
         type: GenericResponse,
     })
     @Post("verify")
-    async verify(@Res() res:Response, @Body() facebookDto:FacebookLoginDto): Promise<any> {
-        const user = await this._facebookService.login(facebookDto);
-
-        res.status(user.code).send(user);
+    @HttpCode(HttpStatus.OK)
+    async verify(@Res() res:Response, @Body() facebookDto:FacebookLoginDto): Promise<void> {
+        const tokens:TokenResponseDto = await this._facebookService.login(facebookDto);
+        this._authService.setCookies(res, tokens, HttpStatus.OK);
     }
 
 }

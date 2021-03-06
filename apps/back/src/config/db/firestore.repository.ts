@@ -1,4 +1,5 @@
 import { Injectable } from "@nestjs/common";
+import { Bucket } from '@google-cloud/storage';
 import * as admin from 'firebase-admin';
 
 @Injectable()
@@ -6,6 +7,29 @@ export class FirestoreRepository {
     
     get db(): admin.firestore.Firestore {
         return admin.firestore();
+    }
+
+    async storage(directory:string, file:any, name:string): Promise<string> {
+        const fileName:string = `${directory}/${name}`;
+        
+        await this._bucket().file(fileName).save(file);
+        
+        const urlFile:string[] = await this._bucket().file(fileName).getSignedUrl({
+            action: "read",
+            expires: '01-01-2030'
+        });
+
+        const url:string = urlFile[0];
+        
+        return url;
+    }
+
+    private _bucket(): Bucket {
+        return this._storage().bucket();
+    }
+
+    private _storage(): admin.storage.Storage {
+        return admin.storage();
     }
 
     collection(collection:string): admin.firestore.CollectionReference {
@@ -37,6 +61,10 @@ export class FirestoreRepository {
         return [ start, end ];
     }
 
+    async referenceDocumentId(collection:string, id:string): Promise<admin.firestore.DocumentReference> {
+        return await this.collection(collection).doc(id);
+    }
+
     async referenceDocumentKey(collection:string, keyReference:string, value:string): Promise<admin.firestore.DocumentReference> {
         const document:admin.firestore.QuerySnapshot = await this.collection(collection).where(keyReference, '==', value).get();
         const id:string = await this.idDocument(document);
@@ -54,6 +82,17 @@ export class FirestoreRepository {
         );
     }
 
+    async returnInfoDocument(refDocument:admin.firestore.DocumentSnapshot) {
+        let finalData:admin.firestore.DocumentData | null = {};
+        finalData.id = refDocument.id;
+
+        for (const [key, value] of Object.entries(refDocument.data())) {
+            finalData[key] = await this.childrenData(value);
+        }
+
+        return finalData;
+    }
+    
     async returnDocument(refDocument:admin.firestore.QuerySnapshot) {
         const dataResponse:admin.firestore.DocumentData | null = await this.returnDocuments(refDocument);
         return dataResponse.length > 0

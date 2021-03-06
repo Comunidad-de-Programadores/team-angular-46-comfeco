@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+
 import { FirestoreRepository } from './firestore.repository';
 
 @Module({

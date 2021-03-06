@@ -1,17 +1,22 @@
-import { Body, Controller, Post, Res } from '@nestjs/common';
+import { Body, Controller, HttpCode, HttpStatus, Post, Res } from '@nestjs/common';
 import { ApiOkResponse, ApiOperation, ApiTags, ApiUnauthorizedResponse } from '@nestjs/swagger';
 import { Response } from "express";
 
 import { GenericResponse, GoogleLoginDto, TokenDto } from '@comfeco/interfaces';
 
 import { GoogleService } from './google.service';
+import { TokenResponseDto } from '../tokensResponse';
+import { AuthService } from '../auth.service';
 
 @ApiTags('Autenticación')
 @ApiTags('Google')
 @Controller('auth/google')
 export class GoogleController {
 
-    constructor( private _googleService: GoogleService ){}
+    constructor(
+        private readonly _googleService: GoogleService,
+        private readonly _authService: AuthService
+    ){}
 
     @ApiOperation({
         summary: 'Verificación de autenticación con google',
@@ -26,10 +31,10 @@ export class GoogleController {
         type: GenericResponse,
     })
     @Post("verify")
-    async verify(@Res() res:Response, @Body() googleDto:GoogleLoginDto): Promise<any> {
-        const user = await this._googleService.login(googleDto);
-
-        res.status(user.code).send(user);
+    @HttpCode(HttpStatus.OK)
+    async verify(@Res() res:Response, @Body() googleDto:GoogleLoginDto): Promise<void> {
+        const tokens:TokenResponseDto = await this._googleService.login(googleDto);
+        this._authService.setCookies(res, tokens, HttpStatus.OK);
     }
 
 }
