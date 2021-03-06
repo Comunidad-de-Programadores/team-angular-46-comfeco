@@ -6,6 +6,7 @@ import { Observable } from 'rxjs';
 export class HttpInterceptor implements NestInterceptor {
     private readonly logger = new Logger('HTTP');
     
+
     intercept(
         ctx: ExecutionContext,
         next: CallHandler<any>,
@@ -71,6 +72,10 @@ export class HttpInterceptor implements NestInterceptor {
             
             if(message) {
                 message = `[${message}]: `;
+            }
+
+            if(url==='/api/countrys' && responseService.indexOf('"code":200,"country"')>-1) {
+                responseService = '{"code":200,"country":[...]';
             }
 
             this.logger.log(

@@ -36,36 +36,36 @@ export class AuthService {
     const url:string = `${this.urlAuth}/google/verify`;
 
     return from(this.authService.signIn(GoogleLoginProvider.PROVIDER_ID))
-    .pipe(
-      catchError(error => of({ error, success: false })),
-      switchMap((data:any) => {
-        const {id, firstName, lastName, email, photoUrl, authToken, provider, idToken} = data;
-        const google:GoogleLoginDto = {
-          id, firstName, lastName, email, photoUrl, authToken, provider, idToken
-        };
-        
-        return this.http.post(url, google);
-      }),
-      ValidatorService.changeErrorAuthResponse()
-    );
+      .pipe(
+        catchError(error => of({ error, success: false })),
+        switchMap((data:any) => {
+          const {id, firstName, lastName, email, photoUrl, authToken, provider, idToken} = data;
+          const google:GoogleLoginDto = {
+            id, firstName, lastName, email, photoUrl, authToken, provider, idToken
+          };
+          
+          return this.http.post(url, google);
+        }),
+        ValidatorService.changeErrorAuthResponse()
+      );
   }
 
   public accessFacebook() {
     const url:string = `${this.urlAuth}/facebook/verify`;
 
     return from(this.authService.signIn(FacebookLoginProvider.PROVIDER_ID))
-    .pipe(
-      catchError(error => of({ error, success: false })),
-      switchMap((data:any) => {
-        const {id, firstName, lastName, email, photoUrl, authToken, provider} = data;
-        const facebook:FacebookLoginDto = {
-          id, firstName, lastName, email, photoUrl, authToken, provider
-        };
+      .pipe(
+        catchError(error => of({ error, success: false })),
+        switchMap((data:any) => {
+          const {id, firstName, lastName, email, photoUrl, authToken, provider} = data;
+          const facebook:FacebookLoginDto = {
+            id, firstName, lastName, email, photoUrl, authToken, provider
+          };
 
-        return this.http.post(url, facebook);
-      }),
-      ValidatorService.changeErrorAuthResponse()
-    );
+          return this.http.post(url, facebook);
+        }),
+        ValidatorService.changeErrorAuthResponse()
+      );
   }
 
   logout() {

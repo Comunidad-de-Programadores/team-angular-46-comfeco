@@ -1,21 +1,25 @@
-import { Body, Controller, Get, Post, Res, UseGuards, Patch, Req, Put } from '@nestjs/common';
+import { Body, Controller, Get, Post, Res, Patch, Req, Put, HttpCode, HttpStatus, UseGuards } from '@nestjs/common';
 import { ApiAcceptedResponse, ApiBadRequestResponse, ApiBearerAuth, ApiCreatedResponse, ApiForbiddenResponse, ApiOkResponse, ApiOperation,  ApiTags, ApiUnauthorizedResponse } from '@nestjs/swagger';
 import { Request, Response } from 'express';
 
 import { GenericResponse, RegisterDto, LoginDto, TokenDto, RecoverAccountDto, ChangePasswordDto } from '@comfeco/interfaces';
 
 import { BasicService } from './basic.service';
-import { ParameterToken } from '../../../config/guard/user.decorator';
-import { UserGuard } from '../../../config/guard/user.guard';
+import { IdUser } from '../../../config/guard/access.decorator';
+import { TokenResponseDto } from '../tokensResponse';
+import { AuthService } from '../auth.service';
+import { AccessGuard } from '../../../config/guard/access.guard';
 import { JwtUtil } from '../../../util/jwt/jwt.util';
+import { RefreshGuard } from '../../../config/guard/refresh.guard';
+import { CookieGuard } from '../../../config/guard/cookie.enum';
 
-@ApiTags('Autenticación')
 @Controller('auth')
+@ApiTags('Autenticación')
 export class BasicController {
 
     constructor(
-        private _jwtUtil: JwtUtil,
-        private _basicService: BasicService
+        private readonly _basicService: BasicService,
+        private readonly _authService: AuthService
     ){}
     
 
@@ -32,10 +36,10 @@ export class BasicController {
         type: GenericResponse,
     })
     @Post('/register')
+    @HttpCode(HttpStatus.CREATED)
 	async register(@Res() res:Response, @Body() registerDto:RegisterDto): Promise<void> {
-        const user = await this._basicService.register(registerDto);
-
-        res.status(user.code).send(user);
+        const tokens:TokenResponseDto = await this._basicService.register(registerDto);
+        this._authService.setCookies(res, tokens, HttpStatus.CREATED);
 	}
 
 
@@ -52,33 +56,33 @@ export class BasicController {
         type: GenericResponse,
     })
     @Post('/login')
+    @HttpCode(HttpStatus.OK)
 	async login(@Res() res:Response, @Body() loginDto:LoginDto): Promise<void> {
-        const user = await this._basicService.userExists(loginDto);
-
-        res.status(user.code).send(user);
+        const tokens:TokenResponseDto = await this._basicService.login(loginDto);
+        this._authService.setCookies(res, tokens, HttpStatus.OK);
 	}
 
 
     @ApiOperation({
-        summary: 'Validación de token',
-        description: 'Validar que el token no ha expirado'
+        summary: 'Renovación de token',
+        description: 'Validar que el refresh token no ha expirado y creación de un nuevo token de acceso y de refresh'
     })
     @ApiOkResponse({
-        description: 'Token válido',
+        description: 'Refresh Token válido',
         type: TokenDto,
     })
     @ApiUnauthorizedResponse({
         description: "Token invalido o expirado",
         type: GenericResponse
     })
-    @Get('/validate_token')
-    @UseGuards(UserGuard)
+    @Get('/refresh_token')
+    @HttpCode(HttpStatus.OK)
+    @UseGuards(RefreshGuard)
     @ApiBearerAuth('access-token-service')
-	async validateRefreshToken(@Req() req:Request, @Res() res:Response, @ParameterToken('user') user:string): Promise<void> {
-        const token = this._jwtUtil.getToken(req);
-        const newToken = await this._basicService.renewToken(user, token);
-
-        res.status(newToken.code).send(newToken);
+	async validateRefreshToken(@Req() req:Request, @Res() res:Response, @IdUser() id:string): Promise<void> {
+        const token:string = JwtUtil.getTokenCookie(req, CookieGuard.REFRESH);
+        const tokens:TokenResponseDto = await this._basicService.renewToken(id, token);
+        this._authService.setCookies(res, tokens, HttpStatus.OK);
     }
 
 
@@ -94,11 +98,10 @@ export class BasicController {
         description: 'No se puede recuperar la cuenta',
         type: GenericResponse,
     })
+    @HttpCode(HttpStatus.OK)
     @Patch('/recover_user_account')
 	async recoverAccount(@Res() res:Response, @Body() renewPassword:RecoverAccountDto): Promise<void> {
-        const user = await this._basicService.recoverAccount(renewPassword);
-
-        res.status(user.code).send(user);
+        res.send(await this._basicService.recoverAccount(renewPassword));
 	}
 
 
@@ -115,10 +118,9 @@ export class BasicController {
         type: GenericResponse,
     })
     @Put('/change_password')
+    @HttpCode(HttpStatus.ACCEPTED)
 	async changePassword(@Res() res:Response, @Body() changePassword:ChangePasswordDto): Promise<void> {
-        const user:GenericResponse = await this._basicService.changePassword(changePassword);
-
-        res.status(user.code).send(user);
+        res.send(await this._basicService.changePassword(changePassword));
 	}
 
 
@@ -135,12 +137,12 @@ export class BasicController {
         type: GenericResponse,
     })
     @Get('/logout')
-    @UseGuards(UserGuard)
+    @HttpCode(HttpStatus.OK)
+    @UseGuards(AccessGuard)
     @ApiBearerAuth('access-token-service')
-	async logout(@Res() res:Response, @ParameterToken('email') correo:string): Promise<void>  {
-        const response = await this._basicService.logout(correo);
-
-        res.status(response.code).send(response);
+	async logout(@Res() res:Response, @IdUser() id:string): Promise<void>  {
+        const message:string = await this._basicService.logout(id);
+        this._authService.cleanCookies(res, message);
 	}
 
 }
