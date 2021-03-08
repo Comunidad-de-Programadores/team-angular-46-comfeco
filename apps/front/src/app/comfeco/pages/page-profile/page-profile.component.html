@@ -1,0 +1,9 @@
+<div class="submenu">
+  <a *ngFor="let option of options; index as i"
+    [ngClass]="option.component==='user-profile' && 'active'">
+    <i [ngClass]="option.icon"></i>
+    <span
+      [ngClass]="option.component==='user-profile' && 'active'"
+    >{{option.option}}</span>
+  </a>
+</div>

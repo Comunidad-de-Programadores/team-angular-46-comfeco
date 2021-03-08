@@ -1,4 +1,5 @@
 import { Component, ViewEncapsulation, OnInit, ElementRef } from '@angular/core';
+import { Router } from '@angular/router';
 
 import { MenuDto } from '@comfeco/interfaces';
 
@@ -23,6 +24,7 @@ export class HeaderComponent implements OnInit {
   photoUrl:string;
 
   constructor(
+    private _router: Router,
     private _service: HeaderService,
     private _domref: ElementRef) { }
 
@@ -68,6 +70,12 @@ export class HeaderComponent implements OnInit {
 
   logout() {
     this._service.logout().subscribe();
+    this.toggleProfileOptions();
+  }
+
+  myProfile() {
+    this._router.navigateByUrl('/app/my-profile');
+    this.toggleProfileOptions();
   }
 
 }

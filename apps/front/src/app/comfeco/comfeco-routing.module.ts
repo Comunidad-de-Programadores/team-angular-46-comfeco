@@ -13,6 +13,7 @@ import { ExhibitorComponent } from './pages/exhibitor/exhibitor.component';
 import { PageCommunitiesComponent } from './pages/page-communities/page-communities.component';
 import { PageCreatorsComponent } from './pages/page-creators/page-creators.component';
 import { PageDashboardComponent } from './pages/page-dashboard/page-dashboard.component';
+import { PageProfileComponent } from './pages/page-profile/page-profile.component';
 import { PageWorkshopsComponent } from './pages/page-workshops/page-workshops.component';
 import { SliderComponent } from './pages/slider/slider.component';
 import { SponsorComponent } from './pages/sponsor/sponsor.component';
@@ -39,6 +40,7 @@ export const Components = [
   PageCommunitiesComponent,
   PageWorkshopsComponent,
   PageCreatorsComponent,
+  PageProfileComponent,
 ];
 
 const routes: Routes = [
@@ -47,6 +49,7 @@ const routes: Routes = [
       { path: 'communities', component: PageCommunitiesComponent }, // app/communities
       { path: 'workshops', component: PageWorkshopsComponent }, // app/workshops
       { path: 'creators', component: PageCreatorsComponent }, // app/creators
+      { path: 'my-profile', component: PageProfileComponent }, // app/my-profile
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
       { path: '**', redirectTo: 'dashboard' },
     ],
