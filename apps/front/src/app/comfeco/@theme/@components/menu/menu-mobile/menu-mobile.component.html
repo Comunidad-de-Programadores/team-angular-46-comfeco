@@ -2,7 +2,8 @@
   <div class="options">
     <a *ngFor="let option of options; index as i"
       class="option"
-      [ngClass]="{'active' : i==0}"
+      [routerLink]="[option.link]"
+      routerLinkActive="active"
     >
       <i
         class="icon"

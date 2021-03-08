@@ -1,0 +1,16 @@
+<div class="title-section">Talleres</div>
+
+<section class="container-page">
+  <div *ngFor="let workshopArea of workshopsArea">
+    <div class="workshop-area">{{workshopArea.area}}</div>
+    <hr>
+
+    <div class="cards">
+      <comfeco-card-workshop
+        *ngFor="let workshop of workshopArea.workshops"
+        [workshop]="workshop"
+      ></comfeco-card-workshop>
+    </div>
+  </div>
+    
+</section>

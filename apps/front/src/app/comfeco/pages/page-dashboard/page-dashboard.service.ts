@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { timer } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -6,29 +6,21 @@ import { map } from 'rxjs/operators';
 import { AreasDto, CommunitiesDto, DayEvent, EventDto, GenericResponse, WorkshopsAreaDto } from '@comfeco/interfaces';
 import { ValidatorService } from '@comfeco/validator';
 
-import { environment } from '../../../../environments/environment';
-
 @Injectable({
   providedIn: 'root'
 })
 export class DashboardService {
-
-  urlApp:string = environment.urlApi;
 
   constructor(
     private http: HttpClient
   ) {}
 
   communities() {
-    const url:string = `${this.urlApp}/communities`;
-    const headers:HttpHeaders = ValidatorService.authHeader();
-    return this.http.get<CommunitiesDto | GenericResponse>(url, { headers }).pipe(ValidatorService.changeBasicResponse());
+    return this.http.get<CommunitiesDto | GenericResponse>('/communities').pipe(ValidatorService.changeBasicResponse());
   }
 
   knowledgeArea() {
-    const url:string = `${this.urlApp}/knowledge_area`;
-    const headers:HttpHeaders = ValidatorService.authHeader();
-    return this.http.get<AreasDto | GenericResponse>(url, { headers }).pipe(ValidatorService.changeBasicResponse());
+    return this.http.get<AreasDto | GenericResponse>('/knowledge_area').pipe(ValidatorService.changeBasicResponse());
   }
 
   workshops(idArea:string) {
@@ -36,15 +28,12 @@ export class DashboardService {
       idArea = '0';
     }
 
-    const url:string = `${this.urlApp}/workshops_area/${idArea}`;
-    const headers:HttpHeaders = ValidatorService.authHeader();
-    return this.http.get<WorkshopsAreaDto | GenericResponse>(url, { headers }).pipe(ValidatorService.changeBasicResponse());
+    const url:string = `/workshops_area/${idArea}`;
+    return this.http.get<WorkshopsAreaDto | GenericResponse>(url).pipe(ValidatorService.changeBasicResponse());
   }
 
   eventInfo() {
-    const url:string = `${this.urlApp}/events`;
-    const headers:HttpHeaders = ValidatorService.authHeader();
-    return this.http.get<EventDto | GenericResponse>(url, { headers }).pipe(ValidatorService.changeBasicResponse());
+    return this.http.get<EventDto | GenericResponse>('/events').pipe(ValidatorService.changeBasicResponse());
   }
 
   countdownTimer(dateEvent:Date) {

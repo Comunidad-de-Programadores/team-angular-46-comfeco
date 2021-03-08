@@ -10,6 +10,9 @@
   --color-primary-hover-light:    #{mapGet($colors, primary-hover-light)};
   --color-secondary-hover-light:  #{mapGet($colors, secondary-hover-light)};
   --color-tertiary:               #{mapGet($colors, tertiary)};
+
+  --color-twitter:                #{mapGet($colors, twitter)};
+  --color-twitter-hover:          #{mapGet($colors, twitter-hover)};
   
   --color-link:                   #{mapGet($colors, link)};
   --color-error:                  #{mapGet($colors, error)};

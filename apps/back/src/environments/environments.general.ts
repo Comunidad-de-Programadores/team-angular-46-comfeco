@@ -1,6 +1,5 @@
 export const comunes = {
-    title: 'API Confeco - Angular 46',
-    titleEmail: 'Confeco - Angular 46',
+    title: 'API Confeco - Equipo Angular 46',
     description: 'Servicios expuestos para la construcción del aplicativo',
     name_app: 'Confeco API',
     version_app: '1.0.0',
