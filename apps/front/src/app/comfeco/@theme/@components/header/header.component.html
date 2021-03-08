@@ -19,6 +19,12 @@
           <div [ngClass]="!showProfileOptions ? 'hidde_options' : 'show_options'" class="user__menu">
             <a
               class="user__menu-option"
+              (click)="myProfile()">
+              <i class="user__btn-close icon-comfeco-user_edit"></i>
+              <span>Mi Perfil</span>
+            </a>
+            <a
+              class="user__menu-option"
               (click)="logout()">
               <i class="user__btn-close icon-comfeco-sign-out"></i>
               <span>Cerrar Sesión</span>

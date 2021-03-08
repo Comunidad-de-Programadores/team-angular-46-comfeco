@@ -24,10 +24,13 @@
 
   .hidde_options {
     @apply opacity-0;
+    visibility: hidden;
+    transition: visibility 0s, opacity 0.5s linear;
   }
 
   .show_options {
     @apply opacity-100;
+    visibility: visible;
   }
 
   .link {

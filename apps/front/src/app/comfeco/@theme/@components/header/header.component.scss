@@ -54,13 +54,15 @@
   }
 
   &__menu {
-    @apply transition ease-in duration-100 origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-opacity-5;
+    @apply transition ease-in duration-100 origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 ring-1 ring-opacity-5 divide-y;
+    background-color: var(--color-white);
 
     &-option {
       @apply block px-4 py-2 text-sm;
       color: var(--color-gray);
 
       &:hover {
+        @apply cursor-pointer;
         background-color: var(--color-secondary-hover-light);
         color: var(--color-black);
       }
