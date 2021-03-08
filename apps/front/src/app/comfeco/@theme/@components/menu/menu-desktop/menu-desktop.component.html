@@ -13,9 +13,9 @@
   <div class="section">
     <div class="options">
       <a *ngFor="let option of options; index as i"
-        [routerLink]="option.link"
+        [routerLink]="[option.link]"
+        routerLinkActive="active"
         class="option"
-        [ngClass]="{'active' : i==0}"
       >
         <i
           class="icon"

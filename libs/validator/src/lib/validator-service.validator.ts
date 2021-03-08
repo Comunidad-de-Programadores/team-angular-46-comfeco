@@ -7,13 +7,7 @@ import { ExpresionRegex, GenericResponse, ResponseService, TokenDto } from '@com
 import { UtilResponse } from "./answers.util";
 
 export class ValidatorService {
-
-  static authHeader(): HttpHeaders {
-    //const token:string = '';
-    const token:string = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoicnViZW5fc2FsZ2FkbyIsImVtYWlsIjoiY2hvcm9zdG9zdG9zY2FAaG90bWFpbC5jb20iLCJ0eXBlIjoiRU1BSUwiLCJpYXQiOjE2MTQzNjE4MTkwNDIsImV4cCI6MTYxNDM2MTgxOTA0NX0.gSrUfLK8fALr2AtWUdJoRl7ynIfjs4CWuyKr_9nYIiY';
-    return new HttpHeaders({'Authorization':`Bearer ${token}`});
-  }
-
+  
   static changeBasicResponse(): UnaryFunction<Observable<GenericResponse>, Observable<ResponseService>> {
     return pipe(
       catchError(({error}) => of({ code: error.code, errors: error.errors, success: false })),

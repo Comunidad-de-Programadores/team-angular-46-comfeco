@@ -1,0 +1,16 @@
+:host {
+  display: block;
+}
+
+.workshop-area {
+  @apply font-semibold text-lg mb-3;
+  color: var(--color-primary);
+}
+
+hr {
+  border-color: var(--color-primary);
+}
+
+.cards {
+  @apply flex flex-wrap -mx-1 lg:-mx-4;
+}

@@ -11,7 +11,7 @@ export class LayoutComfecoComponent implements AfterViewInit {
   constructor(private elementRef: ElementRef) {}
 
   ngAfterViewInit(){
-    this.elementRef.nativeElement.ownerDocument.body.style.backgroundColor = '#FAFAFF';
+    this.elementRef.nativeElement.ownerDocument.body.style.backgroundColor = '#ECECFF';
   }
 
 }
