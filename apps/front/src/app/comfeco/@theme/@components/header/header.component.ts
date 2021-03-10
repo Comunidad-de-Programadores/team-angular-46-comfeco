@@ -1,7 +1,9 @@
-import { Component, ViewEncapsulation, OnInit, ElementRef } from '@angular/core';
+import { Component, ViewEncapsulation, OnInit, ElementRef, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { MenuDto } from '@comfeco/interfaces';
+import { Subscription } from 'rxjs';
+import { LayoutComfecoService } from '../../layout/layout-comfeco.service';
 
 import { HeaderService } from './header.service';
 
@@ -14,19 +16,24 @@ import { HeaderService } from './header.service';
   },
   encapsulation: ViewEncapsulation.Emulated
 })
-export class HeaderComponent implements OnInit {
+export class HeaderComponent implements OnInit, OnDestroy {
+
+  photoDefault:string = '../../../../../assets/img/avatar_user.svg';
+  photoUrl:string;
 
   showMenu = false;
   showProfileOptions = false;
 
   options:MenuDto[] = [];
-  user:string;
-  photoUrl:string;
-
+  
+  private photoUrlRef$:Subscription = null;
+  
   constructor(
     private _router: Router,
-    private _service: HeaderService,
-    private _domref: ElementRef) { }
+    private _domref: ElementRef,
+    public service: HeaderService,
+    private notification: LayoutComfecoService,
+  ) {}
 
   onClickOutside(event) {
     if (!this._domref.nativeElement.contains(event.target)) {
@@ -35,29 +42,41 @@ export class HeaderComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this._service.optionsMenu()
+    this.photoUrl = this.photoDefault;
+    this.photoUrlRef$ = this.service.photoUrl$.subscribe(resp => {
+      const photoRef:any = document.getElementById("user-photo-profile");
+      const photoNew:string = !!resp ? resp : this.photoDefault;
+      photoRef.setAttribute('src', photoNew);
+      this.photoUrl = photoNew;
+    });
+
+    this.service.optionsMenu()
       .subscribe(
         (resp:any) => {
           if(resp.success) {
             this.options = resp.options;
           } else {
-            console.log(resp.message);
+            this.notification.alertNotification({message: resp.message});
           }
         }
       );
     
-    this._service.user()
+    this.service.user()
       .subscribe(
         (resp:any) => {
           if(resp.success) {
             const { user, photoUrl } = resp;
-            this.user = user;
-            this.photoUrl = photoUrl;
+            this.service.changeUser(user);
+            this.service.changePhoto(photoUrl);
           } else {
-            console.log(resp.message);
+            this.notification.alertNotification({message: resp.message});
           }
         }
       );
+  }
+
+  ngOnDestroy(): void {
+    this.photoUrlRef$.unsubscribe();
   }
   
   toggleProfileOptions() {
@@ -69,7 +88,7 @@ export class HeaderComponent implements OnInit {
   }
 
   logout() {
-    this._service.logout().subscribe();
+    this.service.logout().subscribe();
     this.toggleProfileOptions();
   }
 

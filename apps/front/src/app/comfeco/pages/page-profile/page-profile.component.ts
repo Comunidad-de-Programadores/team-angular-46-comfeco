@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { MenuOptionUserProfileDto } from '@comfeco/interfaces';
+import { LayoutComfecoService } from '../../@theme/layout/layout-comfeco.service';
 import { PageProfileService } from './page-profile.service';
 
 @Component({
@@ -12,7 +13,10 @@ export class PageProfileComponent implements OnInit {
 
   options:MenuOptionUserProfileDto[] = [];
 
-  constructor(private _service: PageProfileService) { }
+  constructor(
+    private _service: PageProfileService,
+    private notification: LayoutComfecoService
+  ) {}
 
   ngOnInit(): void {
     this._service.optionsMenu()
@@ -21,7 +25,7 @@ export class PageProfileComponent implements OnInit {
           if(resp.success) {
             this.options = resp.options;
           } else {
-            console.log(resp.message);
+            this.notification.alertNotification({message: resp.message});
           }
         }
       );

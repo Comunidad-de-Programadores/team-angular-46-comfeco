@@ -3,3 +3,10 @@
     <router-outlet></router-outlet>
 </comfeco-content>
 <comfeco-footer></comfeco-footer>
+<comfeco-spinner></comfeco-spinner>
+<div class="alert-notifications">
+    <comfeco-alert-notification
+        *ngFor="let alert of alertsNotification"
+        [notification]="alert"
+    ></comfeco-alert-notification>
+</div>

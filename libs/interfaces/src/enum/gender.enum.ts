@@ -1,4 +1,5 @@
-export enum Gender {
-    MAN='Masculino',
-    GIRL='Femenino'
+export class Gender {
+    prefix:string;
+    type:string;
+    id:string;
 }

@@ -12,11 +12,20 @@ export class ValidateComponent {
         return (formGroup: AbstractControl): ValidationErrors | null => {
             const parent:FormGroup|FormArray = formGroup.parent;
             const controls:any = parent?.controls;
+            let actualValue:any;
+            let otherMatch:any;
+
+            try {
+                otherMatch = controls[matchTo]?.value.trim();
+                actualValue = formGroup?.value.trim();
+            } catch(err) {}
+
+            if(!otherMatch && !actualValue) return null;
 
           return !!parent && !!parent?.value &&
-            formGroup.value === controls[matchTo]?.value
+            actualValue === otherMatch
             ? null
-            : { error: 'Las contraseñas deben de ser iguales' };
+            : { error: ['Las contraseñas deben de ser iguales'] };
         };
     }
 
@@ -41,31 +50,35 @@ export class ValidateComponent {
     }
 
     static email(control:FormControl) {
-        return new ValidateComponent()._validate(control, 'email');
+        return new ValidateComponent()._validate(control, 'email', false);
     }
 
     static user(control:FormControl) {
-        return new ValidateComponent()._validate(control, 'user');
+        return new ValidateComponent()._validate(control, 'user', false);
     }
 
     static password(control:FormControl) {
-        return new ValidateComponent()._validate(control, 'password');
+        return new ValidateComponent()._validate(control, 'password', false);
     }
 
+    static passwordRequired(control:FormControl) {
+        return new ValidateComponent()._validate(control, 'password', true);
+    }
+    
     static token(control:FormControl) {
-        return new ValidateComponent()._validate(control, 'token');
+        return new ValidateComponent()._validate(control, 'token', false);
     }
 
-    private _validate(control:FormControl, componente:string) {
-        const valor:string = control.value?.trim();
+    private _validate(control:FormControl, component:string, required:boolean) {
+        const value:string = control.value?.trim();
 
-        if(valor) {
+        if(required || !!value) {
             const validator:any = ValidatorService;
-            const respuesta:GenericResponse = validator[componente](valor, null);
-
-            if(respuesta!==null) {
+            const response:GenericResponse = validator[component](value, null);
+            
+            if(response!==null) {
                 return {
-                    error: respuesta.errors
+                    error: response.errors
                 };
             }
         }

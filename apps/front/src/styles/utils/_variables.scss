@@ -57,16 +57,22 @@ $base: (
 );
 
 $colors: (
-  primary: #{mapGet($base, primary-2)},
-  primary-hover: #{mapGet($base, primary-1)},
-  primary-hover-light: #{mapGet($base, primary-7)},
-  secondary-hover-light: #{mapGet($base, secondary-7)},
-  
-  tertiary: #{mapGet($base, tertiary-5)},
+  primary:                #{mapGet($base, primary-2)},
+  primary-hover:          #{mapGet($base, primary-1)},
+  primary-hover-light:    #{mapGet($base, primary-7)},
+  secondary:              #{mapGet($base, secondary-2)},
+  secondary-hover:        #{mapGet($base, secondary-1)},
+  secondary-hover-light:  #{mapGet($base, secondary-7)},
+  tertiary:               #{mapGet($base, tertiary-5)},
+  tertiary-hover:         #{mapGet($base, tertiary-6)},
 
-  twitter: #1da1f2,
-  twitter-hover: #1A91DA,
+  twitter:              #1da1f2,
+  twitter-hover:        #1A91DA,
 
-  link: #586ae6,
-  error: #ef4444
+  link:                 #586ae6,
+  success:              #41b35a,
+  error:                #ef4444,
+  error-light:          #dab3b3,
+
+  background-modal:     #00000026,
 );

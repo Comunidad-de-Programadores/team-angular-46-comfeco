@@ -10,6 +10,6 @@ export class UserChangeInformationDto {
     readonly password: string;
     readonly password_new?: string;
     readonly description?: string;
-    readonly specialty?: string;
+    readonly specialities?: string[];
     readonly social_networks?: UserSocialNetworksDto;
 }
