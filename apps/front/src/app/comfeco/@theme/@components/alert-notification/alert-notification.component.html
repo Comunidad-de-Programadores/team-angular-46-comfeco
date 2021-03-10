@@ -1,0 +1,15 @@
+<div class="alert-notification-principal">
+  <div [ngClass]="show">
+    <div class="alert-notification-container">
+      <section [ngClass]="section">
+        <div class="alert-notification-image">
+          <i [ngClass]="icon"></i>
+        </div>
+        <span class="alert-notification-text">{{notification.message}}</span>
+        <div class="alert-notification-close" (click)="close()">
+          <i class="icon-comfeco-times"></i>
+        </div>
+      </section>
+    </div>
+  </div>
+</div>

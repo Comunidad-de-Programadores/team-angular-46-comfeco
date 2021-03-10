@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 
 import { MenuDto } from '@comfeco/interfaces';
 import { Subscription } from 'rxjs';
+import { LayoutComfecoService } from '../../layout/layout-comfeco.service';
 
 import { HeaderService } from './header.service';
 
@@ -31,6 +32,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     private _router: Router,
     private _domref: ElementRef,
     public service: HeaderService,
+    private notification: LayoutComfecoService,
   ) {}
 
   onClickOutside(event) {
@@ -54,7 +56,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
           if(resp.success) {
             this.options = resp.options;
           } else {
-            console.log(resp.message);
+            this.notification.alertNotification({message: resp.message});
           }
         }
       );
@@ -67,7 +69,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
             this.service.changeUser(user);
             this.service.changePhoto(photoUrl);
           } else {
-            console.log(resp.message);
+            this.notification.alertNotification({message: resp.message});
           }
         }
       );
