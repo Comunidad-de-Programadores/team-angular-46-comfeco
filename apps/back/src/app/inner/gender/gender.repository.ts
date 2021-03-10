@@ -25,6 +25,7 @@ export class GenderRepository {
             genders.push({
                 id: gender.id,
                 type: gender.type,
+                prefix: gender.prefix,
             });
         });
 

@@ -1,7 +1,7 @@
 import { HttpStatus, Injectable } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
 
-import { AccountType, CountryDto, EventDayDto, EventsDayDto, GenericResponse, InsigniaDto, InsigniasDto, UserChangeInformationDto, UserDto, UserSocialNetworksDto } from '@comfeco/interfaces';
+import { AccountType, CountryDto, EventDayDto, EventsDayDto, Gender, GenericResponse, InsigniaDto, InsigniasDto, KnowledgeAreaDto, UserChangeInformationDto, UserDto, UserSocialNetworksDto } from '@comfeco/interfaces';
 import { UtilResponse, ValidatorService } from '@comfeco/validator';
 
 import { UserRepository } from './user.repository';
@@ -40,17 +40,20 @@ export class UserService {
     async profileInformation(id:string, token:string): Promise<UserDto | GenericResponse> {
         const userEntity:UserEntity = await this._userRepository.idExists(id);
 
-        const { user, email, roles, description, specialty, gender  } = userEntity;
-        
+        const { user, email, roles, description, birdth_date, specialities, gender, country } = userEntity;
+        const genderEntity:Gender = await this._userRepository.informationGender(gender.prefix);
+
         const userInformation:UserDto = {
             code: HttpStatus.OK,
             social_networks: await this._socialNetworksUser(userEntity),
             photoUrl: await this._urlUser(userEntity, token),
+            gender: genderEntity,
+            country, 
             user,
             email,
             description,
-            specialty,
-            gender,
+            birdth_date,
+            specialities,
             roles,
         };
         
@@ -183,20 +186,19 @@ export class UserService {
     
     private async _parseParamsToDataBaseChangeInformation(changeInformation:UserChangeInformationDto, pictureUrl:string) {
         const newInformationUser:any = {};
-        /*console.log(changeInformation?.social_networks)
-        const b:any = changeInformation?.social_networks;
-        const social = JSON.parse(b);*/
-
+        
         const tempCountry:any = changeInformation?.country;
-        const countryInformation = JSON.parse(tempCountry);
+        const countryInformation = !!tempCountry ? JSON.parse(tempCountry) : null;
+        const tempSpecialities:any = changeInformation?.specialities;
+        const specialities = !!tempSpecialities ? JSON.parse(tempSpecialities) : '';
         const date:any = changeInformation?.birdth_date;
         
-        if(changeInformation?.password_new) {
+        if(!!changeInformation?.password_new) {
             const encryptedPassword = await bcrypt.hash(changeInformation.password_new, environment.salt_rounds);
             newInformationUser.password = encryptedPassword;
         }
 
-        if(pictureUrl) {
+        if(!!pictureUrl) {
             newInformationUser.modify = true;
             newInformationUser.photoUrl = pictureUrl;
         }
@@ -204,19 +206,22 @@ export class UserService {
         newInformationUser.user = changeInformation?.user;
         newInformationUser.email = changeInformation?.email;
         newInformationUser.description = changeInformation?.description;
-        if(changeInformation?.birdth_date) newInformationUser.birdth_date = new Date(parseInt(date) * 100);
+        if(!!date) newInformationUser.birdth_date = new Date(parseInt(date));
         
-        /*const country:CountryDto = {
-            flag: changeInformation?.country?.flag,
-            name: changeInformation?.country?.name
-        };*/
-        const country:CountryDto = {
-            flag: countryInformation?.flag,
-            name: countryInformation?.name
-        };
-        newInformationUser.country = country;
-        if(changeInformation?.specialty) {
-            newInformationUser.specialty = await this._userRepository.referenceKnowledgeArea(changeInformation.specialty);
+        if(!!countryInformation) {
+            const country:CountryDto = {
+                flag: countryInformation?.flag,
+                name: countryInformation?.name
+            };
+
+            newInformationUser.country = country;
+        }
+
+        if(!!specialities) {
+            newInformationUser.specialities = [];
+            specialities.forEach(async(speciality:string)=> {
+                newInformationUser.specialities.push(await this._userRepository.referenceKnowledgeArea(speciality));
+            })
         }
 
         if(changeInformation?.gender) {
@@ -240,18 +245,10 @@ export class UserService {
             const tempSocial:any = changeInformation?.social_networks;
             const social = JSON.parse(tempSocial);
             
-            if(social?.facebook) {
-                socialNetwoks.push({ type: 'facebook', url: social.facebook })
-            }
-            if(social?.github) {
-                socialNetwoks.push({ type: 'github', url: social.github })
-            }
-            if(social?.twitter) {
-                socialNetwoks.push({ type: 'twitter', url: social.twitter })
-            }
-            if(social?.linkedin) {
-                socialNetwoks.push({ type: 'linkedin', url: social.linkedin })
-            }
+            socialNetwoks.push({ type: 'facebook', url: social.facebook })
+            socialNetwoks.push({ type: 'github', url: social.github })
+            socialNetwoks.push({ type: 'twitter', url: social.twitter })
+            socialNetwoks.push({ type: 'linkedin', url: social.linkedin })
         }
 
         return socialNetwoks;

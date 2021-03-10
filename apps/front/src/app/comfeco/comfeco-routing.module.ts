@@ -9,6 +9,7 @@ import { CardWorkshopComponent } from './pages/card-workshop/card-workshop.compo
 import { ComboComponent } from './pages/combo/combo.component';
 import { CommunityComponent } from './pages/community/community.component';
 import { CounterdownComponent } from './pages/counterdown/counterdown.component';
+import { EditProfileComponent } from './pages/edit-profile/edit-profile.component';
 import { ExhibitorComponent } from './pages/exhibitor/exhibitor.component';
 import { PageCommunitiesComponent } from './pages/page-communities/page-communities.component';
 import { PageCreatorsComponent } from './pages/page-creators/page-creators.component';
@@ -23,7 +24,7 @@ import { WorkshopComponent } from './pages/workshop/workshop.component';
 export const Components = [
   ComfecoComponent,
   ComboComponent,
-  
+
   CardCommunityComponent,
   CardWorkshopComponent,
   CardCreatorComponent,
@@ -35,6 +36,7 @@ export const Components = [
   SponsorComponent,
   WorkshopComponent,
   WorkshopListComponent,
+  EditProfileComponent,
 
   PageDashboardComponent,
   PageCommunitiesComponent,

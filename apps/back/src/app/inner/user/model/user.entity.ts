@@ -1,4 +1,4 @@
-import { Status, Rol, AccountType, KnowledgeAreaDto, Gender } from "@comfeco/interfaces";
+import { Status, Rol, AccountType, KnowledgeAreaDto, Gender, CountryDto } from "@comfeco/interfaces";
 
 import { FacebookEntity } from "./facebook.entity";
 import { GoogleEntity } from "./google.entity";
@@ -9,8 +9,10 @@ export interface UserEntity {
     name?:string,
     lastname?:string,
     description?:string,
-    specialty?:KnowledgeAreaDto,
+    birdth_date?:Date,
+    specialities?:KnowledgeAreaDto[],
     social_networks?:SocialNetworkEntity[],
+    country?:CountryDto,
     gender?:Gender,
     email?: string,
     password?: string,

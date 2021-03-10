@@ -25,6 +25,11 @@ export class UserRepository {
         return refGender;
     }
 
+    async informationGender(prefix:string): Promise<any> {
+        const baseGenders = await this.db.collection('gender').where('prefix', '==', prefix).get();
+        return await this.db.returnDocument(baseGenders);
+    }
+
     async updateUser(id:string, data:any): Promise<any> {
         const baseUsers = await this.db.collection(this._coleccion).doc(id).update(data);
         return baseUsers;
