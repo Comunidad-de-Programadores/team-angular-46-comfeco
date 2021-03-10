@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { timer } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { AreasDto, CommunitiesDto, DayEvent, EventDto, GenericResponse, WorkshopsAreaDto } from '@comfeco/interfaces';
+import { AreasDto, CommunitiesDto, DayEvent, EventDto, WorkshopsAreaDto } from '@comfeco/interfaces';
 import { ValidatorService } from '@comfeco/validator';
 
 @Injectable({
@@ -16,11 +16,11 @@ export class DashboardService {
   ) {}
 
   communities() {
-    return this.http.get<CommunitiesDto | GenericResponse>('/communities').pipe(ValidatorService.changeBasicResponse());
+    return this.http.get<CommunitiesDto>('/communities').pipe(ValidatorService.changeBasicResponse());
   }
 
   knowledgeArea() {
-    return this.http.get<AreasDto | GenericResponse>('/knowledge_area').pipe(ValidatorService.changeBasicResponse());
+    return this.http.get<AreasDto>('/knowledge_area').pipe(ValidatorService.changeBasicResponse());
   }
 
   workshops(idArea:string) {
@@ -29,11 +29,11 @@ export class DashboardService {
     }
 
     const url:string = `/workshops_area/${idArea}`;
-    return this.http.get<WorkshopsAreaDto | GenericResponse>(url).pipe(ValidatorService.changeBasicResponse());
+    return this.http.get<WorkshopsAreaDto>(url).pipe(ValidatorService.changeBasicResponse());
   }
 
   eventInfo() {
-    return this.http.get<EventDto | GenericResponse>('/events').pipe(ValidatorService.changeBasicResponse());
+    return this.http.get<EventDto>('/events').pipe(ValidatorService.changeBasicResponse());
   }
 
   countdownTimer(dateEvent:Date) {

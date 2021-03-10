@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { CommunitiesDto, GenericResponse } from '@comfeco/interfaces';
+import { CommunitiesDto } from '@comfeco/interfaces';
 import { ValidatorService } from '@comfeco/validator';
 
 @Injectable({
@@ -13,7 +13,7 @@ export class PageCommunitiesService {
   ) {}
 
   communities() {
-    return this.http.get<CommunitiesDto | GenericResponse>('/communities/all').pipe(ValidatorService.changeBasicResponse());
+    return this.http.get<CommunitiesDto>('/communities/all').pipe(ValidatorService.changeBasicResponse());
   }
   
 }

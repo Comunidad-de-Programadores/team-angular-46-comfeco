@@ -14,12 +14,12 @@
   }
 }
 
-.icon-comfeco-twitter,
-.icon-comfeco-facebook,
-.icon-comfeco-discord,
-.icon-comfeco-youtube,
-.icon-comfeco-github,
-.icon-comfeco-bell {
+.icon-social.icon-comfeco-twitter,
+.icon-social.icon-comfeco-facebook,
+.icon-social.icon-comfeco-discord,
+.icon-social.icon-comfeco-youtube,
+.icon-social.icon-comfeco-github,
+.icon-header.icon-comfeco-bell {
   @extend .buttonSocialNetwork;
 }
 
@@ -37,5 +37,35 @@
 
   & span {
     @apply ml-2;
+  }
+}
+
+.btn-primary,
+.btn-secondary {
+  @apply inline-flex items-center justify-center py-2 px-4 rounded focus:outline-none;
+
+  & .icon {
+    @apply block h-6 w-6 pr-2;
+  }
+
+  &:hover {
+    background-color: var(--color-primary-hover);
+    color: var(--color-white);
+  }
+}
+
+.btn-primary {
+  background-color: var(--color-primary);
+  color: var(--color-white);
+}
+
+.btn-secondary {
+  @apply bg-transparent py-2 px-4 border rounded;
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+
+  &.text-white {
+    border-color: var(--color-white);
+    color: var(--color-white);
   }
 }

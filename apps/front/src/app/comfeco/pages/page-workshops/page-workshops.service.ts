@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { GenericResponse, WorkshopsAreaDto } from '@comfeco/interfaces';
+import { WorkshopsAreaDto } from '@comfeco/interfaces';
 import { ValidatorService } from '@comfeco/validator';
 
 @Injectable({
@@ -13,7 +13,7 @@ export class PageWorkshopsService {
   ) {}
 
   workshops() {
-    return this.http.get<WorkshopsAreaDto | GenericResponse>('/workshops/all').pipe(ValidatorService.changeBasicResponse());
+    return this.http.get<WorkshopsAreaDto>('/workshops/all').pipe(ValidatorService.changeBasicResponse());
   }
   
 }
