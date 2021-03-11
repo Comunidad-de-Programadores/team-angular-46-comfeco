@@ -1,0 +1,93 @@
+:host {
+  @apply block shadow-md bg-white m-4 rounded-md;
+}
+
+.user {
+  @apply relative rounded-t-md h-32 flex items-center justify-center;
+  background: var(--color-primary);
+  background: linear-gradient(90deg, var(--color-secondary) 0%, var(--color-primary) 35%, var(--color-tertiary) 100%);
+  color: var(--color-white);
+}
+
+.user-username {
+  @apply absolute top-8 text-xl;
+}
+
+.picture {
+  @apply absolute -bottom-16;
+
+  & &-container {
+    @apply relative p-1 rounded-full h-28 bg-white;
+  }
+
+  & &__user-photo {
+    @apply rounded-full h-24 w-24 flex items-center justify-center;
+  }
+
+  & &__user-flag {
+    @apply absolute flex items-center justify-center right-3 bottom-3 w-7 h-6 bg-white;
+
+    & img {
+      @apply w-6;
+    }
+  }
+}
+
+.information {
+  @apply p-4;
+}
+
+.general {
+  @apply pt-16 text-xs;
+
+  & .age {
+    @apply inline border-l-4 border-purple-500 pl-2;
+  }
+
+  & .country {
+    @apply inline ml-1;
+  }
+}
+
+.specialities {
+  @apply my-4 text-gray-500;
+}
+
+.social-networks {
+  @apply flex items-center justify-between px-4 pt-4 pb-2 border-t-2 mt-8;
+
+  & .social {
+    @apply rounded-full h-8 w-8 flex items-center justify-center cursor-pointer;
+
+    &:hover,
+    &:hover > i {
+      background-color: var(--color-primary);
+      color: var(--color-white);
+    }
+
+    & .icon-comfeco-facebook {
+      color: var(--color-facebook);
+    }
+
+    & .icon-comfeco-github {
+      color: var(--color-github);
+    }
+
+    & .icon-comfeco-twitter {
+      color: var(--color-twitter);
+    }
+
+    & .icon-comfeco-linkedin {
+      color: var(--color-linkedin);
+    }
+  }
+}
+
+.edit-profile {
+  @apply w-full flex items-center justify-center h-10;
+
+  & .btn-secondary {
+    @apply w-full;
+    margin: 10px 10px 29px 10px;
+  }
+}

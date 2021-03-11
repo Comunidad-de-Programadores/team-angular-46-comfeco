@@ -1,0 +1,40 @@
+<section class="user">
+  <div class="user-username">{{user?.user}}</div>
+  <div class="picture">
+    <div class="picture-container">
+      <img class="picture__user-photo" [src]="user?.photoUrl || '../../../../../assets/img/avatar_user.svg'">
+      <div
+        *ngIf="!!user?.country?.flag"
+        class="picture__user-flag">
+        <img [src]="user.country.flag">
+      </div>
+    </div>
+  </div>
+</section>
+<section class="information">
+  <div
+    *ngIf="!!user?.birdth_date || !!country"
+    class="general"
+  >
+    <div class="age">{{user?.birdth_date}}</div>
+    <div class="country">{{country}}</div>
+  </div>
+  <div
+    *ngIf="specialities"
+    class="specialities"
+  >{{specialities}}</div>
+  <div>{{user?.description}}</div>
+  <div class="social-networks">
+    
+    <div
+      *ngFor="let socialNetwork of socialNetworks"
+      class="social"
+      (click)="openSocial(socialNetwork.link)"
+    >
+      <i [ngClass]="socialNetwork.clases"></i>
+    </div>
+  </div>
+</section>
+<section class="edit-profile">
+  <button class="btn-secondary">Editar perfil</button>
+</section>

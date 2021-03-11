@@ -18,6 +18,7 @@ import { PageProfileComponent } from './pages/page-profile/page-profile.componen
 import { PageWorkshopsComponent } from './pages/page-workshops/page-workshops.component';
 import { SliderComponent } from './pages/slider/slider.component';
 import { SponsorComponent } from './pages/sponsor/sponsor.component';
+import { UserInformationComponent } from './pages/user-information/user-information.component';
 import { WorkshopListComponent } from './pages/workshop-list/workshop-list.component';
 import { WorkshopComponent } from './pages/workshop/workshop.component';
 
@@ -36,6 +37,8 @@ export const Components = [
   SponsorComponent,
   WorkshopComponent,
   WorkshopListComponent,
+  UserInformationComponent,
+  
   EditProfileComponent,
 
   PageDashboardComponent,
