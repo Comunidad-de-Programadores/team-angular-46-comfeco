@@ -16,6 +16,12 @@
 
   --color-twitter:                #{mapGet($colors, twitter)};
   --color-twitter-hover:          #{mapGet($colors, twitter-hover)};
+  --color-facebook:               #{mapGet($colors, facebook)};
+  --color-facebook-hover:         #{mapGet($colors, facebook-hover)};
+  --color-github:                 #{mapGet($colors, github)};
+  --color-github-hover:           #{mapGet($colors, github-hover)};
+  --color-linkedin:               #{mapGet($colors, linkedin)};
+  --color-linkedin-hover:         #{mapGet($colors, linkedin-hover)};
   
   --color-link:                   #{mapGet($colors, link)};
   --color-success:                #{mapGet($colors, success)};
