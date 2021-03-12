@@ -12,7 +12,7 @@ export class InsigniaRepository {
     constructor(private readonly db: FirestoreRepository) {}
 
     async insignias(): Promise<InsigniaDto[] | null> {
-        const insigniasBase = await this.db.collection(this._coleccion).get();
+        const insigniasBase = await this.db.collection(this._coleccion).orderBy('order', 'asc').get();
         const insigniasDocuments = await this.db.returnDocuments(insigniasBase);
 
         if(insigniasDocuments.length==0) {
@@ -24,6 +24,9 @@ export class InsigniaRepository {
         insigniasDocuments.forEach((insignia:any) => {
             insignias.push({
                 name: insignia.name,
+                image: insignia.image,
+                description: insignia.description,
+                instructions: insignia.instructions,
             });
         });
 

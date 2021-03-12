@@ -8,7 +8,13 @@
 
 @media(min-width: 768px) {
   .screen {
-    height: calc(100vh - theme('spacing.44'));
+    height: calc(100vh - theme('spacing.28'));
+  }
+}
+
+@media (min-width: 1024px) {
+  .screen {
+    height: calc(100vh - theme('spacing.36'));
   }
 }
 
@@ -20,7 +26,7 @@
   @apply md:col-span-3 lg:col-span-7;
 
   & .title {
-    @apply text-2xl text-center mt-2 lg:mt-12;
+    @apply text-2xl text-center mt-2 lg:mt-4;
   }
 
   & .subtitle {

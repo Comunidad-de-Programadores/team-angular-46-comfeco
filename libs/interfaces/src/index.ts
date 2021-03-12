@@ -43,6 +43,8 @@ export * from './lib/genders_response.dto';
 export * from './lib/gender_response.dto';
 export * from './lib/countrys_response.dto';
 export * from './lib/country_response.dto';
+export * from './lib/recent_activities_response.dto';
+export * from './lib/recent_activity_response.dto';
 
 export * from './enum/account_type.enum';
 export * from './enum/roles.enum';

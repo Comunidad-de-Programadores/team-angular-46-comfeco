@@ -1,0 +1,13 @@
+<div class="events">
+  <section class="title w-full p-4 title flex items-center justify-between">
+    <div class="description">Eventos de tu interes</div>
+    <div class="link pt-1">Ver más</div>
+  </section>
+  <section class="events-info scrollbar-auto">
+    <comfeco-user-event
+      *ngFor="let event of events"
+      [event]="event"
+      class="event"
+    ></comfeco-user-event>
+  </section>
+</div>

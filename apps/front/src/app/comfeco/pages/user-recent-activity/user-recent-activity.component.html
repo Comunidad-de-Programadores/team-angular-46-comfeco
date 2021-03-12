@@ -1,0 +1,15 @@
+<div class="activities">
+  <div class="title">Actividad Reciente</div>
+  <div class="recent">
+    <div
+      *ngFor="let activity of activities"
+      class="activity"
+    >
+      <div>
+        <div class="description">{{activity.description}}</div>
+        <div class="time">{{activity.time}}</div>
+      </div>
+      <i [ngClass]="activity.type"></i>
+    </div>
+  </div>
+</div>

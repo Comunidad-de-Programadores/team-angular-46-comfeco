@@ -13,21 +13,21 @@
 </section>
 <section class="information">
   <div
-    *ngIf="!!user?.birdth_date || !!country"
+    *ngIf="!!user?.birdth_date || !!user?.country?.name"
     class="general"
   >
-    <div class="age">{{user?.birdth_date}}</div>
-    <div class="country">{{country}}</div>
+    <div class="age">{{user?.birdth_date | ageUser}}</div>
+    <div class="country">{{(!!user?.birdth_date ? '- ' : '') + user.country.name}}</div>
   </div>
   <div
-    *ngIf="specialities"
+    *ngIf="!!user?.specialities"
     class="specialities"
-  >{{specialities}}</div>
+  >{{user.specialities.join(' / ')}}</div>
   <div>{{user?.description}}</div>
-  <div class="social-networks">
-    
+  <div class="social-networks"
+    [ngClass]="(user?.social_networks | socialNetworks)?.length > 2 ? 'justify-between' : 'justify-center'">
     <div
-      *ngFor="let socialNetwork of socialNetworks"
+      *ngFor="let socialNetwork of user?.social_networks | socialNetworks"
       class="social"
       (click)="openSocial(socialNetwork.link)"
     >
@@ -36,5 +36,5 @@
   </div>
 </section>
 <section class="edit-profile">
-  <button class="btn-secondary">Editar perfil</button>
+  <button class="btn-secondary" skipLocationChange routerLink="/app/my-profile/edit">Editar perfil</button>
 </section>

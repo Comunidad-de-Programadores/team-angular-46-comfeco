@@ -5,8 +5,8 @@
 
 
 @layer utilities {
-  .scrollbar {
-    @apply overflow-x-hidden text-sm mt-2 overflow-auto h-48;
+  .scrollbar-auto {
+    @apply overflow-x-hidden text-sm mt-2 overflow-auto;
     scrollbar-color: var(--color-primary) var(--color-white);
     scrollbar-width: thin;
 
@@ -20,6 +20,11 @@
       background-color: var(--color-primary);
       border-radius: 5px;
     }
+  }
+
+  .scrollbar {
+    @apply h-48;
+    @extend .scrollbar-auto;
   }
 
   .hidde_options {
