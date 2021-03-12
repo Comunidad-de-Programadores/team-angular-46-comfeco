@@ -13,7 +13,7 @@ export class ValidatorService {
       catchError(({error}) => of({ code: error.code, errors: error.errors, success: false })),
       map((resp:GenericResponse) => ({
         success: resp?.errors ? false : true,
-        message: resp?.message ? resp.message : resp?.errors ? resp.errors.join(' ') : '',
+        message: resp?.message ? resp.message : resp?.errors ? resp.errors.join(', ') : '',
         ...resp
       }))
     )

@@ -1,0 +1,10 @@
+:host {
+  @apply block md:grid md:grid-cols-3 lg:grid-cols-4 py-6;
+  height: 100vh;
+}
+
+@media (min-width: 768px) {
+  :host {
+    height: calc(100vh - 19rem);
+  }
+}

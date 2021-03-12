@@ -1,6 +1,7 @@
 export class EventDayDto {
     readonly image: string;
-    readonly topic: string;
-    readonly url: string;
+    readonly name: string;
+    readonly description?: string;
     readonly register?: Date;
+    readonly aborted?: boolean;
 }

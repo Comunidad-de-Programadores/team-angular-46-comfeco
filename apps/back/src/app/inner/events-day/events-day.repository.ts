@@ -12,7 +12,7 @@ export class EventsDayRepository {
     constructor(private readonly db: FirestoreRepository) {}
     
     async events(): Promise<EventDayDto[] | null> {
-        const eventsBase = await this.db.collection(this._coleccion).get();
+        const eventsBase = await this.db.collection(this._coleccion).orderBy('order', 'asc').get();
         const eventsDocuments = await this.db.returnDocuments(eventsBase);
 
         if(eventsDocuments.length==0) {
@@ -24,8 +24,8 @@ export class EventsDayRepository {
         eventsDocuments.forEach((event:any) => {
             events.push({
                 image: event.image,
-                topic: event.topic,
-                url: event.url,
+                name: event.name,
+                description: event.description,
             });
         });
 

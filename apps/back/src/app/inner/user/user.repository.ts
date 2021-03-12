@@ -77,18 +77,18 @@ export class UserRepository {
     }
 
     async insignias(id:string): Promise<any> {
-        const baseUsers = await this.db.collection(this._coleccion).doc(id).collection('insignia').get();
+        const baseUsers = await this.db.collection(this._coleccion).doc(id).collection('insignias').get();
         return await this.db.returnDocuments(baseUsers);
     }
 
     async events(id:string): Promise<any> {
-        const baseUsers = await this.db.collection(this._coleccion).doc(id).collection('events').get();
+        const baseUsers = await this.db.collection(this._coleccion).doc(id).collection('events_day').where('aborted','==', false).orderBy('register','desc').get();
         return await this.db.returnDocuments(baseUsers);
     }
 
     async recentActivity(id:string): Promise<any> {
         const [ start, end ] = await this.db.todaysRank();
-        const baseUsers = await this.db.collection(this._coleccion).doc(id).collection('events')
+        const baseUsers = await this.db.collection(this._coleccion).doc(id).collection('events_day')
             .where('register', '>=', start)
             .where('register', '<=', end)
             .get();

@@ -1,14 +1,14 @@
 @charset 'utf-8';
 
 @font-face {
-  font-family: 'comfeco';
-  src: url('../fonts/comfeco.eot');
-  src: url('../fonts/comfeco.eot?#iefix') format('embedded-opentype'),
-    url('../fonts/comfeco.woff') format('woff'),
-    url('../fonts/comfeco.ttf') format('truetype'),
-    url('../fonts/comfeco.svg#comfeco') format('svg');
-  font-weight: normal;
-  font-style: normal;
+    font-family: 'comfeco';
+    src: url('../fonts/comfeco.eot');
+    src: url('../fonts/comfeco.eot?#iefix') format('embedded-opentype'),
+      url('../fonts/comfeco.woff') format('woff'),
+      url('../fonts/comfeco.ttf') format('truetype'),
+      url('../fonts/comfeco.svg#comfeco') format('svg');
+    font-weight: normal;
+    font-style: normal;
 }
 
 [class*='icon-comfeco-']:before{
@@ -24,38 +24,41 @@
 .icon-comfeco-arrow_up:before{content:'\0042';}
 .icon-comfeco-arrows_direction:before{content:'\0043';}
 .icon-comfeco-bell:before{content:'\0044';}
-.icon-comfeco-camera:before{content:'\0045';}
-.icon-comfeco-check:before{content:'\0046';}
-.icon-comfeco-community:before{content:'\0047';}
-.icon-comfeco-discord:before{content:'\0048';}
-.icon-comfeco-event:before{content:'\0049';}
-.icon-comfeco-exclamation-circle:before{content:'\004a';}
-.icon-comfeco-exclamation-triangle:before{content:'\004b';}
-.icon-comfeco-exhibitor:before{content:'\004c';}
-.icon-comfeco-facebook:before{content:'\004d';}
-.icon-comfeco-finished:before{content:'\004e';}
-.icon-comfeco-github:before{content:'\004f';}
-.icon-comfeco-group:before{content:'\0050';}
-.icon-comfeco-home:before{content:'\0051';}
-.icon-comfeco-in-progress:before{content:'\0052';}
-.icon-comfeco-insignia:before{content:'\0053';}
-.icon-comfeco-lock:before{content:'\0054';}
-.icon-comfeco-logo:before{content:'\0055';}
-.icon-comfeco-menu:before{content:'\0056';}
-.icon-comfeco-pending:before{content:'\0057';}
-.icon-comfeco-register:before{content:'\0058';}
-.icon-comfeco-sign-in:before{content:'\0059';}
-.icon-comfeco-sign-out:before{content:'\005a';}
-.icon-comfeco-times:before{content:'\0061';}
-.icon-comfeco-twitter:before{content:'\0062';}
-.icon-comfeco-united-users:before{content:'\0063';}
-.icon-comfeco-user:before{content:'\0064';}
-.icon-comfeco-user_edit:before{content:'\0065';}
-.icon-comfeco-video:before{content:'\0066';}
-.icon-comfeco-workshop:before{content:'\0067';}
-.icon-comfeco-youtube:before{content:'\0068';}
-.icon-comfeco-calendar:before{content:'\0069';}
-.icon-comfeco-linkedin:before{content:'\006a';}
-.icon-comfeco-email:before{content:'\006b';}
-.icon-comfeco-save:before{content:'\006c';}
-.icon-comfeco-return:before{content:'\006d';}
+.icon-comfeco-calendar:before{content:'\0045';}
+.icon-comfeco-camera:before{content:'\0046';}
+.icon-comfeco-check:before{content:'\0047';}
+.icon-comfeco-community:before{content:'\0048';}
+.icon-comfeco-discord:before{content:'\0049';}
+.icon-comfeco-email:before{content:'\004a';}
+.icon-comfeco-event:before{content:'\004b';}
+.icon-comfeco-event_ok:before{content:'\004c';}
+.icon-comfeco-exclamation-circle:before{content:'\004d';}
+.icon-comfeco-exclamation-triangle:before{content:'\004e';}
+.icon-comfeco-exhibitor:before{content:'\004f';}
+.icon-comfeco-facebook:before{content:'\0050';}
+.icon-comfeco-finished:before{content:'\0051';}
+.icon-comfeco-github:before{content:'\0052';}
+.icon-comfeco-group:before{content:'\0053';}
+.icon-comfeco-group_ok:before{content:'\0054';}
+.icon-comfeco-home:before{content:'\0055';}
+.icon-comfeco-in-progress:before{content:'\0056';}
+.icon-comfeco-insignia:before{content:'\0057';}
+.icon-comfeco-insignia_ok:before{content:'\0058';}
+.icon-comfeco-linkedin:before{content:'\0059';}
+.icon-comfeco-lock:before{content:'\005a';}
+.icon-comfeco-logo:before{content:'\0061';}
+.icon-comfeco-menu:before{content:'\0062';}
+.icon-comfeco-pending:before{content:'\0063';}
+.icon-comfeco-register:before{content:'\0064';}
+.icon-comfeco-return:before{content:'\0065';}
+.icon-comfeco-save:before{content:'\0066';}
+.icon-comfeco-sign-in:before{content:'\0067';}
+.icon-comfeco-sign-out:before{content:'\0068';}
+.icon-comfeco-times:before{content:'\0069';}
+.icon-comfeco-twitter:before{content:'\006a';}
+.icon-comfeco-united-users:before{content:'\006b';}
+.icon-comfeco-user:before{content:'\006c';}
+.icon-comfeco-user_edit:before{content:'\006d';}
+.icon-comfeco-video:before{content:'\006e';}
+.icon-comfeco-workshop:before{content:'\006f';}
+.icon-comfeco-youtube:before{content:'\0070';}

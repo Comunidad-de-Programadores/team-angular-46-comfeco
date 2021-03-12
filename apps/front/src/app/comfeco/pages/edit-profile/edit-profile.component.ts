@@ -165,12 +165,14 @@ export class EditProfileComponent implements OnInit, OnDestroy {
     this.editForm.controls['biography'].setValue(resp.description);
     this.editForm.controls['gender'].setValue(resp.gender.id);
 
-    const countriesRef:any = document.getElementsByName("country");
-    countriesRef.forEach((countryRef:any) => {
-      if(countryRef.getAttribute("country-flag")===resp.country.flag) {
-        countryRef.checked = true;
-      }
-    });
+    if(!!resp?.country?.flag) {
+      const countriesRef:any = document.getElementsByName("country");
+      countriesRef.forEach((countryRef:any) => {
+        if(countryRef.getAttribute("country-flag")===resp.country.flag) {
+          countryRef.checked = true;
+        }
+      });
+    }
 
     if(!!resp.specialities) {
       const specialitiesRef:any = document.getElementsByName("speciality");
@@ -225,7 +227,16 @@ export class EditProfileComponent implements OnInit, OnDestroy {
             type: TypeAlertNotification.SUCCESS
           });
         } else {
-          this.notification.alertNotification({message: resp.message});
+          const message:string = resp.message;
+          if(message.indexOf('Usuario')>-1) {
+            this.errorUser = 'Cambiar por un usuario diferente';
+          }
+          
+          if(message.indexOf('Correo')>-1) {
+            this.errorEmail = 'Correo asociado a otra cuenta';
+          }
+          
+          this.notification.alertNotification({message});
         }
         
         this.spinner.hidde();

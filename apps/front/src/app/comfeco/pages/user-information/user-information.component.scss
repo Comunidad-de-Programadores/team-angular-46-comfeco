@@ -54,7 +54,7 @@
 }
 
 .social-networks {
-  @apply flex items-center justify-between px-4 pt-4 pb-2 border-t-2 mt-8;
+  @apply flex items-center px-4 pt-4 pb-2 border-t-2 mt-8;
 
   & .social {
     @apply rounded-full h-8 w-8 flex items-center justify-center cursor-pointer;

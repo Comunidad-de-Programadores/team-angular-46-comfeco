@@ -12,6 +12,8 @@ import { ParametersExcepcion } from '../../../util';
 import { ConfigService } from '../../../config/config.service';
 import { Configuration } from '../../../config/config.keys';
 import { environment } from '../../../environments/environment';
+import { InsigniaUserEntity } from './model/insignia_uesr.entity';
+import { EventDayUserDto } from './model/events_user.entity';
 
 @Injectable()
 export class UserService {
@@ -61,17 +63,19 @@ export class UserService {
     }
     
     async insignias(id:string): Promise<InsigniasDto | GenericResponse> {
-        const insigniasEntity:InsigniaDto[] = await this._userRepository.insignias(id);
+        const insigniasEntity:InsigniaUserEntity[] = await this._userRepository.insignias(id);
 
         if(insigniasEntity==null) {
             return UtilResponse.genericResponse('',['El usuario no cuenta con insignias obtenidas'], HttpStatus.NOT_FOUND);
         }
         
         let insigniasTemp:InsigniaDto[] = [];
+        
+        insigniasEntity.forEach(insigniaUser => {
+            const { insignia } = insigniaUser;
+            const { name, image } = insignia;
 
-        insigniasEntity.forEach(insignia => {
-            const { name } = insignia;
-            insigniasTemp.push({ name });
+            insigniasTemp.push({ name, image });
         });
         
         const insignias:InsigniasDto = {
@@ -83,7 +87,7 @@ export class UserService {
     }
 
     async events(id:string): Promise<EventsDayDto | GenericResponse> {
-        const eventsEntity:EventDayDto[] = await this._userRepository.events(id);
+        const eventsEntity:EventDayUserDto[] = await this._userRepository.events(id);
         
         if(eventsEntity==null) {
             return UtilResponse.genericResponse('',['El usuario no tiene calendarizado ningún evento'], HttpStatus.NOT_FOUND);
@@ -91,13 +95,13 @@ export class UserService {
         
         let eventsTemp:EventDayDto[] = [];
 
-        eventsEntity.forEach((event:any) => {
-            const { image, topic, url } = event.event;
+        eventsEntity.forEach((eventUser:EventDayUserDto) => {
+            const { event } = eventUser;
+            const { image, name } = event;
 
             eventsTemp.push({
                 image,
-                topic,
-                url
+                name
             });
         });
 
@@ -110,7 +114,7 @@ export class UserService {
     }
 
     async recentActivity(id:string): Promise<EventsDayDto | GenericResponse> {
-        const eventsEntity:EventDayDto[] = await this._userRepository.recentActivity(id);
+        const eventsEntity:EventDayUserDto[] = await this._userRepository.recentActivity(id);
         
         if(eventsEntity==null) {
             return UtilResponse.genericResponse('',['No has agregado ningún evento recientemente'], HttpStatus.NOT_FOUND);
@@ -118,13 +122,14 @@ export class UserService {
         
         let eventsTemp:EventDayDto[] = [];
 
-        eventsEntity.forEach((event:any) => {
-            const { image, topic, url } = event.event;
+        eventsEntity.forEach((eventUser:EventDayUserDto) => {
+            const { event } = eventUser;
+            const { image, name, description } = event;
 
             eventsTemp.push({
                 image,
-                topic,
-                url
+                name,
+                description
             });
         });
 

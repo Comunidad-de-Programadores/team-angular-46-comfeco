@@ -1,0 +1,24 @@
+:host {
+  @apply block m-4;
+}
+
+.medals {
+  @apply w-full bg-white h-40 rounded-md shadow-md flex flex-col items-start;
+}
+
+.title {
+  @apply ml-4 mt-4 font-semibold;
+}
+
+.insignias {
+  @apply flex items-center justify-between w-full;
+}
+
+.insignia {
+  @apply rounded-full w-20 h-20 m-4;
+
+  &.incomplete {
+    filter: saturate(0);
+  }
+}
+

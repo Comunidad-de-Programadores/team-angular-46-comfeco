@@ -1,0 +1,21 @@
+:host {
+  @apply block m-4;
+}
+
+.events {
+  @apply shadow-md w-full bg-white h-auto rounded-md shadow-md flex flex-col items-start;
+  min-height: 126px;
+}
+
+.events-info {
+  @apply w-full mb-2;
+  max-height: calc(100vh - 27rem);
+}
+
+.event {
+  @apply mx-4 my-8 h-auto;
+
+  &:not(:last-child) {
+    border-bottom: 1px solid var(--color-primary);
+  }
+}
