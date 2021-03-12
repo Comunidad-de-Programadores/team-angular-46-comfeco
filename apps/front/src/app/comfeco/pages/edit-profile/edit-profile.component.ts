@@ -63,7 +63,7 @@ export class EditProfileComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.editForm.reset({
       country: '',
-      password: 'asd123ASD$#'
+      password: ''
     });
 
     this.subscriptionMatchValues$ = ValidateComponent.subscriptionMatchValues(this.editForm, 'newPassword', 'confirmPassword');
