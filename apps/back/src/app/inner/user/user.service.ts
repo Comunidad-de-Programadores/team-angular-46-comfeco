@@ -43,7 +43,11 @@ export class UserService {
         const userEntity:UserEntity = await this._userRepository.idExists(id);
 
         const { user, email, roles, description, birdth_date, specialities, gender, country } = userEntity;
-        const genderEntity:Gender = await this._userRepository.informationGender(gender.prefix);
+        let genderEntity:Gender;
+        
+        if(gender) {
+            genderEntity = await this._userRepository.informationGender(gender.prefix);
+        }
 
         const userInformation:UserDto = {
             code: HttpStatus.OK,
