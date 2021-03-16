@@ -1,12 +1,17 @@
 import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { Subscription } from 'rxjs';
+
 import { CountryDto, GenderDto, KnowledgeAreaDto, UserChangeInformationDto, UserDto, UserSocialNetworksDto } from '@comfeco/interfaces';
 import { ValidateComponent } from '@comfeco/validator';
-import { Subscription } from 'rxjs';
+
 import { TypeAlertNotification } from '../../@theme/@components/alert-notification/alert-notification.enum';
 import { HeaderService } from '../../@theme/@components/header/header.service';
+import { InsigniaType } from '../../@theme/@components/insignia/insignia.enum';
+import { InsigniaService } from '../../@theme/@components/insignia/insignia.service';
 import { SpinnerService } from '../../@theme/@components/spinner/spinner.service';
 import { LayoutComfecoService } from '../../@theme/layout/layout-comfeco.service';
+import { PageProfileService } from '../page-profile/page-profile.service';
 import { EditProfileService } from './edit-profile.service';
 
 @Component({
@@ -34,9 +39,12 @@ export class EditProfileComponent implements OnInit, OnDestroy {
     biography: [],
   });
   
+  user:UserDto;
+
   subscriptionMatchValues$:Subscription;
   subscriptionChanges$:Subscription;
-  
+  userInformationSubscription$:Subscription;
+
   errorUser:string;
   errorEmail:string;
   errorPassword:string;
@@ -49,18 +57,35 @@ export class EditProfileComponent implements OnInit, OnDestroy {
   numberCharactersBiography:number;
 
   genders:GenderDto[];
-  countrys:CountryDto[];
+  countries:CountryDto[];
   specialities:KnowledgeAreaDto[][] = [];
+  allSpecialities:KnowledgeAreaDto[] = [];
 
   constructor(
     private fb: FormBuilder,
+    private _serviceProfile: PageProfileService,
     private _service: EditProfileService,
     private spinner: SpinnerService,
     private _header: HeaderService,
     private notification: LayoutComfecoService,
+    private insignia:InsigniaService
   ) {}
 
   ngOnInit(): void {
+    this.subscriptionForm();
+    this.subscriptionUserInformation();
+    this.completeGenders();
+    this.completeCountries();
+    this.completeKnowledgeAreas();
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptionMatchValues$.unsubscribe();
+    this.subscriptionChanges$.unsubscribe();
+    this.userInformationSubscription$.unsubscribe();
+  }
+
+  subscriptionForm() {
     this.editForm.reset({
       country: '',
       password: ''
@@ -77,7 +102,17 @@ export class EditProfileComponent implements OnInit, OnDestroy {
         this.numberCharactersBiography = 140-biography.length;
       }
     });
+  }
 
+  subscriptionUserInformation() {
+    this.userInformationSubscription$ = this._serviceProfile.userInformation$.subscribe(userChanged => {
+      this.completeAllKnowledgeAreas(userChanged);
+      
+      this.user = userChanged;
+    });
+  }
+
+  completeGenders() {
     this._service.genders()
       .subscribe(
         (resp:any) => {
@@ -90,20 +125,24 @@ export class EditProfileComponent implements OnInit, OnDestroy {
           }
         }
       );
-    
+  }
+
+  completeCountries() {
     this._service.countrys()
       .subscribe(
         (resp:any) => {
           if(resp.success) {
             if(resp.country) {
-              this.countrys = resp.country;
+              this.countries = resp.country;
             }
           } else {
             this.notification.alertNotification({message: resp.message});
           }
         }
       );
-    
+  }
+
+  completeKnowledgeAreas() {
     this._service.knowledgeArea()
       .subscribe(
         (resp:any) => {
@@ -116,17 +155,25 @@ export class EditProfileComponent implements OnInit, OnDestroy {
           }
         }
       );
-    
-    this._service.userInformation()
+  }
+
+  completeAllKnowledgeAreas(dataUser:UserDto) {
+    this._service.knowledgeArea()
       .subscribe(
         (resp:any) => {
           if(resp.success) {
-            this.setDataFormControl(resp);
+            if(!!resp.areas) {
+              const allSpecialities = [];
+              resp.areas.forEach((area:KnowledgeAreaDto) => {
+                allSpecialities.push(area.area);
+              });
+              this.setDataFormControl(dataUser, allSpecialities);
+            }
           } else {
             this.notification.alertNotification({message: resp.message});
           }
         }
-      );    
+      );
   }
 
   separeAreasForCheckbox(areas:KnowledgeAreaDto[]) {
@@ -150,7 +197,7 @@ export class EditProfileComponent implements OnInit, OnDestroy {
     }
   }
 
-  setDataFormControl(resp:UserDto) {
+  setDataFormControl(resp:UserDto, specialities:string[]) {
     const birdthDate:any = resp?.birdth_date;
     const date:string = !!birdthDate && this._service.formatDate(parseInt(birdthDate._seconds)*1000);
     
@@ -164,33 +211,24 @@ export class EditProfileComponent implements OnInit, OnDestroy {
     this.editForm.controls['twitter'].setValue(resp.social_networks?.twitter);
     this.editForm.controls['biography'].setValue(resp.description);
     this.editForm.controls['gender'].setValue(resp.gender.id);
-
+    
     if(!!resp?.country?.flag) {
-      const countriesRef:any = document.getElementsByName("country");
-      countriesRef.forEach((countryRef:any) => {
-        if(countryRef.getAttribute("country-flag")===resp.country.flag) {
-          countryRef.checked = true;
+      this.countries?.forEach((country, index) => {
+        if(country.flag===resp.country.flag) {
+          this.editForm.controls['country'].setValue(index);
         }
       });
     }
-
+    
     if(!!resp.specialities) {
-      const specialitiesRef:any = document.getElementsByName("speciality");
-      specialitiesRef.forEach((specialityRef:any) => {
-        resp.specialities.forEach((specialityUser:any) => {
-          if(specialityRef.getAttribute('area')==specialityUser) {
-            specialityRef.checked = true;
-          }
-        });
+      const controlsSpecialities:any = this.editForm.controls['specialities'];
+      const areas:any = resp.specialities;
+      specialities.forEach((speciality, index)=>{
+        controlsSpecialities.controls[index].setValue(areas.includes(speciality));
       });
     }
   }
 
-  ngOnDestroy(): void {
-    this.subscriptionMatchValues$.unsubscribe();
-    this.subscriptionChanges$.unsubscribe();
-  }
-  
   readURL(event:any): void {
     if (event.target.files && event.target.files[0]) {
       const fileRead = event.target.files[0];
@@ -226,6 +264,8 @@ export class EditProfileComponent implements OnInit, OnDestroy {
             message: 'Información de perfil actualizada correctamente',
             type: TypeAlertNotification.SUCCESS
           });
+          this._serviceProfile.userInformation$.next(resp);
+          this.showInsignia(resp);
         } else {
           const message:string = resp.message;
           if(message.indexOf('Usuario')>-1) {
@@ -287,12 +327,30 @@ export class EditProfileComponent implements OnInit, OnDestroy {
     } as UserChangeInformationDto;
   }
 
+  showInsignia(user:UserDto) {
+    if(!!user?.insignia) {
+      this.insignia.show(InsigniaType.SOCIABLE);
+      const { name, image } = user.insignia;
+      this._serviceProfile.userInsignias$.next([{name, image, complete:true}]);
+    }
+  }
+
   cleanErrors() {
     this.errorUser = '';
     this.errorEmail = '';
     this.errorPassword = '';
     this.errorNewPassword = '';
     this.errorConfirmPassword = '';
+  }
+
+  returnUserInformation() {
+    let editRef:HTMLElement = document.getElementById('myProfile') as HTMLElement;
+    editRef.click();
+    const newUser:UserDto = {
+      ...this.user,
+      photoUrl: `${this.user.photoUrl}&id=${(new Date()).getTime()}`
+    }
+    this._serviceProfile.userInformation$.next(newUser);
   }
 
 }

@@ -1,10 +1,10 @@
-<div class="md:col-span-1">
-  <comfeco-user-information [user]="user"></comfeco-user-information>
+<div class="secion-user">
+  <comfeco-user-information [user]="user" (onEditProfileEvent)="onEditProfileEvent($event)"></comfeco-user-information>
 </div>
-<div class="md:col-span-1 lg:col-span-2">
+<div class="secion-records">
   <comfeco-user-insignias [insignias]="insignias"></comfeco-user-insignias>
-  <comfeco-user-recent-activity [activities]="activities"></comfeco-user-recent-activity>
+  <comfeco-user-recent-activity [activities]="activities" [message]="messageActivities"></comfeco-user-recent-activity>
 </div>
-<div class="md:col-span-1">
-  <comfeco-user-events [events]="events"></comfeco-user-events>
+<div class="secion-events">
+  <comfeco-user-events [events]="events" (onLeaveEvent)="onLeaveEvent($event)"></comfeco-user-events>
 </div>
