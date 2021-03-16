@@ -27,6 +27,7 @@ export class InsigniaRepository {
                 image: insignia.image,
                 description: insignia.description,
                 instructions: insignia.instructions,
+                clazz: insignia.clazz,
             });
         });
 

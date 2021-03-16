@@ -27,6 +27,7 @@ export class ExhibitorsRepository {
             
             exhibitor.technologies?.forEach((technologie:any)=>{
                 technologies.push({
+                    id: technologie.id,
                     name: technologie.name,
                     photoUrl: technologie.photoUrl
                 });
