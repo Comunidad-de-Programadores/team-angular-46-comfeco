@@ -20,14 +20,12 @@ export class ArticleContainerComponent {
   
   showWorkshop:boolean;
 
-  constructor() { }
-
   toggleWorkshop() {
     this.showWorkshop = !this.showWorkshop;
   }
 
-  onOptionSelected(evento) {
-    this.onComboOptionSelected.emit( evento );
+  onOptionSelected(event) {
+    this.onComboOptionSelected.emit( event );
   }
 
 }

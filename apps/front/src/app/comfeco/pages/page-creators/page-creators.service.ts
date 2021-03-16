@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+
 import { ExhibitorsDto } from '@comfeco/interfaces';
 import { ValidatorService } from '@comfeco/validator';
 
@@ -15,4 +16,5 @@ export class PageCreatorsService {
   exhibitors() {
     return this.http.get<ExhibitorsDto>('/exhibitors').pipe(ValidatorService.changeBasicResponse());
   }
+  
 }

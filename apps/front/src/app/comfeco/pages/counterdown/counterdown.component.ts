@@ -12,7 +12,5 @@ import { DayEvent } from '@comfeco/interfaces';
 export class CounterdownComponent {
 
   @Input() dayEvent:DayEvent;
-  
-  constructor() { }
 
 }

@@ -1,10 +1,10 @@
 import { Component, ViewEncapsulation, OnInit, ElementRef, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 
 import { MenuDto } from '@comfeco/interfaces';
-import { Subscription } from 'rxjs';
-import { LayoutComfecoService } from '../../layout/layout-comfeco.service';
 
+import { LayoutComfecoService } from '../../layout/layout-comfeco.service';
 import { HeaderService } from './header.service';
 
 @Component({
@@ -18,7 +18,7 @@ import { HeaderService } from './header.service';
 })
 export class HeaderComponent implements OnInit, OnDestroy {
 
-  photoDefault:string = '../../../../../assets/img/avatar_user.svg';
+  photoDefault:string = 'assets/img/avatar_user.svg';
   photoUrl:string;
 
   showMenu = false;

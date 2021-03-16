@@ -15,8 +15,6 @@ export class CommunityComponent {
   @Input() community:string;
   @Input() link:string;
 
-  constructor() { }
-
   goToLink() {
     ComponentConfeco.goToLink(this.link);
   }

@@ -1,4 +1,4 @@
-import { Component, Input, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, ViewEncapsulation } from '@angular/core';
 
 import { ExhibitorDto } from '@comfeco/interfaces';
 
@@ -6,7 +6,8 @@ import { ExhibitorDto } from '@comfeco/interfaces';
   selector: 'comfeco-card-creator',
   templateUrl: './card-creator.component.html',
   styleUrls: ['./card-creator.component.scss'],
-  encapsulation: ViewEncapsulation.Emulated
+  encapsulation: ViewEncapsulation.Emulated,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CardCreatorComponent {
 
