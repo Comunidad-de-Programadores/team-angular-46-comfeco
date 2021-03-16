@@ -40,3 +40,17 @@
 .tabs-body {
   @apply mt-8;
 }
+
+.hidden {
+  display: none;
+}
+
+.label-item {
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .label-item {
+    display:block;
+  }
+}

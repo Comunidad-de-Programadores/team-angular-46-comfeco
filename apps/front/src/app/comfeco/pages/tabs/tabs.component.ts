@@ -5,27 +5,7 @@ import { startWith, map, delay } from "rxjs/operators";
  
 @Component({
   selector: "app-tabs",
-  template: `
-    <div class="tabs-header">
-      <div
-        *ngFor="let item of tabItems$ | async"
-        class="tab-label"
-        (click)="selectTab(item)"
-        [class.active]="activeTab === item"
-      >
-        <ng-container *ngIf="!item.labelComponent">
-          <i [ngClass]="item.icon"></i>
-          <span [class.active]="activeTab === item">{{ item.label }}</span>
-        </ng-container>
-      </div>
-    </div>
-    <div class="tabs-body">
-      <ng-container *ngIf="activeTab && activeTab.bodyComponent">
-        <ng-container *ngTemplateOutlet="activeTab.bodyComponent.bodyContent">
-        </ng-container>
-      </ng-container>
-    </div>
-  `,
+  templateUrl: './tabs.component.html',
   styleUrls: ['./tabs.component.scss'],
 })
 export class TabsComponent implements AfterContentInit, AfterContentChecked {
@@ -58,7 +38,6 @@ export class TabsComponent implements AfterContentInit, AfterContentChecked {
 
     if (this.activeTab) {
       this.activeTab.isActive = false;
-      
     }
 
     this.activeTab = tabItem;

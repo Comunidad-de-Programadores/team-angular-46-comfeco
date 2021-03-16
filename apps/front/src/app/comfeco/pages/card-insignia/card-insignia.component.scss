@@ -1,0 +1,156 @@
+:host {
+  @apply col-span-1;
+}
+
+.inner-container {
+  @apply flex items-center justify-center;
+}
+
+.card {
+  @apply shadow-md cursor-pointer;
+  background-color: var(--color-white);
+  width: 335px;
+  min-width: 250px;
+  margin: 45px;
+  
+  &:hover {
+    box-shadow: 0 0 32px -3px var(--color-primary);
+
+    & .card-insignia-image__medal {
+      width: 40%;
+      top: -57px;
+      left: 30%;
+    }
+
+    & .card-insignia-image__body {
+      top: 17px;
+    }
+
+    & .title {
+      top: 15%;
+    }
+
+    & .card-insignia-information {
+      @apply opacity-100;
+      top: 44%;
+    }
+  } 
+}
+
+.card-insignia {
+  @apply relative items-center justify-center;
+  padding: 20px;
+  height: 533px;
+}
+
+.card-insignia-image__medal {
+  @apply absolute;
+  width: 68%;
+  left: 17%;
+  top: 46px;
+  transition: 1.5s;
+  z-index: 1;
+}
+
+.card-insignia-image__header {
+  @apply absolute w-full left-0;
+  top: -39px;
+}
+
+.card-insignia-image__body {
+  @apply absolute w-full;
+  top: 220px;
+  left: 0;
+  transition: 1.5s;
+  z-index: 1;
+}
+
+.card-insignia-image__footer {
+  @apply absolute w-full left-0;
+  bottom: -1px;
+}
+
+.title {
+  @apply absolute w-full left-0 uppercase text-center;
+  font-size: 23px;
+  font-weight: 700;
+  transition: 1.5s;
+  top: 53%;
+}
+
+.obtain {
+  @apply font-extrabold;
+}
+
+.card-insignia-information {
+  @apply absolute w-full left-0 opacity-0;
+  transition: 1.5s;
+  top: 40%;
+  padding: 15px;
+
+  & .obtain {
+    margin: 15px 0;
+  }
+
+  & ul {
+    list-style-type: circle;
+    margin-left: 30px;
+    margin-bottom: 10px;
+  }
+}
+
+.sociable {
+  filter: contrast(150%);
+}
+
+.dynamic {
+  filter: grayscale(100%) contrast(150%);
+}
+
+.proactive {
+  filter: invert(100%) contrast(150%);
+}
+
+.inspiring {
+  filter: hue-rotate(182deg) contrast(150%);
+}
+
+@media (min-width: 768px) {
+  .card-insignia {
+    height: 502px;
+  }
+
+  .title {
+    top: 57%;
+  }
+
+  .card:hover {
+    & .title {
+      top: 15%;
+    }
+
+    & .card-insignia-information {
+      top: 46%;
+    }
+  }
+}
+
+@media (min-width: 1024px) {
+  .card-insignia {
+    height: 445px;
+  }
+
+  .title {
+    top: 52%;
+  }
+
+  .card:hover {
+    & .title {
+      top: 10%;
+    }
+
+    & .card-insignia-information {
+      top: 41%;
+    }
+  }
+}
