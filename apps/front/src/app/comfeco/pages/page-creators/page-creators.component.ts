@@ -1,5 +1,7 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { ExhibitorDto, ExhibitorsDto } from '@comfeco/interfaces';
+
+import { ExhibitorDto } from '@comfeco/interfaces';
+
 import { PageCreatorsService } from './page-creators.service';
 
 @Component({

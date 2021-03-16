@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input, ViewEncapsulation } from '@angular/core';
+
 import { InsigniaDto } from '@comfeco/interfaces';
 
 @Component({

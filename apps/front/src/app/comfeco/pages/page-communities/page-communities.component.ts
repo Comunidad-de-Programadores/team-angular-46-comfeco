@@ -1,5 +1,7 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+
 import { CommunityDto } from '@comfeco/interfaces';
+
 import { PageCommunitiesService } from './page-communities.service';
 
 @Component({

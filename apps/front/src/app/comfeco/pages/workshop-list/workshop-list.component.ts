@@ -68,5 +68,4 @@ export class WorkshopListComponent implements OnChanges {
     );
   }
 
-
 }
