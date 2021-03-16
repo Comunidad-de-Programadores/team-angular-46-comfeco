@@ -1,14 +1,31 @@
 :host {
-  @apply block m-4 mt-8;
+  @apply block m-4 mt-4 md:mt-8;
 }
 
 .activities {
-  @apply shadow-md w-full bg-white h-auto rounded-md shadow-md flex flex-col items-start;
+  @apply shadow-md w-full h-auto rounded-md shadow-md flex flex-col items-start;
+  background-color: var(--color-white);
   min-height: 126px;
+  margin-bottom: 17px;
+}
+
+@media (min-width: 768px) {
+  .activities {
+    margin-bottom: 60px;
+  }
 }
 
 .title {
-  @apply ml-4 mt-4 font-semibold;
+  @apply ml-4 mt-4;
+  
+  & .content {
+    @apply inline-block font-semibold;
+  }
+  
+  & .legend {
+    @apply inline-block text-xs ml-2;
+    color: var(--color-gray);
+  }
 }
 
 .recent {
@@ -31,4 +48,8 @@
     @apply text-5xl;
     color: var(--color-secondary);
   }
+}
+
+.no-activity {
+  color: var(--color-gray);
 }

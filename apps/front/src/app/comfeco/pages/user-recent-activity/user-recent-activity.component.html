@@ -1,13 +1,24 @@
 <div class="activities">
-  <div class="title">Actividad Reciente</div>
+  <div class="title">
+    <div class="content">Actividad Reciente</div>
+    <div class="legend">(Últimos 15 minutos)</div>
+  </div>
   <div class="recent">
+    <div
+      *ngIf="!activities?.length"
+      class="activity"
+    >
+      <div>
+        <div class="no-activity">{{message}}</div>
+      </div>
+    </div>
     <div
       *ngFor="let activity of activities"
       class="activity"
     >
       <div>
         <div class="description">{{activity.description}}</div>
-        <div class="time">{{activity.time}}</div>
+        <!--<div class="time">{{activity.time | activityTime}}</div>-->
       </div>
       <i [ngClass]="activity.type"></i>
     </div>
