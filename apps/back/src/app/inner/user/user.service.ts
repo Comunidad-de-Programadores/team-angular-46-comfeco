@@ -1,7 +1,7 @@
 import { HttpStatus, Injectable } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
 
-import { AccountType, CountryDto, EventDayDto, EventsDayDto, Gender, GenericResponse, InsigniaDto, InsigniasDto, KnowledgeAreaDto, UserChangeInformationDto, UserDto, UserSocialNetworksDto } from '@comfeco/interfaces';
+import { AccountType, CountryDto, EventDayDto, EventsDayDto, Gender, GenericResponse, GroupDto, GroupRequest, InsigniaDto, InsigniasDto, RecentActivitiesDto, RecentActivityDto, TechnologieDto, UserChangeInformationDto, UserDto, UserGroupDto, UsersGroupDto, UserSocialNetworksDto } from '@comfeco/interfaces';
 import { UtilResponse, ValidatorService } from '@comfeco/validator';
 
 import { UserRepository } from './user.repository';
@@ -12,7 +12,7 @@ import { ParametersExcepcion } from '../../../util';
 import { ConfigService } from '../../../config/config.service';
 import { Configuration } from '../../../config/config.keys';
 import { environment } from '../../../environments/environment';
-import { InsigniaUserEntity } from './model/insignia_uesr.entity';
+import { InsigniaUserEntity } from './model/insignia_user.entity';
 import { EventDayUserDto } from './model/events_user.entity';
 
 @Injectable()
@@ -39,7 +39,7 @@ export class UserService {
         return userInformation;
     }
 
-    async profileInformation(id:string, token:string): Promise<UserDto | GenericResponse> {
+    async profileInformation(id:string, token:string): Promise<UserDto> {
         const userEntity:UserEntity = await this._userRepository.idExists(id);
 
         const { user, email, roles, description, birdth_date, specialities, gender, country } = userEntity;
@@ -99,43 +99,17 @@ export class UserService {
         
         let eventsTemp:EventDayDto[] = [];
 
-        eventsEntity.forEach((eventUser:EventDayUserDto) => {
+        for(let i=0; i<eventsEntity.length; i++) {
+            const eventUser:EventDayUserDto = eventsEntity[i];
             const { event } = eventUser;
-            const { image, name } = event;
-
-            eventsTemp.push({
-                image,
-                name
-            });
-        });
-
-        const events:EventsDayDto = {
-            code: HttpStatus.OK,
-            events: eventsTemp
-        }
-
-        return events;
-    }
-
-    async recentActivity(id:string): Promise<EventsDayDto | GenericResponse> {
-        const eventsEntity:EventDayUserDto[] = await this._userRepository.recentActivity(id);
-        
-        if(eventsEntity==null) {
-            return UtilResponse.genericResponse('',['No has agregado ningún evento recientemente'], HttpStatus.NOT_FOUND);
-        }
-        
-        let eventsTemp:EventDayDto[] = [];
-
-        eventsEntity.forEach((eventUser:EventDayUserDto) => {
-            const { event } = eventUser;
-            const { image, name, description } = event;
-
+            const eventEntity:EventDayDto = await this._userRepository.event(event.order);
+            const { image, name, id } = eventEntity;
             eventsTemp.push({
                 image,
                 name,
-                description
+                id
             });
-        });
+        }
 
         const events:EventsDayDto = {
             code: HttpStatus.OK,
@@ -145,7 +119,273 @@ export class UserService {
         return events;
     }
 
-    async changeInformation(file:any, id:string, changeInformation:UserChangeInformationDto): Promise<UserDto | GenericResponse> {
+    async addEvent(event:EventDayDto, id:string) {
+        const saveEvent:boolean = await this._userRepository.addEvent(id, event.id);
+
+        if(!saveEvent) {
+            return UtilResponse.genericResponse('',['No puedes participar en el evento '+event.name], HttpStatus.BAD_REQUEST);
+        }
+        
+        const userEntity:UserEntity = await this._userRepository.idExists(id);
+        const insignia:InsigniaDto = await this._validateInsignia(userEntity.id);
+
+        const events:EventsDayDto = {
+            code: HttpStatus.OK,
+            message: 'Te inscribiste al evento '+event.name+' de manera exitosa',
+            events: [ event ],
+            insignia
+        }
+
+        return events;
+    }
+
+    async leaveEvent(event:EventDayDto, id:string) {
+        if(!event || !event?.id) {
+            return UtilResponse.genericResponse('',['No puedes abandonar el evento '+event.name], HttpStatus.BAD_REQUEST);
+        }
+
+        const saveEvent:boolean = await this._userRepository.leaveEvent(id, event.id);
+
+        if(!saveEvent) {
+            return UtilResponse.genericResponse('',['No puedes abandonar el evento '+event.name], HttpStatus.BAD_REQUEST);
+        }
+
+        const events:EventsDayDto = {
+            code: HttpStatus.ACCEPTED,
+            message: 'Ya no podrás participar en el evento '+event.name,
+            events: [ event ]
+        }
+
+        return events;
+    }
+
+    async recentActivity(id:string): Promise<RecentActivitiesDto | GenericResponse> {
+        const eventsRegisterEntity:EventDayUserDto[] = await this._userRepository.recentEventsRegisterActivity(id);
+        const eventsLeaveEntity:EventDayUserDto[] = await this._userRepository.recentEventsLeaveActivity(id);
+        const insigniasObtainEntity:InsigniaUserEntity[] = await this._userRepository.recentInsigniasObtainActivity(id);
+        
+        if(eventsRegisterEntity.length===0 && eventsLeaveEntity.length===0 && insigniasObtainEntity.length===0) {
+            return UtilResponse.genericResponse('',['No tienes actividad reciente'], HttpStatus.NOT_FOUND);
+        }
+        
+        const eventsRegister:RecentActivityDto[] = this._eventsToActivity(eventsRegisterEntity, 'icon-comfeco-event_ok', 'Te has unido al evento: ');
+        const eventsLeave:RecentActivityDto[] = this._eventsToActivity(eventsLeaveEntity, 'icon-comfeco-event_leave', 'Abandonaste el evento: ');
+        const insigniasObtain:RecentActivityDto[] = this._insigniasToActivity(insigniasObtainEntity, 'icon-comfeco-insignia_ok', 'Obtuviste la insignia: ');
+
+        const activity:RecentActivityDto[] = [
+            ...eventsRegister,
+            ...eventsLeave,
+            ...insigniasObtain
+        ];
+
+        const recentActivity:RecentActivityDto[] = activity.sort((a, b) => (a.time < b.time) ? 1 : -1);
+        
+        const events:RecentActivitiesDto = {
+            code: HttpStatus.OK,
+            activities: recentActivity
+        }
+
+        return events;
+    }
+
+    async group(id:string): Promise<UserGroupDto | GenericResponse> {
+        const userEntity:UserEntity = await this._userRepository.idExists(id);
+        
+        if(userEntity===null) {
+            return UtilResponse.genericResponse('',['No existe el usuario'], HttpStatus.NOT_FOUND);
+        }
+        
+        if(!userEntity?.group) {
+            return UtilResponse.genericResponse('',['Aún no haces parte de ningún grupo'], HttpStatus.NOT_FOUND);
+        }
+
+        const usersByGroup:UsersGroupDto[] = await this._getUsersByGroup(userEntity.group.order);
+        
+        const {name:nameGroup, language} = userEntity.group;
+        const languageGroup:TechnologieDto = await this._getIntoLanguage(language);
+        const {name:nameLanguage, photoUrl, id:idLanguage} = languageGroup;
+        
+        const group:UserGroupDto = {
+            code: HttpStatus.OK,
+            group: {
+                name:nameGroup,
+                language: { name:nameLanguage, photoUrl, id:idLanguage },
+                belong: true
+            },
+            users: usersByGroup
+        }
+
+        return group;
+    }
+
+    private async _getIntoLanguage(language:any):Promise<TechnologieDto> {
+        const languageGroupRef:any = language;
+        const idLanguageGroupRef:string = languageGroupRef?._path?.segments[1];
+        return await this._userRepository.languageByGroup(idLanguageGroupRef);
+    }
+
+    private async _getUsersByGroup(order:number):Promise<UsersGroupDto[]> {
+        const usersEntity:UserEntity[] = await this._userRepository.usersByGroup(order);
+        const usersByGroup:UsersGroupDto[] = [];
+        
+        usersEntity.forEach((userGroup:UserEntity) => {
+            const { photoUrl, user, level:levelUser } = userGroup;
+            let level = levelUser;
+
+            if(!levelUser) {
+                level = 'Novato';
+            }
+
+            const hierarchy:string = this._convertHierarchyByLevel(level);
+
+            usersByGroup.push({user, level, hierarchy, photoUrl});
+        });
+
+        return usersByGroup;
+    }
+
+    async joinGroup(idGrupo:GroupRequest, idUser:string): Promise<UserGroupDto | GenericResponse> {
+        if(idGrupo===null || !idGrupo.id) {
+            return UtilResponse.genericResponse('',['Es necesario enviar el id del grupo al que te deseas unir'], HttpStatus.NOT_FOUND);
+        }
+
+        const groupEntity:GroupDto = await this._userRepository.groupById(idGrupo.id);
+
+        if(groupEntity===null || !groupEntity.active) {
+            return UtilResponse.genericResponse('',['El grupo al que te deseas unir no existe o se encuentra inactivo'], HttpStatus.NOT_FOUND);
+        }
+
+        const userEntity:UserEntity = await this._userRepository.idExists(idUser);
+        const belongGroup:boolean = !!userEntity.group;
+        let messageError:string;
+        messageError = userEntity===null ? 'No existe el usuario' : messageError;
+        messageError = !messageError && belongGroup && userEntity.group?.order===groupEntity.order
+                ? 'Ya eres parte del grupo '+groupEntity.name
+                : messageError;
+        messageError = !messageError && belongGroup && userEntity.group?.order!==groupEntity.order
+                ? 'Primero necesitas abandonar el grupo en el que te encuentras para poderte unir a uno nuevo'
+                : messageError;
+        
+        if(messageError) {
+            return UtilResponse.genericResponse('',[messageError], HttpStatus.BAD_REQUEST);
+        }
+
+        const saveGroup:boolean = await this._userRepository.joinGroup(idGrupo.id, idUser);
+        
+        if(!saveGroup) {
+            return UtilResponse.genericResponse('',['No puedes unirte al grupo '+groupEntity.name], HttpStatus.NOT_FOUND);
+        }
+
+        const insignia:InsigniaDto = await this._validateInsignia(userEntity.id);
+        const usersByGroup:UsersGroupDto[] = await this._getUsersByGroup(groupEntity.order);
+        const {name:nameLanguage, photoUrl } = groupEntity.language;
+
+        const response:UserGroupDto = {
+            code: HttpStatus.OK,
+            message: 'Te has unido al grupo '+groupEntity.name+' de manera exitosa',
+            group: {
+                name:groupEntity.name,
+                language: { name:nameLanguage, photoUrl },
+                belong: true
+            },
+            users: usersByGroup,
+            insignia
+        }
+
+        return response;
+    }
+
+    private async _validateInsignia(idUser:string) {
+        const userEntity:UserEntity = await this._userRepository.idExists(idUser);
+        const eventsEntity = await this._userRepository.allEvents(userEntity.id);
+        const belongGroup:boolean = !!userEntity.group;
+        const belongEvents:boolean = eventsEntity.length>0;
+
+        let insignia:InsigniaDto;
+
+        if(belongGroup && belongEvents) {
+            insignia = await this._validInsignia(userEntity, 2);
+        }
+
+        return insignia;
+    }
+
+    async leaveGroup(idUser:string): Promise<GenericResponse> {
+        const userEntity:UserEntity = await this._userRepository.idExists(idUser);
+
+        if(userEntity===null) {
+            return UtilResponse.genericResponse('',['No existe el usuario'], HttpStatus.NOT_FOUND);
+        }
+
+        if(!userEntity?.group) {
+            return UtilResponse.genericResponse('',['No eres miembro de ningún grupo todavía'], HttpStatus.NOT_FOUND);
+        }
+
+        const leaveGroup:boolean = await this._userRepository.leaveGroup(idUser);
+        
+        if(!leaveGroup) {
+            return UtilResponse.genericResponse('',['No puedes salirte del grupo en el que te encuentras'], HttpStatus.NOT_FOUND);
+        }
+
+        const response:GenericResponse = {
+            code: HttpStatus.ACCEPTED,
+            message: 'Saliste del grupo de manera exitosa'
+        }
+
+        return response;
+    }
+
+    private _convertHierarchyByLevel(level:string) {
+        let hierarchy:string = 'Líder';
+
+        if(level==='Novato' || level==='Medio' || level==='Apenas aprendiendo') {
+            hierarchy = 'Integrante';
+        }
+        
+        return hierarchy;
+    }
+
+    private _eventsToActivity(eventsEntity:EventDayUserDto[], type:string, activity:string) {
+        let eventsActivity:RecentActivityDto[] = [];
+
+        eventsEntity.forEach((eventUser:EventDayUserDto) => {
+            const { event, register } = eventUser;
+
+            eventsActivity.push({
+                type,
+                time: this._transformDate(register),
+                description: activity+event.name,
+            });
+        });
+
+        return eventsActivity;
+    }
+    
+    private _insigniasToActivity(insigniasEntity:InsigniaUserEntity[], type:string, activity:string) {
+        let insigniasActivity:RecentActivityDto[] = [];
+
+        insigniasEntity.forEach((insigniaUser:InsigniaUserEntity) => {
+            const { insignia, obtain } = insigniaUser;
+
+            insigniasActivity.push({
+                type,
+                time: this._transformDate(obtain),
+                description: activity+insignia.name,
+            });
+        });
+
+        return insigniasActivity;
+    }
+
+    private _transformDate(date:any) {
+        /*return {
+            _seconds: parseInt(date._seconds)+5950,
+            _nanoseconds: date._nanoseconds
+        };*/
+        return date;
+    }
+
+    async changeInformation(file:any, id:string, changeInformation:UserChangeInformationDto, token:string): Promise<UserDto | GenericResponse> {
         const validation = ValidatorService.password(changeInformation.password, null);
         if(validation!=null) throw new ParametersExcepcion(validation);
 
@@ -166,20 +406,52 @@ export class UserService {
         })
         
         const userNew = changeInformation?.user || actualUser.user;
-
+        
         const newUser:UserEntity = await this._userRepository.userExists(userNew);
-
-        const { photoUrl, user:userNewReturn, email, roles } = newUser;
-
-        const userReturn:UserDto = {
-            code: HttpStatus.ACCEPTED,
-            user:userNewReturn,
-            photoUrl,
-            email,
-            roles,
+        
+        let insignia:InsigniaDto;
+        if(await this._validFullInformation(newUser)) {
+            insignia = await this._validInsignia(newUser, 1, !newUser?.insignias);
         }
 
-        return userReturn;
+        const userNewInformation:UserDto = await this.profileInformation(id, token);
+        
+        return {
+            ...userNewInformation,
+            insignia
+        };
+    }
+    
+    private async _validFullInformation(user:UserEntity) {
+        if(!user.description) return false;
+        if(!user.birdth_date) return false;
+        if(!user.specialities) return false;
+        if(!user.country) return false;
+        if(!user.gender) return false;
+        if(!user.modify) return false;
+        
+        const socialFacebook:any = await await this._userRepository.getSocialNetworkUser(user.id, 'facebook');
+        const socialGithub:any = await await this._userRepository.getSocialNetworkUser(user.id, 'github');
+        const socialTwitter:any = await await this._userRepository.getSocialNetworkUser(user.id, 'twitter');
+        const socialLinkedin:any = await await this._userRepository.getSocialNetworkUser(user.id, 'linkedin');
+        
+        if(!socialFacebook) return false;
+        if(!socialGithub) return false;
+        if(!socialTwitter) return false;
+        if(!socialLinkedin) return false;
+
+        return true;
+    }
+
+    private async _validInsignia(user:UserEntity, numberInsignia:number, addInsignia=true) {
+        let insignia:InsigniaDto;
+        if(addInsignia) {
+            const insigniaRef = await this._userRepository.insigniaReference(numberInsignia);
+            const addInsignia:boolean = await this._userRepository.addInsigniaUser(user.id, insigniaRef);
+            insignia = addInsignia && await this._userRepository.insigniaInformation(numberInsignia);
+        }
+
+        return insignia;
     }
 
     private async _pictureProfileUpload(file:any, idUser:string): Promise<string> {
@@ -241,13 +513,6 @@ export class UserService {
     }
 
     private async _parseParamsSocialNetworksChangeInformation(changeInformation:UserChangeInformationDto) {
-        /*newInformationUser.social_networks = {
-            facebook : changeInformation?.social_networks?.facebook,
-            twitter : changeInformation?.social_networks?.twitter,
-            github : changeInformation?.social_networks?.github,
-            linkedin : changeInformation?.social_networks?.linkedin
-        };*/
-        
         let socialNetwoks:any[] = [];
 
         if(changeInformation?.social_networks) {

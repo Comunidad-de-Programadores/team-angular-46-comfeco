@@ -14,7 +14,7 @@ import { InnerModule } from './inner/inner.module';
         ConfigModule,
         AuthModule,
         InnerModule,
-    ]
+    ],
 })
 export class AppModule {
     private readonly logger = new Logger(AppModule.name);

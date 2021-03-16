@@ -1,9 +1,9 @@
-import { Controller, Get, Res, Req, Put, Body, UseInterceptors, UploadedFile, HttpStatus, HttpCode, UseGuards } from '@nestjs/common';
+import { Controller, Get, Res, Req, Put, Body, UseInterceptors, UploadedFile, HttpStatus, HttpCode, UseGuards, Post } from '@nestjs/common';
 import { ApiAcceptedResponse, ApiBadRequestResponse, ApiBearerAuth, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { FileInterceptor } from "@nestjs/platform-express";
 import { Request, Response } from 'express';
 
-import { EventsDayDto, GenericResponse, InsigniasDto, UserChangeInformationDto, UserDto } from '@comfeco/interfaces';
+import { EventDayDto, EventsDayDto, GenericResponse, GroupRequest, InsigniasDto, RecentActivitiesDto, UserChangeInformationDto, UserDto, UserGroupDto } from '@comfeco/interfaces';
 
 import { UserService } from './user.service';
 import { IdUser } from '../../../config/guard/access.decorator';
@@ -99,12 +99,48 @@ export class UserController {
 	}
 
     @ApiOperation({
-        summary: 'Eventos recientes del usuario',
-        description: 'Se muestran los eventos que han sido agregados por el usuario el día de hoy'
+        summary: 'El usuario desea participar en un evento',
+        description: 'Se agrega un evento a la lista del usuario'
     })
     @ApiOkResponse({
-        description: 'Información de los eventos',
+        description: 'Información del evento al que se agrego',
         type: EventsDayDto,
+    })
+    @ApiBadRequestResponse({
+        description: "No se manda un token válido",
+        type: GenericResponse,
+    })
+    @Post('add_event')
+    @HttpCode(HttpStatus.OK)
+	async addEvent(@Res() res:Response, @Body() event:EventDayDto, @IdUser() id:string): Promise<void> {
+        res.send(await this._userService.addEvent(event, id));
+	}
+
+    @ApiOperation({
+        summary: 'El usuario desea salirse de un evento en el que participa',
+        description: 'Se elimina un evento de la lista del usuario'
+    })
+    @ApiAcceptedResponse({
+        description: 'Información del evento al que se agrego',
+        type: EventsDayDto,
+    })
+    @ApiBadRequestResponse({
+        description: "No se manda un token válido",
+        type: GenericResponse,
+    })
+    @Put('leave_event')
+    @HttpCode(HttpStatus.OK)
+	async leaveEvent(@Res() res:Response, @Body() event:EventDayDto, @IdUser() id:string): Promise<void> {
+        res.send(await this._userService.leaveEvent(event, id));
+	}
+
+    @ApiOperation({
+        summary: 'Actividad reciente en la cuenta del usuario',
+        description: 'Se muestran los eventos que han sido agregados, de los que se ha salido y las medallas obtenidas por el usuario recientemente'
+    })
+    @ApiOkResponse({
+        description: 'Información de la actividad reciente del usuario',
+        type: RecentActivitiesDto,
     })
     @ApiBadRequestResponse({
         description: "No se manda un token válido",
@@ -114,6 +150,60 @@ export class UserController {
     @HttpCode(HttpStatus.OK)
 	async recentActivity(@Res() res:Response, @IdUser() id:string): Promise<void> {
         res.send(await this._userService.recentActivity(id));
+	}
+
+    @ApiOperation({
+        summary: 'Grupo al que pertenece el usuario',
+        description: 'Grupo al que esta suscrito el usuario'
+    })
+    @ApiOkResponse({
+        description: 'Información del grupo y de los integrantes del grupo al que esta suscrito el usuario',
+        type: UserGroupDto,
+    })
+    @ApiBadRequestResponse({
+        description: "No se manda un token válido",
+        type: GenericResponse,
+    })
+    @Get('group')
+    @HttpCode(HttpStatus.OK)
+	async group(@Res() res:Response, @IdUser() id:string): Promise<void> {
+        res.send(await this._userService.group(id));
+	}
+
+    @ApiOperation({
+        summary: 'El usuario se puede unir a un grupo',
+        description: 'Hacer miembro al usuario de un grupo'
+    })
+    @ApiOkResponse({
+        description: 'El usuario se unio correctamente al grupo',
+        type: UserGroupDto,
+    })
+    @ApiBadRequestResponse({
+        description: "No se manda un token válido",
+        type: GenericResponse,
+    })
+    @Post('join_group')
+    @HttpCode(HttpStatus.OK)
+	async joinGroup(@Res() res:Response, @Body() idGrupo:GroupRequest, @IdUser() id:string): Promise<void> {
+        res.send(await this._userService.joinGroup(idGrupo, id));
+	}
+
+    @ApiOperation({
+        summary: 'El usuario abandona el grupo al que pertenece',
+        description: 'El usuario abandona el grupo al que esta suscrito'
+    })
+    @ApiOkResponse({
+        description: 'Mensaje para saber si se pudo o no salir correctamente del grupo',
+        type: GenericResponse,
+    })
+    @ApiBadRequestResponse({
+        description: "No se manda un token válido",
+        type: GenericResponse,
+    })
+    @Put('leave_group')
+    @HttpCode(HttpStatus.OK)
+	async leaveGroup(@Res() res:Response, @IdUser() id:string): Promise<void> {
+        res.send(await this._userService.leaveGroup(id));
 	}
 
     @ApiOperation({
@@ -132,12 +222,14 @@ export class UserController {
     @Put('/change_information')
     @UseInterceptors(FileInterceptor('file'))
     async uploadFile(
+        @Req() req:Request,
         @UploadedFile() file:any,
         @IdUser() id:string,
         @Body() changeInformation:UserChangeInformationDto,
         @Res() res:Response
     ) {
-        res.send(await this._userService.changeInformation(file, id, changeInformation));
+        const token:string = JwtUtil.getTokenCookie(req, CookieGuard.AUTHENTICATION);
+        res.send(await this._userService.changeInformation(file, id, changeInformation, token));
     }
     
 }
