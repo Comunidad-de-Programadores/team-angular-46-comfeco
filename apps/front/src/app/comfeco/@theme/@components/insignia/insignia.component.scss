@@ -1,0 +1,277 @@
+:host {
+  display: block;
+}
+
+.insignia-winner {
+  position: relative;
+}
+
+.insignia-winner.hide-insignia {
+  animation-name: insignia;
+  animation-duration: 500ms;
+  animation-delay: 2s;
+  animation-fill-mode: both;
+  animation-timing-function: ease-out;
+  opacity: 1;
+}
+
+.insignia-background {
+  @apply fixed w-full h-screen top-0;
+  background: rgb(117 117 117 / 10%);
+}
+
+.insignia-card.show {
+  position: fixed;
+  transform: translateX(-50%);
+  left: 25%;
+  top: 10%;
+  width: 50%;
+}
+
+.insignia-accessories.show {
+  animation-name: accessories;
+  animation-duration: 500ms;
+  animation-delay: 0.5s;
+  animation-fill-mode: both;
+  animation-timing-function: ease-in-out;
+}
+
+.lights.show {
+  opacity: 0.5;
+  transform-origin: 53% 375px;
+  animation: lights 30s linear infinite;
+  
+  & .light {
+    position: absolute;
+    width: 213px;
+    left: 36%;
+    top: -99px;
+  }
+  
+  & .light-1 {
+    animation: light 4s ease infinite alternate;
+    transform: rotate(0deg);
+  }
+
+  & .light-2 {
+    animation: light 5s ease infinite alternate;
+    transform: rotate(30deg);
+  }
+  
+  & .light-3 {
+    animation: light 10s ease infinite alternate;
+    transform: rotate(60deg);
+  }
+  
+  & .light-4 {
+    animation: light 5s ease infinite alternate;
+    transform: rotate(90deg);
+  }
+  
+  & .light-5 {
+    animation: light 7s ease infinite alternate;
+    transform: rotate(120deg);
+  }
+  
+  & .light-6 {
+    animation: light 3s ease infinite alternate;
+    transform: rotate(150deg);
+  }
+}
+
+.stars.show {
+  transform-origin: center center;
+
+  & .star {
+    position: absolute;
+  }
+  
+  & .star-1 {
+    animation: star 3s 0.2s infinite;
+    width: 33%;
+    top: 179px;
+    left: -145px;
+  }
+  
+  & .star-2 {
+    animation: star 1.7s 0.2s infinite;
+    width: 28%;
+    top: 379px;
+    left: 20px;
+  }
+  
+  & .star-3 {
+    animation: star 2.8s 0.2s infinite;
+    width: 52%;
+    top: 538px;
+    left: -84px;
+  }
+  
+  & .star-4 {
+    animation: star 1.8s 0.2s infinite;
+    width: 53%;
+    top: 170px;
+    left: 458px;
+  }
+  
+  & .star-5 {
+    animation: star 2.2s 0.2s infinite;
+    width: 27%;
+    top: 438px;
+    left: 625px;
+  }
+  
+  & .star-6 {
+    animation: star 1.4s 0.2s infinite;
+    width: 43%;
+    top: 555px;
+    left: 345px;
+  }
+  
+  & .star-7 {
+    animation: star 2s 0.2s infinite;
+    width: 18%;
+    top: -30px;
+    left: 156px;
+  }
+  
+  & .star-8 {
+    animation: star 1.7s 0.2s infinite;
+    width: 33%;
+    top: 6px;
+    left: 470px;
+  }
+}
+
+.medal.show {
+  position: absolute;
+  width: 80%;
+  left: 66px;
+  top: 125px;
+  animation-name: headband;
+  animation-duration: 350ms;
+  animation-delay: 0.1s;
+  animation-fill-mode: both;
+  animation-timing-function: ease-in-out;
+}
+
+.headband.show {
+  position: absolute;
+  width: 100%;
+  top: 55px;
+  animation-name: headband;
+  animation-duration: 500ms;
+  animation-delay: 0.2s;
+  animation-fill-mode: both;
+  animation-timing-function: ease-in-out;
+}
+
+@keyframes insignia {
+  0% {
+    opacity: 1;
+  }
+  
+  100% {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+
+@keyframes accessories {
+  0% {
+    opacity: 0;
+  }
+  
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes medal {
+  0% {
+    opacity: 0;
+    transform: scale(0.1) translateY(-8px);
+  }
+  
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes headband {
+  0% {
+    opacity: 0;
+    transform: scale(0.1) translateY(-15px);
+  }
+  
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes lights {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes light {
+  from {
+    transform: scaleX(1, 1);
+  }
+  to {
+    width: 180px;
+    transform: scaleX(0.8, 1);
+  }
+}
+
+@keyframes star {
+  0% { transform: scale(1); }
+  50% { transform: scale(0.5); }
+  100% { transform: scale(1); }
+}
+
+@media (max-width: 767px) {
+  .insignia-card.show {
+    transform: scale(1);
+    zoom: 1;
+  }
+
+  .medal {
+    zoom: 1;
+    transform: scale(1.4);
+    top: 207px;
+    left: 23px;
+  }
+
+  .headband {
+    zoom: 1;
+    transform: scale(1.3);
+    top: 95px;
+    left: -10px;
+  }
+}
+
+@media (min-width: 768px) {
+  .insignia-card.show {
+    transform: scale(1);
+    zoom: 1;
+  }
+}
+
+@media (min-width: 1024px) {
+  .insignia-card.show {
+    transform: scale(0.9);
+    zoom: 0.9;
+  }
+}
+
+@media (min-width: 1280px) {
+  .insignia-card.show {
+    transform: scale(1);
+    zoom: 1;
+  }
+}
