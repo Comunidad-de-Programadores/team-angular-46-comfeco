@@ -1,5 +1,4 @@
 import { Component, Input, ContentChild, } from "@angular/core";
-import { TabLabelComponent } from "./tab-label.component";
 import { TabBodyComponent } from "./tab-body.component";
 
 @Component({
@@ -11,6 +10,10 @@ export class TabItemComponent {
   label: string;
   @Input()
   icon: string;
+  @Input()
+  id: string;
+  @Input()
+  clazz: string;
 
   @Input()
   isActive: boolean;
