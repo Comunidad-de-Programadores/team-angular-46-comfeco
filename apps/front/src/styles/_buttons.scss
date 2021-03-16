@@ -19,6 +19,7 @@
 .icon-social.icon-comfeco-discord,
 .icon-social.icon-comfeco-youtube,
 .icon-social.icon-comfeco-github,
+.icon-social.icon-comfeco-patreon,
 .icon-header.icon-comfeco-bell {
   @extend .buttonSocialNetwork;
 }
@@ -41,7 +42,8 @@
 }
 
 .btn-primary,
-.btn-secondary {
+.btn-secondary,
+.btn-tertiary {
   @apply inline-flex items-center justify-center py-2 px-4 rounded focus:outline-none;
 
   & .icon {
@@ -66,6 +68,15 @@
 
   &.text-white {
     border-color: var(--color-white);
+    color: var(--color-white);
+  }
+}
+
+.btn-tertiary {
+  @apply bg-transparent py-2 px-4 border-0;
+  color: var(--color-primary);
+
+  &.text-white {
     color: var(--color-white);
   }
 }
