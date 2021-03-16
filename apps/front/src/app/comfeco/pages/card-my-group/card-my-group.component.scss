@@ -1,0 +1,111 @@
+:host {
+  @apply w-full md:w-2/5 lg:w-1/5 m-0 md:m-3 p-4 rounded-md shadow-md flex flex-col items-center justify-between overflow-hidden;
+  background-color: var(--color-white);
+  height: 460px;
+}
+
+.my-group-content {
+  @apply w-full;
+}
+
+.my-group-actions {
+  @apply w-full flex justify-between my-2;
+
+  & .btn-chat i {
+    @apply mr-1;
+  }
+}
+
+.my-group-empty {
+  @apply text-sm;
+  color: var(--color-error);
+}
+
+.my-group-title {
+  @apply flex items-center justify-between p-2 mb-2;
+  background-color: var(--color-secondary);
+  color: var(--color-white);
+
+  & .title {
+    @apply inline-block text-sm;
+  }
+
+  & .technologie {
+    @apply inline-block w-7 rounded-full p-1;
+    background-color: var(--color-white);
+  }
+}
+
+.my-group-header {
+  @apply flex items-center justify-between mb-2;
+  & .title,
+  & .link {
+    @apply inline-block;
+  }
+  & .title {
+    @apply text-base font-bold;
+  }
+}
+
+.participant {
+  @apply flex items-center justify-between py-2;
+  
+  &:not(:last-child) {
+    border-bottom: 1px solid var(--color-secondary);
+  }
+
+  & &-data,
+  & &-hierarchy,
+  & &-avatar,
+  & &-information {
+    @apply inline-block;
+  }
+
+  & &-data {
+    @apply w-2/3;
+  }
+
+  & &-avatar {
+    @apply w-6;
+    
+    & img {
+      @apply w-full h-6 rounded-full object-cover;
+    }
+  }
+
+  & &-information {
+    @apply ml-2 w-3/4;
+
+    & .name {
+      @apply font-semibold overflow-hidden overflow-ellipsis whitespace-nowrap;
+    }
+
+    & .level {
+      @apply text-xs;
+      color: var(--color-gray);
+    }
+  }
+
+  & &-hierarchy {
+    @apply inline-block text-sm;
+    color: var(--color-gray);
+  }
+
+}
+
+@media (min-width: 1020px) and (max-width: 1266px) {
+  .participant {
+    & &-hierarchy,
+    & &-information .level {
+      @apply hidden;
+    }
+
+    & &-data {
+      @apply flex items-center justify-center;
+    }
+  }
+
+  .my-group-actions {
+    @apply flex-col;
+  }
+}
