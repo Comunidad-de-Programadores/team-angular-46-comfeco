@@ -1,0 +1,7 @@
+<comfeco-card-event
+  *ngFor="let event of events$ | async"
+  [event]="event"
+  (onParticipateEvent)="onParticipateEvent($event)"
+  (onLeaveEvent)="onLeaveEvent($event)"
+>
+</comfeco-card-event>
