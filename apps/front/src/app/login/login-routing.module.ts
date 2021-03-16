@@ -27,10 +27,12 @@ export const Components = [
 const routes: Routes = [
   { path: '', component: LoginComponent, children: [
       { path: 'login', component: ViewLoginComponent }, // login/login
+      { path: 'register', component: RegisterUserComponent},
       { path: 'recoverypassword', component: RecoveryPasswordComponent  }, // login/recoverypassword
       { path: 'setpassword/:token', component: SetPasswordComponent }, // // login/setpassword
       { path: '', redirectTo: 'login', pathMatch: 'full' },
       { path: '**', redirectTo: 'login' },
+      // { path: '**', pathMatch: 'full', redirectTo: 'login' },
     ],
   },
 ];
