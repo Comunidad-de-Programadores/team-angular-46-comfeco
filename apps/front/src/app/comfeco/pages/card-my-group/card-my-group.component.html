@@ -1,0 +1,36 @@
+<div class="my-group-content">
+  <div class="my-group-header">
+    <div class="title">Mi grupo</div>
+    <div class="link">Ir al grupo</div>
+  </div>
+  <div class="my-group-empty" *ngIf="!!error">{{error}}</div>
+  <div class="my-group-title" *ngIf="!error">
+    <div class="title">{{group?.group.name}}</div>
+    <div class="technologie">
+      <img [src]="'assets/img/'+(!!group?.group.language.photoUrl ? group?.group.language.photoUrl : 'tecnology_question')+'.svg'">
+    </div>
+  </div>
+  <div class="participants" *ngIf="!error">
+
+    <div class="participant" *ngFor="let user of group?.users">
+      <div class="participant-data">
+        <div class="participant-avatar">
+          <img [src]="user.photoUrl || 'assets/img/avatar_user.svg'">
+        </div>
+        <div class="participant-information">
+          <div class="name">{{user.user}}</div>
+          <div class="level">{{user.level}}</div>
+        </div>
+      </div>
+      <div class="participant-hierarchy">{{user.hierarchy}}</div>
+    </div>
+
+  </div>
+</div>
+<div class="my-group-actions" *ngIf="!error">
+  <button class="btn-tertiary" (click)="onLeave()">Abandonar</button>
+  <button class="btn-primary btn-chat">
+    <i class="icon icon-comfeco-chat"></i>
+    <span>Chat</span>
+  </button>
+</div>
