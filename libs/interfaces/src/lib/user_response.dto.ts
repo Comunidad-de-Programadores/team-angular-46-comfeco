@@ -2,6 +2,7 @@ import { Gender } from '../enum/gender.enum';
 import { Rol } from '../enum/roles.enum';
 import { CountryDto } from './country_response.dto';
 import { GenericResponse } from './generic_response.dto';
+import { InsigniaDto } from './insignia_response.dto';
 import { KnowledgeAreaDto } from './knowledge_area_response.dto';
 import { UserSocialNetworksDto } from './user_social_networks_response.dto';
 
@@ -16,4 +17,6 @@ export class UserDto extends GenericResponse {
     readonly specialities?: KnowledgeAreaDto[];
     readonly social_networks?: UserSocialNetworksDto;
     readonly gender?: Gender;
+    readonly insignia?: InsigniaDto;
+    readonly edit?:boolean;
 }
