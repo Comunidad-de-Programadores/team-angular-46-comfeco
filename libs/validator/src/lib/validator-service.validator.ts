@@ -1,5 +1,6 @@
+import { HttpHeaders } from '@angular/common/http';
 import { pipe, of, UnaryFunction, Observable } from 'rxjs';
-import { map, catchError } from 'rxjs/operators';
+import { map, catchError, tap } from 'rxjs/operators';
 
 import { ExpresionRegex, GenericResponse, ResponseService, TokenDto } from '@comfeco/interfaces';
 
