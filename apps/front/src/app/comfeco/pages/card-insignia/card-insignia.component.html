@@ -1,0 +1,53 @@
+<div class="inner-container">
+  <div class="card">
+    <div class="card-insignia">
+      <div class="card-insignia-images">
+        <div class="card-insignia-image__medal">
+          <img
+            [src]="'assets/img/'+insignia.image+'.svg'"
+            [alt]="'insignia-'+insignia.clazz"
+          >
+        </div>
+        <div
+          [ngClass]="insignia.clazz"
+          class="card-insignia-image__header"
+        >
+          <img
+            src="assets/img/insignia_card_header.svg"
+            [alt]="'header-'+insignia.clazz"
+          >
+        </div>
+        <div
+          [ngClass]="insignia.clazz"
+          class="card-insignia-image__body sociable"
+        >
+          <img
+            src="assets/img/insignia_card_body.svg"
+            [alt]="'body-'+insignia.clazz"
+          >
+        </div>
+        <div
+          [ngClass]="insignia.clazz"
+          class="card-insignia-image__footer sociable"
+        >
+          <img
+            src="assets/img/insignia_card_footer.svg"
+            [alt]="'footer'+insignia.clazz"></div>
+      </div>
+      <div class="title">{{insignia.name}}</div>
+      <div class="card-insignia-information">
+        <div class="description">{{insignia.description}}</div>
+        <div class="instructions">
+          <div class="obtain">¿Cómo la obtengo?</div>
+          <ul>
+            <li
+              *ngFor="let instruction of insignia.instructions"
+            >
+              {{instruction}}
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
