@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
+
 import { TypeAlertNotification } from './alert-notification.enum';
 import { AlertNotification } from './alert-notification.interface';
 
