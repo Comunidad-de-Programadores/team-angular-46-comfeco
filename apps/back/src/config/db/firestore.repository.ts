@@ -32,6 +32,10 @@ export class FirestoreRepository {
         return admin.storage();
     }
 
+    fieldValue() {
+        return admin.firestore.FieldValue;
+    }
+
     collection(collection:string): admin.firestore.CollectionReference {
         return admin.firestore().collection(collection);
     }
@@ -61,11 +65,31 @@ export class FirestoreRepository {
         return [ start, end ];
     }
 
+    async dateRank(minutesToStartDate:number, minutesToEndDate?:number) {
+        const currentTime:Date = new Date();
+        const start = new Date(currentTime);
+        let end = new Date(currentTime);
+
+        start.setMinutes(currentTime.getMinutes() - minutesToStartDate);
+
+        if(!!minutesToEndDate) {
+            end.setMinutes(currentTime.getMinutes() + minutesToEndDate);
+        } else {
+            const currentTime:any = await this.now();
+            end = new Date(currentTime._seconds * 1000);
+            end.setHours(23);
+            end.setMinutes(59);
+            end.setSeconds(59);
+        }
+
+        return [ start, end ];
+    }
+
     async referenceDocumentId(collection:string, id:string): Promise<admin.firestore.DocumentReference> {
         return await this.collection(collection).doc(id);
     }
 
-    async referenceDocumentKey(collection:string, keyReference:string, value:string): Promise<admin.firestore.DocumentReference> {
+    async referenceDocumentKey(collection:string, keyReference:string, value:any): Promise<admin.firestore.DocumentReference> {
         const document:admin.firestore.QuerySnapshot = await this.collection(collection).where(keyReference, '==', value).get();
         const id:string = await this.idDocument(document);
         return this.collection(collection).doc(id);
@@ -83,6 +107,10 @@ export class FirestoreRepository {
     }
 
     async returnInfoDocument(refDocument:admin.firestore.DocumentSnapshot) {
+        if(!refDocument || !refDocument?.data()) {
+            return [];
+        }
+
         let finalData:admin.firestore.DocumentData | null = {};
         finalData.id = refDocument.id;
 
