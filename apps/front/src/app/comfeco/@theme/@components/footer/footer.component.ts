@@ -30,4 +30,8 @@ export class FooterComponent {
     ComponentConfeco.goToLink('https://github.com/Comunidad-de-Programadores');
   }
 
+  patreon() {
+    ComponentConfeco.goToLink('https://www.patreon.com/comfeco');
+  }
+
 }

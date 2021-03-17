@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input, ViewEncapsulation } from '@angular/core';
+
 import { ComponentConfeco } from '../../@core/utils.component';
 
 @Component({
@@ -14,8 +15,6 @@ export class CardCommunityComponent {
   @Input() community:string;
   @Input() link:string;
   
-  constructor() { }
-
   goToLink() {
     ComponentConfeco.goToLink(this.link);
   }

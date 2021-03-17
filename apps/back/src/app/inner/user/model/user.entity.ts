@@ -1,7 +1,8 @@
-import { Status, Rol, AccountType, KnowledgeAreaDto, Gender, CountryDto } from "@comfeco/interfaces";
+import { Status, Rol, AccountType, KnowledgeAreaDto, Gender, CountryDto, GroupDto } from "@comfeco/interfaces";
 
 import { FacebookEntity } from "./facebook.entity";
 import { GoogleEntity } from "./google.entity";
+import { InsigniaUserEntity } from "./insignia_user.entity";
 import { SocialNetworkEntity } from "./social_network.entity";
 
 export interface UserEntity {
@@ -14,6 +15,7 @@ export interface UserEntity {
     social_networks?:SocialNetworkEntity[],
     country?:CountryDto,
     gender?:Gender,
+    group?:GroupDto,
     email?: string,
     password?: string,
     roles?: Rol[];
@@ -26,4 +28,6 @@ export interface UserEntity {
     tokenRefreshApi?: string,
     user?:string,
     modify?:boolean,
+    insignias?:InsigniaUserEntity[],
+    level?:string;
 }

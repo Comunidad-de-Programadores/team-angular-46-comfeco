@@ -1,0 +1,8 @@
+:host {
+  @apply block;
+  margin-top: 80px;
+}
+
+.cards {
+  @apply md:grid md:grid-cols-2 lg:grid-cols-4;
+}

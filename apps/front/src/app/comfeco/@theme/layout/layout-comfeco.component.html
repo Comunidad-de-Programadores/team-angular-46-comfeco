@@ -1,12 +1,21 @@
 <comfeco-header></comfeco-header>
 <comfeco-content>
-    <router-outlet></router-outlet>
+  <router-outlet></router-outlet>
 </comfeco-content>
 <comfeco-footer></comfeco-footer>
 <comfeco-spinner></comfeco-spinner>
 <div class="alert-notifications">
-    <comfeco-alert-notification
-        *ngFor="let alert of alertsNotification"
-        [notification]="alert"
-    ></comfeco-alert-notification>
+  <comfeco-alert-notification
+    *ngFor="let alert of alertsNotification"
+    [notification]="alert"
+  >
+  </comfeco-alert-notification>
 </div>
+<comfeco-modal
+  *ngFor="let modal of modals"
+  [modal]="modal"
+  [open]="true"
+  (onConfirm)="onConfirmModal($event)"
+>
+</comfeco-modal>
+<comfeco-insignia></comfeco-insignia>

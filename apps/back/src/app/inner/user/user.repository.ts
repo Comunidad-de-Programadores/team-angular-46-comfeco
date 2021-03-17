@@ -62,6 +62,51 @@ export class UserRepository {
         }
     }
 
+    async getSocialNetworkUser(id:string, type:any): Promise<any> {
+        const baseSocial = await this.db
+            .collection(this._coleccion)
+            .doc(id)
+            .collection('social_networks')
+            .where('type', '==', type)
+            .get();
+
+        return await this.db.returnDocument(baseSocial);
+    }
+
+    async insigniaReference(insignia:number): Promise<any> {
+        return await this.db.referenceDocumentKey('insignia', 'order', insignia);
+    }
+
+    async insigniaInformation(insignia:number): Promise<any> {
+        const baseInsignia = await this.db
+            .collection('insignia')
+            .where('order', '==', insignia)
+            .get();
+
+        return await this.db.returnDocument(baseInsignia);
+    }
+
+    async addInsigniaUser(id:string, insignia:any): Promise<any> {
+        const baseInsignia = await this.db
+            .collection(this._coleccion)
+            .doc(id)
+            .collection('insignias')
+            .where('insignia', '==', insignia)
+            .get();
+
+        const entityInsignia = await this.db.returnDocument(baseInsignia);
+
+        if(!entityInsignia) {
+            await this.db
+                .collection(this._coleccion)
+                .doc(id)
+                .collection('insignias')
+                .add({insignia, obtain: new Date() });
+        }
+
+        return !entityInsignia;
+    }
+
     async upload(file:any, id:string): Promise<string> {
         return await this.db.storage(`${this._coleccion}/${id}`, file, 'profile.jpg');
     }
@@ -81,18 +126,121 @@ export class UserRepository {
         return await this.db.returnDocuments(baseUsers);
     }
 
+    async allEvents(id:string) {
+        const baseEventsUser = await this.db.collection('users').doc(id).collection('events_day').get();
+        return await this.db.returnDocuments(baseEventsUser);
+    }
+
     async events(id:string): Promise<any> {
         const baseUsers = await this.db.collection(this._coleccion).doc(id).collection('events_day').where('aborted','==', false).orderBy('register','desc').get();
         return await this.db.returnDocuments(baseUsers);
     }
 
-    async recentActivity(id:string): Promise<any> {
-        const [ start, end ] = await this.db.todaysRank();
+    async event(order:number): Promise<any> {
+        const baseEvent = await this.db.collection('events_day').where('order','==', order).get();
+        return await this.db.returnDocument(baseEvent);
+    }
+
+    async addEvent(id:string, event:string): Promise<any> {
+        const eventRef = await this.db.collection('events_day').doc(event);
+        const baseEvent = await this.db.collection(this._coleccion).doc(id).collection('events_day').where('event','==', eventRef).get();
+
+        const data:UserEntity = await this.db.returnDocument(baseEvent);
+        if(data) {
+            return false;
+        }
+        
+        await this.db
+            .collection(this._coleccion)
+            .doc(id)
+            .collection('events_day')
+            .add({event: eventRef, aborted: false, register: new Date() });
+        
+        return true;
+    }
+
+    async leaveEvent(id:string, event:string): Promise<any> {
+        const eventRef = await this.db.collection('events_day').doc(event);
+        const baseEvent = await this.db.collection(this._coleccion).doc(id).collection('events_day').where('event','==', eventRef).get();
+
+        const data:UserEntity = await this.db.returnDocument(baseEvent);
+        if(!data) {
+            return false;
+        }
+        
+        await this.db
+            .collection(this._coleccion)
+            .doc(id)
+            .collection('events_day')
+            .doc(data.id)
+            .update({aborted: true, date_aborted: new Date() });
+        
+        return true;
+    }
+
+    async recentEventsRegisterActivity(id:string): Promise<any> {
+        const [ start, end ] = await this.db.dateRank(15);
         const baseUsers = await this.db.collection(this._coleccion).doc(id).collection('events_day')
             .where('register', '>=', start)
             .where('register', '<=', end)
             .get();
         return await this.db.returnDocuments(baseUsers);
+    }
+
+    async recentEventsLeaveActivity(id:string): Promise<any> {
+        const [ start, end ] = await this.db.dateRank(15);
+        const baseUsers = await this.db.collection(this._coleccion).doc(id).collection('events_day')
+            .where('date_aborted', '>=', start)
+            .where('date_aborted', '<=', end)
+            .get();
+        return await this.db.returnDocuments(baseUsers);
+    }
+
+    async recentInsigniasObtainActivity(id:string): Promise<any> {
+        const [ start, end ] = await this.db.dateRank(15);
+        const baseUsers = await this.db.collection(this._coleccion).doc(id).collection('insignias')
+            .where('obtain', '>=', start)
+            .where('obtain', '<=', end)
+            .get();
+        return await this.db.returnDocuments(baseUsers);
+    }
+
+    async groupById(id:string): Promise<any> {
+        const baseUsers = await this.db.collection('groups').doc(id).get();
+        return await this.db.returnInfoDocument(baseUsers);
+    }
+
+    async joinGroup(idGroup:string, idUser:string): Promise<any> {
+        const groupRef = await this.db.collection('groups').doc(idGroup);
+        await this.db
+            .collection(this._coleccion)
+            .doc(idUser)
+            .update({group: groupRef });
+
+        return true;
+    }
+
+    async leaveGroup(idUser:string): Promise<any> {
+        await this.db
+            .collection(this._coleccion)
+            .doc(idUser)
+            .update({group: this.db.fieldValue().delete() });
+
+        return true;
+    }
+
+    async usersByGroup(order:number): Promise<any> {
+        const groupRef:any = await this.db.referenceDocumentKey('groups', 'order', order);
+        const baseUsers = await this.db.collection(this._coleccion).where('group','==', groupRef).get();
+
+        return await this.db.returnDocuments(baseUsers);
+    }
+
+    async languageByGroup(id:string): Promise<any> {
+        if(!id) return null;
+        const baseLanguage = await this.db.collection('technologies').doc(id).get();
+
+        return await this.db.returnInfoDocument(baseLanguage);
     }
 
     async userSocialNetworks(id:string): Promise<any> {

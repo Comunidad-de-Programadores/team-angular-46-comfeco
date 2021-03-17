@@ -1,6 +1,6 @@
 import { HttpHeaders } from '@angular/common/http';
 import { pipe, of, UnaryFunction, Observable } from 'rxjs';
-import { map, catchError } from 'rxjs/operators';
+import { map, catchError, tap } from 'rxjs/operators';
 
 import { ExpresionRegex, GenericResponse, ResponseService, TokenDto } from '@comfeco/interfaces';
 
@@ -22,11 +22,12 @@ export class ValidatorService {
   static changeErrorAuthResponse(): UnaryFunction<Observable<GenericResponse | TokenDto>, Observable<ResponseService | TokenDto>> {
     return pipe(
       catchError(({error}) => of({ code: error.code, errors: error.errors, success: false })),
-      map((resp:GenericResponse | TokenDto) => ({
+      map((resp:any) => {
+        return {
         success: resp?.errors ? false : true,
         message: resp?.errors ? resp.errors.join(' ') : resp.message,
         ...resp
-      }))
+      }})
     )
   };
 

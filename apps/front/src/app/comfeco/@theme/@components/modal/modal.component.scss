@@ -1,0 +1,49 @@
+:host {
+  display: block;
+}
+
+.modal-back {
+  @apply w-full h-screen fixed top-0 left-0 z-40;
+  background-color: var(--background-modal);
+}
+
+.modal-container {
+  @apply fixed flex flex-col justify-between z-50 rounded-md p-6 shadow-md;
+  top: calc(50% - 115px);
+  left: calc(50% - 187px);
+  background-color: var(--color-white);
+  width: 374px;
+  height: 230px;
+
+  & .modal-container-header {
+    @apply text-xl font-semibold pb-2;
+    border-bottom: 1px solid #e2e2e2;
+
+    & .title {
+      @apply uppercase;
+    }
+
+    & i {
+      position: absolute;
+      right: 20px;
+      top: 13px;
+      font-size: 11px;
+      color: #9a9a9a;
+      cursor: pointer;
+    }
+  }
+
+  & .modal-container-body {
+    @apply mt-4;
+  }
+  
+  & .modal-container-footer {
+    @apply flex justify-between;
+    border-top: 1px solid #e2e2e2;
+    padding-top: 20px;
+  }
+}
+
+.btn {
+  width: 150px;
+}

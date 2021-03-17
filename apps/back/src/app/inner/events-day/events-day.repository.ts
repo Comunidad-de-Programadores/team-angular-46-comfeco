@@ -20,15 +20,15 @@ export class EventsDayRepository {
         }
 
         let events: EventDayDto[] = [];
-
         eventsDocuments.forEach((event:any) => {
             events.push({
                 image: event.image,
                 name: event.name,
                 description: event.description,
+                id: event.id
             });
         });
-
+        
         return events;
     }
 

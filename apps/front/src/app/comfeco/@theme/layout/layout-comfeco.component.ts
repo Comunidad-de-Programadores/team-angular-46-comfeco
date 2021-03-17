@@ -1,6 +1,8 @@
 import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 import { Subscription } from 'rxjs';
+
 import { AlertNotification } from '../@components/alert-notification/alert-notification.interface';
+import { Modal } from '../@components/modal/modal.interface';
 import { LayoutComfecoService } from './layout-comfeco.service';
 
 @Component({
@@ -12,8 +14,10 @@ import { LayoutComfecoService } from './layout-comfeco.service';
 export class LayoutComfecoComponent implements OnInit, AfterViewInit, OnDestroy {
 
   alertsNotification:AlertNotification[];
+  modals:Modal[];
 
   private alertNotificationRef$:Subscription = null;
+  private modalRef$:Subscription = null;
   
   constructor(
     private elementRef: ElementRef,
@@ -24,6 +28,9 @@ export class LayoutComfecoComponent implements OnInit, AfterViewInit, OnDestroy 
     this.alertNotificationRef$ = this.service.alertNotification$.subscribe((resp:AlertNotification[]) => {
       this.alertsNotification = resp;
     });
+    this.modalRef$ = this.service.modal$.subscribe((resp:Modal[]) => {
+      this.modals = resp;
+    });
   }
 
   ngAfterViewInit(){
@@ -32,6 +39,11 @@ export class LayoutComfecoComponent implements OnInit, AfterViewInit, OnDestroy 
 
   ngOnDestroy(): void {
     this.alertNotificationRef$.unsubscribe();
+    this.modalRef$.unsubscribe();
+  }
+
+  onConfirmModal(event:Modal) {
+    this.service.deleteModal(event);
   }
 
 }

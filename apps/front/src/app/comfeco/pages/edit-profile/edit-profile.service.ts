@@ -1,8 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+
 import { AreasDto, CountrysDto, GendersDto, UserChangeInformationDto, UserDto } from '@comfeco/interfaces';
 import { ValidatorService } from '@comfeco/validator';
-import { of } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -23,10 +23,6 @@ export class EditProfileService {
 
   countrys() {
     return this.http.get<CountrysDto>('/countrys').pipe(ValidatorService.changeBasicResponse());
-  }
-
-  userInformation() {
-    return this.http.get<UserDto>('/user/profile').pipe(ValidatorService.changeBasicResponse());
   }
 
   editProfile(information:UserChangeInformationDto, file:any) {

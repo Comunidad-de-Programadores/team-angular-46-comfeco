@@ -1,5 +1,11 @@
 <img
-  [src]="'../../../../assets/img/'+event.image+'.svg'"
+  [src]="'assets/img/'+event.image+'.svg'"
   alt="event"
 >
-<button class="btn-primary">Más información</button>
+<div class="buttons">
+  <button class="btn-tertiary">Más información</button>
+  <button class="btn-primary" (click)="leave()">
+    <i class="icon icon-comfeco-leave"></i>
+    <span>Abandonar</span>
+  </button>
+</div>

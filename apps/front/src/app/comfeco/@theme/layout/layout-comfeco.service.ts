@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Subject } from 'rxjs';
+
 import { TypeAlertNotification } from '../@components/alert-notification/alert-notification.enum';
 import { AlertNotification } from '../@components/alert-notification/alert-notification.interface';
+import { Modal } from '../@components/modal/modal.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -9,10 +11,16 @@ import { AlertNotification } from '../@components/alert-notification/alert-notif
 export class LayoutComfecoService {
 
   alertNotifications:AlertNotification[] = [];
+  modals:Modal[] = [];
   idNotification:number = 0;
+  idModal:number = 0;
 
   private alertNotificationSource = new BehaviorSubject<AlertNotification[]>([]);
   public alertNotification$ = this.alertNotificationSource.asObservable();
+  private modalSource = new BehaviorSubject<Modal[]>([]);
+  public modal$ = this.modalSource.asObservable();
+  
+  modalConfirm$:Subject<Modal> = new Subject();
   
   alertNotification(alert:AlertNotification) {
     this.idNotification++;
@@ -23,7 +31,7 @@ export class LayoutComfecoService {
       time: alert.time || 8000, id
     };
 
-    this.alertNotifications.push(alertNew);
+    this.alertNotifications.unshift(alertNew);
     this.alertNotificationSource.next(this.alertNotifications);
 
     this.deleteAlertNotificationExpired(id, alertNew.time);
@@ -38,6 +46,24 @@ export class LayoutComfecoService {
         }
       });
     }, time+1000);
+  }
+
+  modal(modal:Modal) {
+    this.idModal++;
+    const id:number = this.idModal;
+    this.modals.push({...modal, id});
+    this.modalSource.next(this.modals);
+    return id;
+  }
+
+  deleteModal(modal:Modal) {
+    this.modals.forEach((innerModal:Modal, index:number) => {
+      if(innerModal.id===modal.id) {
+        this.modalConfirm$.next(modal);
+        this.modals.splice(index, 1);
+        this.modalSource.next(this.modals);
+      }
+    });
   }
 
 }

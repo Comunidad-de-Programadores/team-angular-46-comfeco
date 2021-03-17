@@ -1,5 +1,7 @@
-import { ChangeDetectionStrategy, Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, ViewEncapsulation } from '@angular/core';
+
 import { WorkshopAreaDto } from '@comfeco/interfaces';
+
 import { ComponentConfeco } from '../../@core/utils.component';
 
 @Component({
@@ -9,13 +11,9 @@ import { ComponentConfeco } from '../../@core/utils.component';
   encapsulation: ViewEncapsulation.Emulated,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CardWorkshopComponent implements OnInit {
+export class CardWorkshopComponent {
 
   @Input() workshop:WorkshopAreaDto;
-
-  constructor() { }
-
-  ngOnInit(): void {}
 
   goToWorkshop() {
     if(this.workshop.urlWorkshop) {

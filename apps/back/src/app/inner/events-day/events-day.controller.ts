@@ -6,6 +6,7 @@ import { EventsDayDto, GenericResponse } from '@comfeco/interfaces';
 
 import { EventsDayService } from './events-day.service';
 import { AccessGuard } from '../../../config/guard/access.guard';
+import { IdUser } from 'apps/back/src/config/guard/access.decorator';
 
 @UseGuards(AccessGuard)
 @Controller('events_day')
@@ -29,8 +30,8 @@ export class EventsDayController {
     })
     @Get()
     @HttpCode(HttpStatus.OK)
-	async events(@Res() res:Response): Promise<void> {
-        res.send(await this._eventsDayService.events());
+	async events(@Res() res:Response, @IdUser() id:string): Promise<void> {
+        res.send(await this._eventsDayService.events(id));
 	}
 
 }

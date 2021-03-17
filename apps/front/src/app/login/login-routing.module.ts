@@ -36,6 +36,7 @@ const routes: Routes = [
       { path: 'politica-privacidad', component: PrivacyPolicyComponent },
       { path: '', redirectTo: 'login', pathMatch: 'full' },
       { path: '**', redirectTo: 'login' },
+      // { path: '**', pathMatch: 'full', redirectTo: 'login' },
     ],
   },
 ];

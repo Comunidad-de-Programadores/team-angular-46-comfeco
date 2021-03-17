@@ -1,7 +1,8 @@
-import { ChangeDetectionStrategy, Component, Input, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, ViewEncapsulation } from '@angular/core';
+
 import { UserDto } from '@comfeco/interfaces';
+
 import { ComponentConfeco } from '../../@core/utils.component';
-import { SocialNetworkInterface } from './social.interface';
 
 @Component({
   selector: 'comfeco-user-information',
@@ -13,9 +14,14 @@ import { SocialNetworkInterface } from './social.interface';
 export class UserInformationComponent {
   
   @Input() user:UserDto;
+  @Output() onEditProfileEvent: EventEmitter<boolean> = new EventEmitter();
 
   openSocial(link:string) {
     ComponentConfeco.goToLink(link);
+  }
+
+  editInformation() {
+    this.onEditProfileEvent.emit(true);
   }
 
 }

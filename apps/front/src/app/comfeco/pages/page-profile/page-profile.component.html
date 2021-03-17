@@ -1,22 +1,46 @@
 <app-tabs>
-  <app-tab-item icon="icon-comfeco-user" label="Mi perfil">
+  <app-tab-item
+    icon="icon-comfeco-user"
+    label="Mi perfil"
+    id="myProfile"
+  >
     <app-tab-body>
       <comfeco-page-profile-user></comfeco-page-profile-user>
     </app-tab-body>
   </app-tab-item>
-  <app-tab-item icon="icon-comfeco-insignia" label="Insignias">
+  <app-tab-item
+    icon="icon-comfeco-insignia"
+    label="Insignias"
+  >
     <app-tab-body>
-      <comfeco-page-profile-user></comfeco-page-profile-user>
+      <comfeco-page-insignias></comfeco-page-insignias>
     </app-tab-body>
   </app-tab-item>
-  <app-tab-item icon="icon-comfeco-group" label="Grupos">
+  <app-tab-item
+    icon="icon-comfeco-group"
+    label="Grupos"
+  >
     <app-tab-body>
-      <comfeco-page-profile-user></comfeco-page-profile-user>
+      <comfeco-page-groups></comfeco-page-groups>
     </app-tab-body>
   </app-tab-item>
-  <app-tab-item icon="icon-comfeco-event" label="Eventos">
+  <app-tab-item
+    icon="icon-comfeco-event"
+    label="Eventos"
+    id="events"
+  >
     <app-tab-body>
-      <comfeco-page-profile-user></comfeco-page-profile-user>
+      <comfeco-page-events></comfeco-page-events>
+    </app-tab-body>
+  </app-tab-item>
+  <app-tab-item
+    clazz="hidden"
+    icon="icon-comfeco-event"
+    label="Eventos"
+    id="editProfile"
+  >
+    <app-tab-body>
+      <comfeco-edit-profile></comfeco-edit-profile>
     </app-tab-body>
   </app-tab-item>
 </app-tabs>

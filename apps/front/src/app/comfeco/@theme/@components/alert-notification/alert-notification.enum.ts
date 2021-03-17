@@ -1,4 +1,4 @@
 export enum TypeAlertNotification {
-    SUCCESS='SUCCESS',
-    ERROR='ERROR'
+  SUCCESS='SUCCESS',
+  ERROR='ERROR'
 }

@@ -23,6 +23,7 @@ export class ViewLoginComponent implements OnInit {
   errorPassword:string;
   errorConfirm:string;
   Msesion = false;
+
   constructor( private _service: AuthService, private router: Router) { }
 
   ngOnInit(): void {

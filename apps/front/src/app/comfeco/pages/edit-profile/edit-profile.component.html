@@ -6,7 +6,7 @@
       <div class="profile-image__ring">
         <div class="profile-image__container">
           <img
-            [src]="imageSrc || '../../../../assets/img/user_question_card.svg'"
+            [src]="imageSrc || 'assets/img/user_question_card.svg'"
           >
           <label>
             <i class="icon-comfeco-camera"></i>
@@ -136,7 +136,8 @@
               </div>
 
               <div
-                *ngFor="let country of countrys; let i = index"
+                
+                *ngFor="let country of countries; let i = index"
                 class="option"
               >
                 <input
@@ -349,7 +350,7 @@
 
     <section class="profile-actions">
       <div class="form-group-buttons">
-        <button class="btn-secondary" skipLocationChange routerLink="/app/my-profile/information">
+        <button class="btn-secondary" (click)="returnUserInformation()">
           <i class="icon icon-comfeco-return"></i>
           <span>Regresar</span>
         </button>

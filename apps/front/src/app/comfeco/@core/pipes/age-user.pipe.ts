@@ -12,9 +12,9 @@ export class AgeUserPipe implements PipeTransform {
   }
 
   ageUser(date:any) {
-    var birthday = new Date(date);
-    var ageDifMs = Date.now() - birthday.getTime();
-    var ageDate = new Date(ageDifMs);
+    const birthday = new Date(date);
+    const ageDifMs = Date.now() - birthday.getTime();
+    const ageDate = new Date(ageDifMs);
     return Math.abs(ageDate.getUTCFullYear() - 1970);
   }
 

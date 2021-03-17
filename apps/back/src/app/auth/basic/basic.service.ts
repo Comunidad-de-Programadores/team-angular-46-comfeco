@@ -59,9 +59,9 @@ export class BasicService {
         }
 
         await this._userRepository.registerUserEmail(registerDto);
-
+        
         baseUser = await this._userRepository.userExists(user);
-
+        
         return await this.updateAndCreateToken(baseUser, AccountType.EMAIL);
     }
 

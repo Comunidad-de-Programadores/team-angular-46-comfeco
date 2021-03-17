@@ -39,6 +39,12 @@ import { SponsorsController } from './sponsors/sponsors.controller';
 import { SubmenuUserProfileController } from './submenu-user-profile/submenu-user-profile.controller';
 import { UserController } from './user/user.controller';
 import { WorkshopsController } from './workshops/workshops.controller';
+import { GroupsController } from './groups/groups.controller';
+import { GroupsService } from './groups/groups.service';
+import { GroupsRepository } from './groups/groups.repository';
+import { TechnologiesController } from './technologies/technologies.controller';
+import { TechnologiesService } from './technologies/technologies.service';
+import { TechnologiesRepository } from './technologies/technologies.repository';
 
 const Controllers = [
     CommunitiesController,
@@ -47,10 +53,12 @@ const Controllers = [
     EventsDayController,
     ExhibitorsController,
     GenderController,
+    GroupsController,
     InsigniaController,
     MenuController,
     SponsorsController,
     SubmenuUserProfileController,
+    TechnologiesController,
     UserController,
     WorkshopsController
 ];
@@ -62,17 +70,19 @@ const Services = [
     EventsDayService, EventsDayRepository,
     ExhibitorsService, ExhibitorsRepository,
     GenderService, GenderRepository,
+    GroupsService, GroupsRepository,
     InsigniaService, InsigniaRepository,
     MenuService, MenuRepository,
     SponsorsService, SponsorsRepository,
     SubmenuUserProfileService, SubmenuUserProfileRepository,
+    TechnologiesService, TechnologiesRepository,
     UserService, UserRepository,
     WorkshopsService, WorkshopsRepository
 ];
 
 @Module({
     controllers: [
-        ...Controllers
+        ...Controllers,
     ],
     imports: [
         HttpModule,
@@ -82,7 +92,7 @@ const Services = [
     ],
     providers: [
         ConfigService,
-        ...Services
+        ...Services,
     ],
     exports: [
         UserRepository

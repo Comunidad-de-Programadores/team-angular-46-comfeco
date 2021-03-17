@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { ActivityTimePipe } from './@core/pipes/activity-time.pipe';
 import { AgeUserPipe } from './@core/pipes/age-user.pipe';
 import { SocialNetworkPipe } from './@core/pipes/social-network.pipe';
 
@@ -8,6 +9,10 @@ import { AuthGuard } from './guards/auth.guard';
 import { ArticleContainerComponent } from './pages/article-container/article-container.component';
 import { CardCommunityComponent } from './pages/card-community/card-community.component';
 import { CardCreatorComponent } from './pages/card-creator/card-creator.component';
+import { CardEventComponent } from './pages/card-event/card-event.component';
+import { CardGroupComponent } from './pages/card-group/card-group.component';
+import { CardInsigniaComponent } from './pages/card-insignia/card-insignia.component';
+import { CardMyGroupComponent } from './pages/card-my-group/card-my-group.component';
 import { CardWorkshopComponent } from './pages/card-workshop/card-workshop.component';
 import { ComboComponent } from './pages/combo/combo.component';
 import { CommunityComponent } from './pages/community/community.component';
@@ -17,6 +22,9 @@ import { ExhibitorComponent } from './pages/exhibitor/exhibitor.component';
 import { PageCommunitiesComponent } from './pages/page-communities/page-communities.component';
 import { PageCreatorsComponent } from './pages/page-creators/page-creators.component';
 import { PageDashboardComponent } from './pages/page-dashboard/page-dashboard.component';
+import { PageEventsComponent } from './pages/page-events/page-events.component';
+import { PageGroupsComponent } from './pages/page-groups/page-groups.component';
+import { PageInsigniasComponent } from './pages/page-insignias/page-insignias.component';
 import { PageProfileUserComponent } from './pages/page-profile-user/page-profile-user.component';
 import { PageProfileComponent } from './pages/page-profile/page-profile.component';
 import { PageWorkshopsComponent } from './pages/page-workshops/page-workshops.component';
@@ -24,7 +32,6 @@ import { SliderComponent } from './pages/slider/slider.component';
 import { SponsorComponent } from './pages/sponsor/sponsor.component';
 import { TabBodyComponent } from './pages/tabs/tab-body.component';
 import { TabItemComponent } from './pages/tabs/tab-item.component';
-import { TabLabelComponent } from './pages/tabs/tab-label.component';
 import { TabsComponent } from './pages/tabs/tabs.component';
 import { UserEventComponent } from './pages/user-event/user-event.component';
 import { UserEventsComponent } from './pages/user-events/user-events.component';
@@ -40,10 +47,13 @@ export const Components = [
 
   TabBodyComponent,
   TabItemComponent,
-  TabLabelComponent,
   TabsComponent,
+  
+  PageProfileComponent,
+  
 
   SocialNetworkPipe,
+  ActivityTimePipe,
   AgeUserPipe,
 
   UserEventComponent,
@@ -51,12 +61,17 @@ export const Components = [
   UserInformationComponent,
   UserInsigniasComponent,
   UserRecentActivityComponent,
+
   PageProfileUserComponent,
   EditProfileComponent,
 
   CardCommunityComponent,
   CardWorkshopComponent,
   CardCreatorComponent,
+  CardInsigniaComponent,
+  CardEventComponent,
+  CardMyGroupComponent,
+  CardGroupComponent,
   ArticleContainerComponent,
   CommunityComponent,
   CounterdownComponent,
@@ -70,7 +85,9 @@ export const Components = [
   PageCommunitiesComponent,
   PageWorkshopsComponent,
   PageCreatorsComponent,
-  PageProfileComponent,
+  PageInsigniasComponent,
+  PageEventsComponent,
+  PageGroupsComponent
 ];
 
 const routes: Routes = [

@@ -7,7 +7,6 @@ import { SocialAuthService, GoogleLoginProvider, FacebookLoginProvider, SocialUs
 
 import { ChangePasswordDto, RecoverAccountDto, ResponseService, GenericResponse, RegisterDto, TokenDto, GoogleLoginDto, FacebookLoginDto, LoginDto } from '@comfeco/interfaces';
 
-import { environment } from '../../../../environments/environment';
 import { ValidatorService } from '@comfeco/validator';
 import { AuthUserService } from './authUser.service';
 
@@ -16,7 +15,7 @@ import { AuthUserService } from './authUser.service';
 })
 export class AuthService {
 
-  urlAuth:string = `/auth`;
+  urlAuth:string = '/auth';
   socialUser: SocialUser;
   userLogged: SocialUser;
   isLogged: boolean;
@@ -68,7 +67,6 @@ export class AuthService {
      return this.user;
    }
 
-
   public accessGoogle() {
     const url:string = `${this.urlAuth}/google/verify`;
 
@@ -86,7 +84,6 @@ export class AuthService {
         ValidatorService.changeErrorAuthResponse()
       );
   }
-
   public accessFacebook() {
     const url:string = `${this.urlAuth}/facebook/verify`;
 

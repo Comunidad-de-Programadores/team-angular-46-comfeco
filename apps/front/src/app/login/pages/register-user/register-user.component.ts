@@ -119,15 +119,6 @@ export class RegisterUserComponent implements OnInit, OnDestroy {
       });
   }
 
-  logout() {
-    this._service.logout()
-      .subscribe(
-        resp => {
-          console.log('logout', resp);
-        }
-      );
-  }
-
   cleanErrors() {
     this.errorUser = '';
     this.errorEmail = '';
