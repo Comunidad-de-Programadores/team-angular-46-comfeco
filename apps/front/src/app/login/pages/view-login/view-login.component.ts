@@ -12,7 +12,8 @@ export class ViewLoginComponent implements OnInit {
 
   loginForm =  new FormGroup({
     email: new FormControl(''),
-    password: new FormControl("")
+    password: new FormControl(''),
+    sesion: new FormControl(false)
   });
 
   procesingRequest:boolean;
@@ -21,6 +22,8 @@ export class ViewLoginComponent implements OnInit {
   errorEmail:string;
   errorPassword:string;
   errorConfirm:string;
+  Msesion = false;
+
   constructor( private _service: AuthService, private router: Router) { }
 
   ngOnInit(): void {
@@ -28,19 +31,21 @@ export class ViewLoginComponent implements OnInit {
   }
 
   async  onlogin(){
-    const { email, password,  } = this.loginForm.value;
-    console.log('email', email, password)
+    const { email, password, sesion } = this.loginForm.value;
+    console.log('email', email, password, sesion)
     this.procesingRequest = true;
-    this._service.login(email, password)
+    this._service.login(email, password, sesion)
       .subscribe((resp:any) => {
-        if(!resp.success) {
+
+        console.log('respuesta',resp)
+        if(resp.code != 200){
           this.errorResponse = resp.message;
         } else {
           this.errorResponse = 'Usuario correcto Ingresando';
           this.router.navigate(['/app/dashboard']);
         }
         this.procesingRequest = false;
-    });
+    },(err)=>{console.log(err)});
 }
 
 registerFacebook() {
@@ -51,6 +56,7 @@ registerFacebook() {
       if(!resp.success) {
         this.errorResponse = resp.message;
       } else {
+        this.router.navigate(['/app/dashboard']);
         this.errorResponse = 'Usuario registrado exitosamente';
       }
 
@@ -67,6 +73,7 @@ registerGoogle() {
       if(!resp.success) {
         this.errorResponse = resp.message;
       } else {
+        this.router.navigate(['/app/dashboard']);
         this.errorResponse = 'Usuario registrado exitosamente';
       }
 

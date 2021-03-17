@@ -1,5 +1,6 @@
 import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { Router } from '@angular/router';
 import { ValidateComponent } from '@comfeco/validator';
 import { SocialAuthService, SocialUser } from 'angularx-social-login';
 import { Subscription } from 'rxjs';
@@ -32,11 +33,12 @@ export class RegisterUserComponent implements OnInit, OnDestroy {
 
   user: SocialUser;
   loggedIn: boolean;
-  
+
   constructor(
     private fb: FormBuilder,
     private authService: SocialAuthService,
-    private _service: AuthService ) { }
+    private _service: AuthService,
+    private _route: Router ) { }
 
     suscriber$:Subscription;
 
@@ -74,10 +76,12 @@ export class RegisterUserComponent implements OnInit, OnDestroy {
       .subscribe((resp:any) => {
         if(!resp.success) {
           this.errorResponse = resp.message;
+
         } else {
+          this._route.navigate(['/app/dashboard']);
           this.errorResponse = 'Usuario registrado exitosamente';
         }
-        
+
         this.procesingRequest = false;
       });
   }
@@ -90,9 +94,10 @@ export class RegisterUserComponent implements OnInit, OnDestroy {
         if(!resp.success) {
           this.errorResponse = resp.message;
         } else {
+          this._route.navigate(['/app/dashboard']);
           this.errorResponse = 'Usuario registrado exitosamente';
         }
-        
+
         this.procesingRequest = false;
       });
   }
@@ -106,9 +111,10 @@ export class RegisterUserComponent implements OnInit, OnDestroy {
         if(!resp.success) {
           this.errorResponse = resp.message;
         } else {
+          this._route.navigate(['/app/dashboard']);
           this.errorResponse = 'Usuario registrado exitosamente';
         }
-        
+
         this.procesingRequest = false;
       });
   }

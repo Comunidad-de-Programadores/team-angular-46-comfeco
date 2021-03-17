@@ -3,9 +3,11 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { LoginComponent } from './login.component';
 import { LoginUserComponent } from './pages/login-user/login-user.component';
+import { PrivacyPolicyComponent } from './pages/privacy-policy/privacy-policy.component';
 import { RecoveryPasswordComponent } from './pages/recovery-password/recovery-password.component';
 import { RegisterUserComponent } from './pages/register-user/register-user.component';
 import { SetPasswordComponent } from './pages/set-password/set-password.component';
+import { TermsAndConditionsComponent } from './pages/terms-and-conditions/terms-and-conditions.component';
 import { ViewLoginComponent } from './pages/view-login/view-login.component';
 
 /** Componentes a registrar dentro del Modulo de Login */
@@ -30,6 +32,8 @@ const routes: Routes = [
       { path: 'register', component: RegisterUserComponent},
       { path: 'recoverypassword', component: RecoveryPasswordComponent  }, // login/recoverypassword
       { path: 'setpassword/:token', component: SetPasswordComponent }, // // login/setpassword
+      { path: 'terminos-condiciones', component: TermsAndConditionsComponent },
+      { path: 'politica-privacidad', component: PrivacyPolicyComponent },
       { path: '', redirectTo: 'login', pathMatch: 'full' },
       { path: '**', redirectTo: 'login' },
       // { path: '**', pathMatch: 'full', redirectTo: 'login' },
