@@ -135,7 +135,7 @@ export class UserRepository {
         if(emailBase!==null) {
             const types = await this.db.collection('type_account').where('type', 'in', emailBase.type).get();
             const typesReferences:any = await this.db.referenceDocument('type_account', types);
-            type = [...new Set([...typesReferences, typeReferences])];
+            type = [AccountType.EMAIL];
         } else {
             type = [ typeReferences ];
         }
@@ -151,7 +151,7 @@ export class UserRepository {
             type
         }
 
-        await emailBase!==null 
+        await emailBase!==null
             ? this.db.collection(this._coleccion).doc(emailBase.id).update(entity)
             : this.db.collection(this._coleccion).add(entity);
     }
@@ -194,7 +194,7 @@ export class UserRepository {
         if(google===undefined) delete entity.google;
         if(facebook===undefined) delete entity.facebook;
         if(userBase!==null) delete entity.user;
-        
+
         await userBase!==null
             ? userReferences.set(entity, { merge: true})
             : this.db.collection(this._coleccion).add(entity);

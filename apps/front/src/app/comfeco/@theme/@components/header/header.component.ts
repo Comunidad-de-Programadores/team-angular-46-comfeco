@@ -25,9 +25,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
   showProfileOptions = false;
 
   options:MenuDto[] = [];
-  
+
   private photoUrlRef$:Subscription = null;
-  
+
   constructor(
     private _router: Router,
     private _domref: ElementRef,
@@ -60,7 +60,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
           }
         }
       );
-    
+
     this.service.user()
       .subscribe(
         (resp:any) => {
@@ -78,7 +78,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.photoUrlRef$.unsubscribe();
   }
-  
+
   toggleProfileOptions() {
     this.showProfileOptions = !this.showProfileOptions;
   }
@@ -88,7 +88,12 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   logout() {
-    this.service.logout().subscribe();
+    this.service.logout().subscribe(resp =>{
+      if(resp.success){
+        localStorage.clear();
+        this._router.navigate(['/login/login']);
+      }
+    });
     this.toggleProfileOptions();
   }
 
