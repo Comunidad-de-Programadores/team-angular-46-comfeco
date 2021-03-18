@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { AuthGuard } from './@core/guards/auth.guard';
 import { ActivityTimePipe } from './@core/pipes/activity-time.pipe';
 import { AgeUserPipe } from './@core/pipes/age-user.pipe';
 import { SocialNetworkPipe } from './@core/pipes/social-network.pipe';
 
 import { ComfecoComponent } from './comfeco.component';
-import { AuthGuard } from './@core/guards/auth.guard';
 import { ArticleContainerComponent } from './pages/article-container/article-container.component';
 import { CardCommunityComponent } from './pages/card-community/card-community.component';
 import { CardCreatorComponent } from './pages/card-creator/card-creator.component';
@@ -89,8 +89,12 @@ export const Components = [
 ];
 
 const routes: Routes = [
-  { path: '', component: ComfecoComponent, canActivate: [AuthGuard],
-  children: [
+  {
+    path: '',
+    component: ComfecoComponent,
+    canLoad: [AuthGuard],
+    canActivate: [AuthGuard],
+    children: [
       { path: 'dashboard', component: PageDashboardComponent }, // app/dashboard
       { path: 'communities', component: PageCommunitiesComponent }, // app/communities
       { path: 'workshops', component: PageWorkshopsComponent }, // app/workshops

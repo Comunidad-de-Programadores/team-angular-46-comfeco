@@ -30,7 +30,8 @@ export const Components = [
 
 /** Rutas del Modulo de Login */
 const routes: Routes = [
-  { path: '', component: AuthComponent, children: [
+  {
+    path: '', component: AuthComponent, children: [
       { path: 'login', component: LoginUserComponent }, // auth/login
       { path: 'register', component: RegisterUserComponent}, // auth/register
       { path: 'recoverypassword', component: RecoveryPasswordComponent  }, // auth/recoverypassword

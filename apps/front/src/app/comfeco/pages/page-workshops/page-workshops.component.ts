@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { SpinnerService } from '@comfeco/api';
 import { AreaWorkshopDto } from '@comfeco/interfaces';
 import { PageWorkshopsService } from './page-workshops.service';
 
@@ -14,9 +15,13 @@ export class PageWorkshopsComponent implements OnInit {
   
   messageErrorWorkshops:string;
 
-  constructor(private _service: PageWorkshopsService) { }
+  constructor(
+    private _service: PageWorkshopsService,
+    private spinner: SpinnerService
+  ) {}
 
   ngOnInit(): void {
+    this.spinner.show();
     this._service.workshops()
       .subscribe(
         (resp:any) => {
@@ -27,6 +32,7 @@ export class PageWorkshopsComponent implements OnInit {
           } else {
             this.messageErrorWorkshops = resp.message;
           }
+          this.spinner.hidde();
         }
       );
   }

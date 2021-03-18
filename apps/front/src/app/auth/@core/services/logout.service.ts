@@ -12,6 +12,10 @@ export class LogoutService {
 
   urlAuth:string = '/auth';
 
+  isActiveRefreshTokenTimeout:boolean = false;
+
+  private refreshTokenTimeout;
+
   constructor(
     private http: HttpClient,
   ) {}
@@ -43,15 +47,16 @@ export class LogoutService {
     );
   }
 
-  private refreshTokenTimeout;
-
   startRefreshTokenTimer() {
     const miliseconds = 14 * 60 * 1000;
+    this.isActiveRefreshTokenTimeout = true;
     this.refreshTokenTimeout = setTimeout(() => this.refreshToken().subscribe(), miliseconds);
   }
 
   private _stopRefreshTokenTimer() {
     clearTimeout(this.refreshTokenTimeout);
+    this.isActiveRefreshTokenTimeout = false;
+    localStorage.clear();
   }
 
 }

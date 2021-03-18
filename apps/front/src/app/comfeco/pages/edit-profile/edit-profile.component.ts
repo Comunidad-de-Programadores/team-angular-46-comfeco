@@ -107,13 +107,16 @@ export class EditProfileComponent implements OnInit, OnDestroy {
 
   subscriptionUserInformation() {
     this.userInformationSubscription$ = this._serviceProfile.userInformation$.subscribe(userChanged => {
+      this.spinner.show();
       this.completeAllKnowledgeAreas(userChanged);
       
       this.user = userChanged;
+      this.spinner.hidde();
     });
   }
 
   completeGenders() {
+    this.spinner.show();
     this._service.genders()
       .subscribe(
         (resp:any) => {
@@ -124,11 +127,13 @@ export class EditProfileComponent implements OnInit, OnDestroy {
           } else {
             this.notification.alertNotification({message: resp.message});
           }
+          this.spinner.hidde();
         }
       );
   }
 
   completeCountries() {
+    this.spinner.show();
     this._service.countrys()
       .subscribe(
         (resp:any) => {
@@ -139,11 +144,13 @@ export class EditProfileComponent implements OnInit, OnDestroy {
           } else {
             this.notification.alertNotification({message: resp.message});
           }
+          this.spinner.hidde();
         }
       );
   }
 
   completeKnowledgeAreas() {
+    this.spinner.show();
     this._service.knowledgeArea()
       .subscribe(
         (resp:any) => {
@@ -154,11 +161,13 @@ export class EditProfileComponent implements OnInit, OnDestroy {
           } else {
             this.notification.alertNotification({message: resp.message});
           }
+          this.spinner.hidde();
         }
       );
   }
 
   completeAllKnowledgeAreas(dataUser:UserDto) {
+    this.spinner.show();
     this._service.knowledgeArea()
       .subscribe(
         (resp:any) => {
@@ -173,6 +182,7 @@ export class EditProfileComponent implements OnInit, OnDestroy {
           } else {
             this.notification.alertNotification({message: resp.message});
           }
+          this.spinner.hidde();
         }
       );
   }
@@ -243,7 +253,7 @@ export class EditProfileComponent implements OnInit, OnDestroy {
   }
   
   editInformation() {
-    this.cleanErrors();
+    this._cleanErrors();
 
     if(this.editForm.invalid) {
       this.errorPassword = this.editForm.controls?.password?.errors?.error[0];
@@ -336,14 +346,6 @@ export class EditProfileComponent implements OnInit, OnDestroy {
     }
   }
 
-  cleanErrors() {
-    this.errorUser = '';
-    this.errorEmail = '';
-    this.errorPassword = '';
-    this.errorNewPassword = '';
-    this.errorConfirmPassword = '';
-  }
-
   returnUserInformation() {
     let editRef:HTMLElement = document.getElementById('myProfile') as HTMLElement;
     editRef.click();
@@ -352,6 +354,14 @@ export class EditProfileComponent implements OnInit, OnDestroy {
       photoUrl: `${this.user.photoUrl}&id=${(new Date()).getTime()}`
     }
     this._serviceProfile.userInformation$.next(newUser);
+  }
+
+  private _cleanErrors() {
+    this.errorUser = '';
+    this.errorEmail = '';
+    this.errorPassword = '';
+    this.errorNewPassword = '';
+    this.errorConfirmPassword = '';
   }
 
 }

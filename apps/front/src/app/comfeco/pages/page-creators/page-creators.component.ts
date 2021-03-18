@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { SpinnerService } from '@comfeco/api';
 
 import { ExhibitorDto } from '@comfeco/interfaces';
 
@@ -16,9 +17,13 @@ export class PageCreatorsComponent implements OnInit {
   
   messageErrorCreators:string;
 
-  constructor(private _service: PageCreatorsService) { }
+  constructor(
+    private _service: PageCreatorsService,
+    private spinner: SpinnerService
+  ) {}
 
   ngOnInit(): void {
+    this.spinner.show();
     this._service.exhibitors()
       .subscribe(
         (resp:any) => {
@@ -29,6 +34,7 @@ export class PageCreatorsComponent implements OnInit {
           } else {
             this.messageErrorCreators = resp.message;
           }
+          this.spinner.hidde();
         }
       );
   }

@@ -5,6 +5,7 @@ import { AreaWorkshopDto, ComboInterface, CommunityDto, DayEvent, EventDto, Know
 
 import { DashboardService } from './page-dashboard.service';
 import { takeUntil } from 'rxjs/operators';
+import { SpinnerService } from '@comfeco/api';
 
 @Component({
   selector: 'comfeco-page-dashboard',
@@ -26,9 +27,13 @@ export class PageDashboardComponent implements OnInit, OnDestroy {
 
   unsubscribe$ = new Subject<void>();
 
-  constructor(private _service: DashboardService) { }
+  constructor(
+    private _service: DashboardService,
+    private spinner: SpinnerService
+  ) {}
 
   ngOnInit(): void {
+    this.spinner.show();
     this._service.communities()
       .subscribe(
         (resp:any) => {
@@ -39,9 +44,11 @@ export class PageDashboardComponent implements OnInit, OnDestroy {
           } else {
             this.messageErrorCommunities = resp.message;
           }
+          this.spinner.hidde();
         }
       );
 
+    this.spinner.show();
     this._service.knowledgeArea()
       .subscribe(
         (resp:any) => {
@@ -56,10 +63,12 @@ export class PageDashboardComponent implements OnInit, OnDestroy {
                 this.comboKnowledgeArea.push(combo);
               });
             }
+            this.spinner.hidde();
           }
         }
       );
 
+    this.spinner.show();
     this._service.eventInfo()
       .subscribe(
         (resp:any) => {
@@ -67,6 +76,7 @@ export class PageDashboardComponent implements OnInit, OnDestroy {
             this.eventInfo = {...resp};
             this._countdown(new Date(resp.dateEvent));
           }
+          this.spinner.hidde();
         }
       );
   }
@@ -77,6 +87,7 @@ export class PageDashboardComponent implements OnInit, OnDestroy {
   }
 
   changeWorkshops(idArea:string) {
+    this.spinner.show();
     this._service.workshops(idArea)
       .subscribe(
         (resp:any) => {
@@ -89,6 +100,7 @@ export class PageDashboardComponent implements OnInit, OnDestroy {
           } else {
             this.messageErrorWorkshops = resp.message;
           }
+          this.spinner.hidde();
         }
       );
   }

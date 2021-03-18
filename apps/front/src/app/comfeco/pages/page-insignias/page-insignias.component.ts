@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { SpinnerService } from '@comfeco/api';
 
 import { InsigniaDto } from '@comfeco/interfaces';
 
@@ -17,10 +18,12 @@ export class PageInsigniasComponent implements OnInit {
   
   constructor(
     private _service: PageInsigniasService,
-    private notification: LayoutComfecoService
+    private notification: LayoutComfecoService,
+    private spinner: SpinnerService,
   ) {}
 
   ngOnInit(): void {
+    this.spinner.show();
     this._service.insignias()
       .subscribe(
         (resp:any) => {
@@ -29,6 +32,7 @@ export class PageInsigniasComponent implements OnInit {
           } else {
             this.notification.alertNotification({message: resp.message});
           }
+          this.spinner.hidde();
         }
       );
   }

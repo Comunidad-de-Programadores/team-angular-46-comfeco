@@ -80,6 +80,7 @@ export class PageGroupsComponent implements OnInit, OnDestroy {
   }
 
   formChanges() {
+    this.spinner.show();
     this._service.userGroup()
       .subscribe(
         (resp:any) => {
@@ -88,9 +89,11 @@ export class PageGroupsComponent implements OnInit, OnDestroy {
           } else {
             this.userGroupError = resp.message;
           }
+          this.spinner.hidde();
         }
       );
 
+    this.spinner.show();
     this.groupForm.get('language')?.valueChanges
       .subscribe( language => {
         this.spinner.show();
@@ -98,6 +101,7 @@ export class PageGroupsComponent implements OnInit, OnDestroy {
           .subscribe((resp:any) => this.refreshGroups(resp));
     });
     
+    this.spinner.show();
     this.groupForm.get('search')?.valueChanges
       .subscribe( search => {
         if(!!search) {
@@ -120,11 +124,13 @@ export class PageGroupsComponent implements OnInit, OnDestroy {
 
   subscriptionMyGroup() {
     this.myGroupSubscription$ = this.myGroup$.subscribe(groupChanged => {
+      this.spinner.show();
       this.userGroup = groupChanged;
       this.userGroupError = '';
       if(this.userGroup===null) {
         this.userGroupError = 'Aún no haces parte de ningún grupo';
       }
+      this.spinner.hidde();
     });
 
     this.myGroupMessageSubscription$ = this.myGroupMessage$.subscribe(messageGroupChanged => {
@@ -134,11 +140,14 @@ export class PageGroupsComponent implements OnInit, OnDestroy {
 
   subscriptionAllGroups() {
     this.allGroupsSubscription$ = this.allGroups$.subscribe(groupsChanged => {
+      this.spinner.show();
       this.allGroups = groupsChanged;
+      this.spinner.hidde();
     });
   }
 
   completeMyGroup() {
+    this.spinner.show();
     this._service.userGroup()
       .subscribe(
         (resp:any) => {
@@ -147,11 +156,13 @@ export class PageGroupsComponent implements OnInit, OnDestroy {
           } else {
             this.userGroupError = resp.message;
           }
+          this.spinner.hidde();
         }
       );
   }
 
   completeGroups() {
+    this.spinner.show();
     this._service.allGroups()
       .subscribe(
         (resp:any) => {
@@ -160,11 +171,13 @@ export class PageGroupsComponent implements OnInit, OnDestroy {
           } else {
             this.notification.alertNotification({message: resp.message});
           }
+          this.spinner.hidde();
         }
       );
   }
 
   completeLanguages() {
+    this.spinner.show();
     this._service.languages()
       .subscribe(
         (resp:any) => {
@@ -173,6 +186,7 @@ export class PageGroupsComponent implements OnInit, OnDestroy {
           } else {
             this.notification.alertNotification({message: resp.message});
           }
+          this.spinner.hidde();
         }
       );
   }

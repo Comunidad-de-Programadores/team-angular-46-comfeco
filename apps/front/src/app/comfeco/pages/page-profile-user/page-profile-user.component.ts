@@ -65,12 +65,15 @@ export class PageProfileUserComponent implements OnInit, OnDestroy {
   }
 
   subscriptionUserInformation() {
+    this.spinner.show();
     this.userInformationSubscription$ = this._serviceProfile.userInformation$.subscribe(userChanged => {
       this.user = userChanged;
+      this.spinner.hidde();
     });
   }
 
   subscriptionInsignias() {
+    this.spinner.show();
     this.insigniasSubscription$ = this._serviceProfile.userInsignias$.subscribe(insigniasChanged => {
       if(!!this.insignias) {
         let newInsignias:InsigniaDto[] = [];
@@ -88,20 +91,24 @@ export class PageProfileUserComponent implements OnInit, OnDestroy {
       } else {
         this.insignias = insigniasChanged;
       }
+      this.spinner.hidde();
     });
   }
 
   subscriptionEvents() {
     this.addedEventsSubscription$ = this._serviceProfile.addedEvent$.subscribe(eventsChanged => {
+      this.spinner.show();
       if(!this.events) {
         this.events = [];
       }
       
       this.events = [ ...this.events, eventsChanged ];
       this.completeRecentActivity();
+      this.spinner.hidde();
     });
     
     this.deletedEventsSubscription$ = this._serviceProfile.deletedEvent$.subscribe(eventsChanged => {
+      this.spinner.show();
       let newEvents:EventDayDto[] = [];
       for(let i=0; i<this.events.length; i++) {
         if(this.events[i].id!==eventsChanged.id) {
@@ -115,10 +122,12 @@ export class PageProfileUserComponent implements OnInit, OnDestroy {
 
       this.events = newEvents;
       this.completeRecentActivity();
+      this.spinner.hidde();
     });
   }
 
   completeUserInformation() {
+    this.spinner.show();
     this._serviceProfile.userInformation()
       .subscribe(
         (resp:any) => {
@@ -127,11 +136,13 @@ export class PageProfileUserComponent implements OnInit, OnDestroy {
           } else {
             this.notification.alertNotification({message: resp.message});
           }
+          this.spinner.hidde();
         }
       );
   }
 
   completeAllInsignias() {
+    this.spinner.show();
     this._service.allInsignias()
       .subscribe(
         (resp:any) => {
@@ -140,11 +151,13 @@ export class PageProfileUserComponent implements OnInit, OnDestroy {
           } else {
             this.notification.alertNotification({message: resp.message});
           }
+          this.spinner.hidde();
         }
       );
   }
 
   completeRecentActivity() {
+    this.spinner.show();
     this._service.recentActivity()
       .subscribe(
         (resp:any) => {
@@ -153,11 +166,14 @@ export class PageProfileUserComponent implements OnInit, OnDestroy {
           if(!resp.success) {
             this.messageActivities = resp.message;
           }
+
+          this.spinner.hidde();
         }
       );
   }
 
   completeUserEvents() {
+    this.spinner.show();
     this._service.userEvents()
       .subscribe(
         (resp:any) => {
@@ -166,6 +182,7 @@ export class PageProfileUserComponent implements OnInit, OnDestroy {
           } else {
             this.messageErrorEvents = resp.message;
           }
+          this.spinner.hidde();
         }
       );
   }
@@ -231,12 +248,14 @@ export class PageProfileUserComponent implements OnInit, OnDestroy {
 
   onEditProfileEvent(edit:boolean) {
     if(edit) {
+      this.spinner.show();
       let editRef:HTMLElement = document.getElementById('editProfile') as HTMLElement;
       editRef.click();
       const newUser:UserDto = {
         ...this.user
       }
       this._serviceProfile.userInformation$.next(newUser);
+      this.spinner.hidde();
     }
   }
 }

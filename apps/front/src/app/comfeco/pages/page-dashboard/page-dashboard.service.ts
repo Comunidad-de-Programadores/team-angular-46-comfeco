@@ -53,13 +53,19 @@ export class DashboardService {
             secondsNew = 59;
 
             minutesNew = this._evaluateChangeTime(minutesNew, 59, hoursNew);
-
+            
             if(minutesNew===59) {
               hoursNew = this._evaluateChangeTime(hoursNew, 23, daysNew);
             }
-
+            
             if(hoursNew===23) {
               daysNew = this._evaluateChangeTime(daysNew, 0, 0);
+            }
+            
+            if(daysNew!==0 && minutesNew===0 && hoursNew===0) {
+              daysNew = this._evaluateChangeTime(daysNew, 0, 365);
+              hoursNew = this._evaluateChangeTime(hoursNew, 23, daysNew, 23);
+              minutesNew = this._evaluateChangeTime(minutesNew, 59, hoursNew);
             }
 
             if(daysNew===0) {
@@ -89,7 +95,7 @@ export class DashboardService {
     );
   }
 
-  private _evaluateChangeTime(time:number, reset:number, predecessor:number) {
+  private _evaluateChangeTime(time:number, reset:number, predecessor:number, special:number=0) {
     let timeNew:number;
 
     if(time-1!==-1) {
@@ -97,7 +103,7 @@ export class DashboardService {
     } else if(predecessor!==0) {
       timeNew = reset;
     } else {
-      timeNew = predecessor;
+      timeNew = special!==0 ? special : predecessor;
     }
 
     return timeNew;

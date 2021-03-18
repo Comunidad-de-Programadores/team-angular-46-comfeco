@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { SpinnerService } from '@comfeco/api';
 
 import { CommunityDto } from '@comfeco/interfaces';
 
@@ -16,9 +17,13 @@ export class PageCommunitiesComponent implements OnInit {
   
   messageErrorCommunities:string;
   
-  constructor(private _service: PageCommunitiesService) { }
+  constructor(
+    private _service: PageCommunitiesService,
+    private spinner: SpinnerService
+  ) {}
 
   ngOnInit(): void {
+    this.spinner.show();
     this._service.communities()
       .subscribe(
         (resp:any) => {
@@ -29,6 +34,7 @@ export class PageCommunitiesComponent implements OnInit {
           } else {
             this.messageErrorCommunities = resp.message;
           }
+          this.spinner.hidde();
         }
       );
   }

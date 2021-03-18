@@ -55,7 +55,9 @@ export class PageEventsComponent implements OnInit, OnDestroy {
 
   subscriptionEvents() {
     this.eventsSubscription$ = this.events$.subscribe(eventsChanged => {
+      this.spinner.show();
       this.events = eventsChanged;
+      this.spinner.hidde();
     });
   }
 
@@ -89,6 +91,7 @@ export class PageEventsComponent implements OnInit, OnDestroy {
   }
 
   completeEvents() {
+    this.spinner.show();
     this._service.eventsData()
       .subscribe(
         (resp:any) => {
@@ -97,6 +100,7 @@ export class PageEventsComponent implements OnInit, OnDestroy {
           } else {
             this.notification.alertNotification({message: resp.message});
           }
+          this.spinner.hidde();
         }
       );
   }
