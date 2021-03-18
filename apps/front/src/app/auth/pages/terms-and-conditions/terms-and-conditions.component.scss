@@ -1,3 +1,62 @@
 :host {
   display: block;
 }
+
+section {
+  @apply my-14;
+}
+
+.title {
+  @apply text-center text-3xl;
+}
+
+.container-terms {
+  @apply max-w-5xl mx-auto mt-10 mb-40;
+}
+
+h1,
+h3,
+h4 {
+  @apply font-bold;
+}
+
+h3,
+h4 {
+  @apply mt-10 mb-6;
+}
+
+h4:before {
+  content: '- ';
+}
+
+p {
+  @apply my-4;
+}
+
+.adjustment {
+  @apply w-1/4;
+}
+
+table {
+  @apply table-auto my-14;
+}
+
+thead tr {
+  @apply bg-gray-200 text-gray-600 uppercase text-sm leading-normal h-8;
+}
+
+tbody tr:nth-child(2n+1) {
+  @apply border-b border-gray-200 hover:bg-gray-100;
+}
+
+tbody tr:nth-child(2n) {
+  @apply border-b border-gray-200 bg-gray-50 hover:bg-gray-100;
+}
+
+tr td:first-child {
+  @apply pl-4;
+}
+
+a {
+  @apply text-base;
+}
