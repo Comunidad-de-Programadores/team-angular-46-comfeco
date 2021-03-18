@@ -140,8 +140,9 @@ export class BasicController {
     @HttpCode(HttpStatus.OK)
     @UseGuards(AccessGuard)
     @ApiBearerAuth('access-token-service')
-	async logout(@Res() res:Response, @IdUser() id:string): Promise<void>  {
-        const message:string = await this._basicService.logout(id);
+	async logout(@Req() req:Request, @Res() res:Response, @IdUser() id:string): Promise<void>  {
+        const token:string = JwtUtil.getTokenCookie(req, CookieGuard.REFRESH);
+        const message:string = await this._basicService.logout(token, id);
         this._authService.cleanCookies(res, message);
 	}
 

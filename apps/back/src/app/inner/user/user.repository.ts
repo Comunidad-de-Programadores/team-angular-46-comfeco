@@ -352,15 +352,17 @@ export class UserRepository {
         const userDocument = await this.db.collection(this._coleccion).where('user', '==', userDetail.user).get();
         const userReferences = await this.db.referenceDocument(this._coleccion, userDocument);
 
-        const entity = {
-            tokenApi: userDetail.tokenApi,
-            tokenRefreshApi: userDetail.tokenRefreshApi,
-            password: userDetail.password
-        };
+        if(userReferences!==null) {
+            const entity = {
+                tokenApi: userDetail.tokenApi,
+                tokenRefreshApi: userDetail.tokenRefreshApi,
+                password: userDetail.password
+            };
 
-        if(entity.password===undefined) delete entity.password;
+            if(entity.password===undefined) delete entity.password;
 
-        await userReferences.update(entity);
+            await userReferences.update(entity);
+        }
     }
 
 }

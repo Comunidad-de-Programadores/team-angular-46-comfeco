@@ -16,6 +16,8 @@ import { ParametersExcepcion } from '../../../util';
 import { TokenCookieDto } from '../tokenCookieDto';
 import { TokenResponseDto } from '../tokensResponse';
 import { environment } from '../../../environments/environment';
+import { FacebookLogoutService } from '../facebook/facebook-logout.service';
+import { GoogleLogoutService } from '../google/google-logout.service';
 
 @Injectable()
 export class BasicService {
@@ -23,6 +25,8 @@ export class BasicService {
 
     constructor(
         private readonly _configService: ConfigService,
+        private readonly _facebookService: FacebookLogoutService,
+        private readonly _googleService: GoogleLogoutService,
         private readonly _userRepository: UserRepository,
         private readonly _authService: AuthService,
         private readonly _emailService: EmailService
@@ -200,6 +204,7 @@ export class BasicService {
 
     async changePassword(changePassword:ChangePasswordDto): Promise<GenericResponse> {
         const { password, token } = changePassword;
+        
         let validation:GenericResponse;
         let tokenExpired:boolean = false;
 
@@ -209,14 +214,15 @@ export class BasicService {
 
         try {
             const payload:any = jwt.verify(token, this._configService.get(Configuration.JWT_EMAIL_TOKEN_SECRET));
-            if(Date.now()>payload?.exp) throw new UnauthorizedException();
+            const dateNow = Date.now()/1000;
+            if(dateNow>payload?.exp) throw new UnauthorizedException();
         } catch(err) {
             this.logger.debug(err.message);
             tokenExpired = true;
         }
 
         if(!password || !ExpresionRegex.PASSWORD.test(password) || tokenExpired) {
-            throw new ParametersExcepcion({ code: HttpStatus.BAD_REQUEST, errors: ['No es posible modificar la contraseña de la cuenta'] });
+            throw new ParametersExcepcion({ code: HttpStatus.BAD_REQUEST, errors: ['No es posible modificar la contraseña de tu cuenta'] });
         }
 
         let baseUser:UserEntity;
@@ -224,25 +230,60 @@ export class BasicService {
         baseUser = await this._userRepository.tokenChangePasswordExists(token);
 
         if(!baseUser || !baseUser.type.includes(AccountType.EMAIL)) {
-            throw new ParametersExcepcion({ code: HttpStatus.BAD_REQUEST, errors: ['No es posible modificar la contraseña de la cuenta'] });
+            throw new ParametersExcepcion({ code: HttpStatus.BAD_REQUEST, errors: ['No es posible modificar la contraseña de tu cuenta'] });
         } else {
             baseUser.password = await bcrypt.hash(password, environment.salt_rounds);
             baseUser.tokenApi = '';
             await this._userRepository.updateTokenUser(baseUser);
 
-            return UtilResponse.genericResponse('Se cambio satisfactoriamente la contraseña de la cuenta',[], HttpStatus.ACCEPTED);
+            return UtilResponse.genericResponse('Se cambio satisfactoriamente la contraseña de tu cuenta',[], HttpStatus.ACCEPTED);
         }
     }
 
-    async logout(id:string): Promise<string> {
+    async logout(token:string, id:string): Promise<string> {
+        let validation:GenericResponse;
+        
+        validation = ValidatorService.token(token, validation);
+        if(validation!=null) throw new ParametersExcepcion(validation);
+        
         const baseUser:UserEntity = await this._userRepository.idExists(id);
+        const type:AccountType = JwtUtil.tokenType(token, this._configService.get(Configuration.JWT_TOKEN_SECRET));
+        let respSocial:GenericResponse;
+        
+        if(baseUser===null) {
+            throw new ParametersExcepcion({ code: HttpStatus.BAD_REQUEST, errors: ['Usuario inexistente'] });
+        }
+        
+        let messageResponse:string;
+        let exit:boolean;
+        
+        if(type===AccountType.FACEBOOK) {
+            respSocial = await this._facebookService.logout(baseUser);
+        } else if(type===AccountType.GOOGLE) {
+            respSocial = await this._googleService.logout(baseUser);
+        } else {
+            messageResponse = 'Saliste exitosamente del aplicativo';
+            exit = true;
+        }
 
-        baseUser.tokenApi = '';
-        baseUser.tokenRefreshApi = '';
+        if(type===AccountType.FACEBOOK || type===AccountType.GOOGLE) {
+            if(respSocial.code===HttpStatus.OK) {
+                messageResponse = respSocial.message;
+                exit = true;
+            } else {
+                messageResponse = respSocial.errors[0];
+                exit = false;
+            }
+        }
 
-        this._userRepository.updateTokenUser(baseUser);
+        if(exit) {
+            baseUser.tokenApi = '';
+            baseUser.tokenRefreshApi = '';
+    
+            await this._userRepository.updateTokenUser(baseUser);
+        }
 
-        return 'El usuario salió exitosamente del aplicativo';
+        return messageResponse;
     }
 
 }

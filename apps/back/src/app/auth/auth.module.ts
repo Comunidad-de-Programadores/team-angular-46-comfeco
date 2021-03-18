@@ -16,6 +16,8 @@ import { FacebookController } from './facebook/facebook.controller';
 import { FacebookService } from './facebook/facebook.service';
 import { RefreshTokenStrategy } from '../../config/guard/refresh_token.strategy';
 import { InnerModule } from '../inner/inner.module';
+import { GoogleLogoutService } from './google/google-logout.service';
+import { FacebookLogoutService } from './facebook/facebook-logout.service';
 
 const passportModule: DynamicModule = PassportModule.register({
     defaultStrategy: 'jwt'
@@ -45,8 +47,8 @@ const jwtModule: DynamicModule = JwtModule.registerAsync({
         AccessTokenStrategy,
         ConfigService,
         BasicService,
-        GoogleService,
-        FacebookService,
+        GoogleService, GoogleLogoutService,
+        FacebookService, FacebookLogoutService,
         AuthService,
     ],
     imports: [
