@@ -1,3 +1,46 @@
+@import '../../../../styles/auth/styles';
+
 :host {
   display: block;
+}
+
+.section-principal {
+  & .btn-quaternary-light {
+    @apply my-4;
+  }
+}
+
+.section-secondary {
+  & .welcome {
+    @apply text-white;
+
+    & .text-big,
+    & .text-small {
+      @apply block text-center;
+    }
+      
+    & .text-big {
+      @apply text-lg font-semibold my-4;
+    }
+
+    & .text-small {
+      @apply text-sm;
+    }
+  }
+}
+
+.keep-connection {
+  @apply flex items-center justify-center text-sm text-white my-2;
+
+  & label {
+    @apply ml-2;
+  }
+}
+
+.section-soacial-network p {
+  @apply mt-8;
+}
+
+.section-logo-small {
+  @apply my-4;
 }

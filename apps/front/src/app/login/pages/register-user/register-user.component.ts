@@ -61,7 +61,6 @@ export class RegisterUserComponent implements OnInit, OnDestroy {
     this.cleanErrors();
 
     if(this.registerForm.invalid) {
-      console.log(this.registerForm);
       this.errorUser = this.registerForm.controls?.user.errors?.error[0];
       this.errorEmail = this.registerForm.controls?.email.errors?.error[0];
       this.errorPassword = this.registerForm.controls?.password.errors?.error[0];
@@ -107,7 +106,6 @@ export class RegisterUserComponent implements OnInit, OnDestroy {
     this.procesingRequest = true;
     this._service.accessGoogle()
       .subscribe((resp:any) => {
-        console.log(resp)
         if(!resp.success) {
           this.errorResponse = resp.message;
         } else {

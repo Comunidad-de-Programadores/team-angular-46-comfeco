@@ -1,0 +1,166 @@
+@charset 'utf-8';
+
+.background-auth {
+  @apply bg-purple-50 w-full flex justify-center items-center;
+  height: calc(100vh - 127px);
+}
+
+.card-auth {
+  @apply shadow-md overflow-hidden sm:rounded-lg max-w-3xl flex justify-center;
+}
+
+.section-principal,
+.section-secondary {
+  @apply overflow-hidden;
+
+  &__container {
+    @apply sticky;
+  }
+}
+
+.section-principal {
+  @apply relative w-full;
+  background-color: var(--color-primary);
+
+  & .bg-top,
+  & .bg-bottom {
+    @apply absolute h-auto w-full;
+  }
+
+  & .bg-top {
+    @apply top-0 right-0;
+  }
+
+  & .bg-bottom {
+    @apply bottom-0 left-0;
+  }
+
+  &__container {
+    @apply h-full;
+  }
+
+  & .btn-quaternary,
+  & .btn-quaternary-light {
+    @apply w-full;
+  }
+}
+
+.section-secondary {
+  @apply hidden md:block relative w-full text-center p-5 flex flex-col justify-center;
+  background-color: var(--color-secondary);
+
+  & .image {
+    @apply absolute top-0 left-0 h-auto;
+    width: 426px;
+  }
+
+  &__container button {
+    @apply w-2/5 my-8;
+  }
+
+  & .action {
+    @apply flex justify-center;
+  }
+}
+
+.section-logo-small {
+  @apply w-full mt-4 mb-28 flex justify-center;
+
+  & img {
+    @apply w-16;
+  }
+}
+
+.section-principal__container-box-form {
+  @apply flex flex-col p-5 text-center justify-between h-full;
+}
+
+.section-logo-full {
+  @apply w-full mt-4 mb-6 px-4;
+
+  & img {
+    @apply w-36;
+  }
+}
+
+.section-title {
+  @apply text-sm font-medium text-gray-100 mt-4 mb-8;
+
+  & h2 {
+    @apply text-center text-xl font-bold;
+  }
+}
+
+.form-control {
+  @apply p-4;
+}
+
+.features {
+  @apply my-4 text-sm text-white;
+}
+
+.btn-secondary-action {
+  @apply block md:hidden;
+}
+
+.section-soacial-network {
+  @apply p-4;
+
+  & p {
+    @apply text-center text-white text-sm;
+  }
+
+  & .buttons {
+    @apply mt-4 mb-3;
+  }
+}
+
+.form-input {
+  @apply w-full my-2;
+}
+
+.btn {
+  &-facebook,
+  &-google {
+    @apply w-full rounded my-4 flex;
+    background-color: var(--color-white);
+    color: var(--color-gray);
+
+    & div {
+      @apply px-2 w-10 h-10 flex items-center inline-block;
+    }
+
+    & img {
+      @apply mr-4;  
+    }
+
+    & span {
+      @apply flex items-center h-10 pl-4 text-sm inline-block w-full font-bold;
+    }
+
+    &:hover span {
+      color: var(--color-white);
+    }
+  }
+
+  &-facebook {
+    &:hover span {
+      background-color: var(--color-facebook-hover);
+    }
+
+    & img {
+      @apply w-6 h-6;
+    }
+  }
+
+  &-google {
+    &:hover span {
+      background-color: var(--color-google-hover);
+    }
+    
+    img {
+      @apply w-5 h-5;
+    }
+  }
+}
+

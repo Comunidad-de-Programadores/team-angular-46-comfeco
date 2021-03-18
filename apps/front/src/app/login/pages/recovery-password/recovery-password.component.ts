@@ -31,7 +31,6 @@ export class RecoveryPasswordComponent {
 
     if(this.recoveryPasswordForm.invalid) {
       this.errorEmail = this.recoveryPasswordForm.controls?.email.errors?.error;
-      console.log(this.errorEmail);
       return;
     }
     
