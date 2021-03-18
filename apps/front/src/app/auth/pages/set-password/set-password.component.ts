@@ -6,6 +6,7 @@ import { Subscription } from 'rxjs';
 import { ValidateComponent } from '@comfeco/validator';
 
 import { AuthService } from '../../@core/services/auth.service';
+import { HeaderAuthService } from '../../@theme/@components/header/header.service';
 
 @Component({
   selector: 'comfeco-set-password',
@@ -31,9 +32,13 @@ export class SetPasswordComponent implements OnInit, OnDestroy {
 
   constructor(
     private fb: FormBuilder,
+    private header: HeaderAuthService,
     private router: Router,
     private activatedRoute: ActivatedRoute,
-    private _service: AuthService ) { }
+    private _service: AuthService
+  ) {
+    header.buttonLogin = true;
+  }
 
   ngOnInit(): void {
     this.token = this.activatedRoute.snapshot.paramMap.get('token');

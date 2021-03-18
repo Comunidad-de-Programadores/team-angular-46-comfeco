@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { SpinnerService } from '@comfeco/api';
 
 import { AuthService } from '../../@core/services/auth.service';
+import { HeaderAuthService } from '../../@theme/@components/header/header.service';
 
 @Component({
   selector: 'comfeco-login-user',
@@ -30,9 +31,12 @@ export class LoginUserComponent implements OnInit {
 
   constructor(
     private _service: AuthService,
+    private header: HeaderAuthService,
     private spinner: SpinnerService,
     private router: Router
-  ) {}
+  ) {
+    header.buttonLogin = false;
+  }
 
   ngOnInit(): void {
     this.procesingRequest = false;
@@ -44,7 +48,6 @@ export class LoginUserComponent implements OnInit {
     this.spinner.show();
     this._service.login(email, password, sesion)
       .subscribe((resp:any) => {
-        console.log(resp)
         if(resp.code != 200){
           this.errorResponse = resp.message;
         } else {

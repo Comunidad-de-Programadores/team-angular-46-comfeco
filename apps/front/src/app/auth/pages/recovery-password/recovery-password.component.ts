@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 
 import { ValidateComponent } from '@comfeco/validator';
 import { AuthService } from '../../@core/services/auth.service';
+import { HeaderAuthService } from '../../@theme/@components/header/header.service';
 
 @Component({
   selector: 'comfeco-recovery-password',
@@ -23,8 +24,12 @@ export class RecoveryPasswordComponent {
 
   constructor(
     private fb: FormBuilder,
+    private header: HeaderAuthService,
     private router: Router,
-    private _service: AuthService ) { }
+    private _service: AuthService
+  ) {
+    header.buttonLogin = true;
+  }
 
   sendEmailChangePassword() {
     this.cleanErrors();

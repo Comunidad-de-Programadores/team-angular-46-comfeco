@@ -7,6 +7,7 @@ import { Subscription } from 'rxjs';
 import { ValidateComponent } from '@comfeco/validator';
 
 import { AuthService } from '../../@core/services/auth.service';
+import { HeaderAuthService } from '../../@theme/@components/header/header.service';
 
 @Component({
   selector: 'comfeco-register-user',
@@ -37,9 +38,13 @@ export class RegisterUserComponent implements OnInit, OnDestroy {
 
   constructor(
     private fb: FormBuilder,
+    private header: HeaderAuthService,
     private authService: SocialAuthService,
     private _service: AuthService,
-    private _route: Router ) { }
+    private _route: Router
+  ) {
+    header.buttonLogin = false;
+  }
 
     suscriber$:Subscription;
 

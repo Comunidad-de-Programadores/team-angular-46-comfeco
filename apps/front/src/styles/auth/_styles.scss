@@ -84,7 +84,8 @@
 }
 
 .section-title {
-  @apply text-sm font-medium text-gray-100 mt-4 mb-8;
+  @apply text-sm font-medium mt-4 mb-8;
+  color: var(--color-white);
 
   & h2 {
     @apply text-center text-xl font-bold;
@@ -96,7 +97,8 @@
 }
 
 .features {
-  @apply my-4 text-sm text-white;
+  @apply my-4 text-sm;
+  color: var(--color-white);
 }
 
 .btn-secondary-action {
@@ -107,7 +109,8 @@
   @apply p-4;
 
   & p {
-    @apply text-center text-white text-sm;
+    @apply text-center text-sm;
+    color: var(--color-white);
   }
 
   & .buttons {

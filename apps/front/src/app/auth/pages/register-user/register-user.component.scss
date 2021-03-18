@@ -16,11 +16,13 @@
 
 .section-secondary {
   & .account {
-    @apply text-center text-sm text-white;
+    @apply text-center text-sm;
+    color: var(--color-white);
   }
 }
 
 .terms-and-conditions {
-  @apply mt-3 text-center text-sm text-white;
+  @apply mt-3 text-center text-sm;
+  color: var(--color-white);
 }
 
