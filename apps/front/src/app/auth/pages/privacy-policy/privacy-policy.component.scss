@@ -1,3 +1,28 @@
 :host {
   display: block;
 }
+
+section {
+  @apply my-14;
+}
+
+.title {
+  @apply text-center text-3xl;
+}
+
+.container-policy {
+  @apply max-w-5xl mx-auto mt-10 mb-40;
+}
+
+h1,
+h2 {
+  @apply font-bold;
+}
+
+h2 {
+  @apply mt-10 mb-6;
+}
+
+p {
+  @apply my-4;
+}
