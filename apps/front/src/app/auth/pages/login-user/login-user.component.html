@@ -44,7 +44,7 @@
               autocomplete="off"
               class="form-control"
               [formGroup]="loginForm"
-              (ngSubmit)="onlogin()"
+              (ngSubmit)="onLogin()"
             >
               <div class="form-input">
                 <input
@@ -53,6 +53,7 @@
                   formControlName="email"
                   autocomplete="off"
                 />
+                <span class="request-error">{{errorEmail}}</span>
               </div>
               <div class="form-input">
                 <input
@@ -61,7 +62,9 @@
                   placeholder="Contraseña"
                   formControlName="password"
                 />
+                <span class="request-error">{{errorPassword}}</span>
               </div>
+              <span class="request-error">{{ errorResponse }}</span>
               <div>
                 <a
                   [routerLink]="['/auth/recoverypassword']"
@@ -89,7 +92,7 @@
             <div class="buttons">
               <button
                 type="button"
-                (click)="registerFacebook()"
+                (click)="loginFacebook()"
                 [disabled]="procesingRequest"
                 class="btn-facebook"
               >
@@ -98,7 +101,7 @@
               </button>
               <button
                 type="button"
-                (click)="registerGoogle()"
+                (click)="loginGoogle()"
                 [disabled]="procesingRequest"
                 class="btn-google"
               >

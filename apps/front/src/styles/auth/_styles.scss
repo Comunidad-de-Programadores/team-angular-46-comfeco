@@ -167,3 +167,7 @@
   }
 }
 
+.request-error {
+  @apply text-sm;
+  color: var(--color-tertiary);
+}

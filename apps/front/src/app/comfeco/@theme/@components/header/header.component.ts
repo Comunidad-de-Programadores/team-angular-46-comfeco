@@ -6,6 +6,7 @@ import { MenuDto } from '@comfeco/interfaces';
 
 import { LayoutComfecoService } from '../../layout/layout-comfeco.service';
 import { HeaderService } from './header.service';
+import { LogoutService } from '../../../../auth/@core/services/logout.service';
 
 @Component({
   selector: 'comfeco-header',
@@ -32,6 +33,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     private _router: Router,
     private _domref: ElementRef,
     public service: HeaderService,
+    private _serviceLogout: LogoutService,
     private notification: LayoutComfecoService,
   ) {}
 
@@ -88,8 +90,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   logout() {
-    this.service.logout().subscribe(resp =>{
-      if(resp.success){
+    this._serviceLogout.logout().subscribe(resp => {
+      if(resp.success) {
         localStorage.clear();
         this._router.navigate(['/auth/login']);
       }

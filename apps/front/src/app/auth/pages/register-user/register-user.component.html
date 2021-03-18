@@ -29,7 +29,7 @@
                   formControlName="user"
                   autocomplete="off"
                 >
-                <span>{{errorUser}}</span>
+                <span class="request-error">{{errorUser}}</span>
               </div>
               
               <div class="form-input">
@@ -39,7 +39,7 @@
                   formControlName="email"
                   autocomplete="off"
                 >
-                <span>{{errorEmail}}</span>
+                <span class="request-error">{{errorEmail}}</span>
               </div>
               <div class="form-input">
                 <input type="password"
@@ -48,7 +48,7 @@
                   formControlName="password"
                   autocomplete="off"
                 >
-                <span>{{errorPassword}}</span>
+                <span class="request-error">{{errorPassword}}</span>
               </div>
               <div class="form-input">
                 <input type="password"
@@ -57,12 +57,12 @@
                   formControlName="confirm"
                   autocomplete="off"
                 >
-                <span>{{errorConfirm}}</span>
+                <span class="request-error">{{errorConfirm}}</span>
               </div>
-              <span>{{ errorResponse }}</span>
+              <span class="request-error">{{ errorResponse }}</span>
               <button
                 type="button"
-                (click)="register()"
+                (click)="onRegister()"
                 [disabled]="procesingRequest"
                 class="btn-quaternary">
                 Regístrate

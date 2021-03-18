@@ -1,6 +1,6 @@
 import { Component, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { Router } from '@angular/router';
+import { SpinnerService } from '@comfeco/api';
 
 import { ValidateComponent } from '@comfeco/validator';
 import { AuthService } from '../../@core/services/auth.service';
@@ -15,7 +15,7 @@ import { HeaderAuthService } from '../../@theme/@components/header/header.servic
 export class RecoveryPasswordComponent {
 
   recoveryPasswordForm:FormGroup = this.fb.group({
-    email: [ , [ ValidateComponent.email ] ],
+    email: [ , [ ValidateComponent.emailRequired ] ],
   });
 
   procesingRequest:boolean = false;
@@ -25,14 +25,14 @@ export class RecoveryPasswordComponent {
   constructor(
     private fb: FormBuilder,
     private header: HeaderAuthService,
-    private router: Router,
-    private _service: AuthService
+    private spinner: SpinnerService,
+    private _service: AuthService,
   ) {
     header.buttonLogin = true;
   }
 
   sendEmailChangePassword() {
-    this.cleanErrors();
+    this._cleanErrors();
 
     if(this.recoveryPasswordForm.invalid) {
       this.errorEmail = this.recoveryPasswordForm.controls?.email.errors?.error;
@@ -42,20 +42,18 @@ export class RecoveryPasswordComponent {
     this.procesingRequest = true;
     const { email } = this.recoveryPasswordForm.value;
 
+    this.spinner.show();
     this._service.emailChangePassword(email)
       .subscribe(
         resp => {
           this.errorResponse = resp.message;
           this.procesingRequest = false;
-
-          if(resp.success) {
-            this.router.navigateByUrl('/auth/login');
-          }
+          this.spinner.hidde();
         }
       );
   }
 
-  cleanErrors() {
+  private _cleanErrors() {
     this.errorEmail = '';
     this.errorResponse = '';
     this.procesingRequest = false;

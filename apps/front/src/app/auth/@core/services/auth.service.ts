@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, of, from } from 'rxjs';
+import { pipe, Observable, of, from } from 'rxjs';
 import { catchError, switchMap, tap } from 'rxjs/operators';
 import { SocialAuthService, GoogleLoginProvider, FacebookLoginProvider, SocialUser } from 'angularx-social-login';
 
@@ -8,6 +8,7 @@ import { ChangePasswordDto, RecoverAccountDto, ResponseService, GenericResponse,
 import { ValidatorService } from '@comfeco/validator';
 
 import { AuthUserService } from './authUser.service';
+import { LogoutService } from './logout.service';
 
 @Injectable({
   providedIn: 'root'
@@ -20,47 +21,31 @@ export class AuthService {
   userLogged: SocialUser;
   isLogged: boolean;
   public user: any;
+
   constructor(
     private http: HttpClient,
     private authService: SocialAuthService,
-    private authuser: AuthUserService
-  ) { }
+    private authuser: AuthUserService,
+    private _logoutService: LogoutService,
+  ) {}
 
   register(user, email, password) {
     const url:string = `${this.urlAuth}/register`;
     const registerUser:RegisterDto = { user, email, password, terms:true };
 
-    return this.http.post<TokenDto | GenericResponse>(url, registerUser).pipe(ValidatorService.changeErrorAuthResponse());
+    return this.http.post<TokenDto>(url, registerUser)
+      .pipe(this._evaluationRecord(false));
   }
 
-  login(email, password, sesion){
+  login(email, password, session) {
     const url:string = `${this.urlAuth}/login`;
     const loginUser:LoginDto = {  email, password };
 
-     this.user =  this.http.post<TokenDto | GenericResponse>(url, loginUser).pipe(ValidatorService.changeErrorAuthResponse(), tap(
-       (res: TokenDto) =>{
-         if(sesion === true){
-          if(res.code === 200){
-            this.authuser.setIsLogget(true);
-            localStorage.getItem('auth');
-          }
-          else{
-           this.authuser.setIsLogget(false);
-          }
-         }
-         else{
-          if(res.code === 200){
-            this.authuser.setIsLogget(true);
-          }
-          else{
-           this.authuser.setIsLogget(false);
-          }
-         }
-       }
-     ));
+    this.user = this.http.post<TokenDto>(url, loginUser)
+      .pipe(this._evaluationRecord(session));
 
-     return this.user;
-   }
+    return this.user;
+  }
 
   public accessGoogle() {
     const url:string = `${this.urlAuth}/google/verify`;
@@ -76,7 +61,7 @@ export class AuthService {
 
           return this.http.post(url, google);
         }),
-        ValidatorService.changeErrorAuthResponse()
+        this._evaluationRecord(true)
       );
   }
 
@@ -94,7 +79,7 @@ export class AuthService {
 
           return this.http.post(url, facebook);
         }),
-        ValidatorService.changeErrorAuthResponse()
+        this._evaluationRecord(true)
       );
   }
 
@@ -110,6 +95,19 @@ export class AuthService {
     const change:ChangePasswordDto = { password, token };
 
     return this.http.put<GenericResponse>(url, change).pipe(ValidatorService.changeBasicResponse());
+  }
+
+  private _evaluationRecord(check:boolean) {
+    return pipe(
+      ValidatorService.changeErrorAuthResponse(),
+      tap(response=> {
+        this.authuser.setIsLogged(response.success, check);
+
+        if(response.success) {
+          this._logoutService.startRefreshTokenTimer();
+        }
+      })
+    );
   }
 
 }

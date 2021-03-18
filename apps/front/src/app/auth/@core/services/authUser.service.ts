@@ -7,9 +7,16 @@ export class AuthUserService {
 
   isLogged: boolean;
 
-  setIsLogget(user: boolean) {
+  setIsLogged(user:boolean, sesion:boolean) {
     this.isLogged = user;
-    localStorage.setItem('auth', `${user}`);
+
+    if(!user) return;
+
+    if(sesion) {
+      localStorage.setItem('auth', `${user}`);
+    } else {
+      sessionStorage.setItem('auth', `${user}`);
+    }
   }
   
 }

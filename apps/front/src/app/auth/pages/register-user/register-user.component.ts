@@ -8,6 +8,8 @@ import { ValidateComponent } from '@comfeco/validator';
 
 import { AuthService } from '../../@core/services/auth.service';
 import { HeaderAuthService } from '../../@theme/@components/header/header.service';
+import { SpinnerService } from '@comfeco/api';
+import { TokenDto } from '@comfeco/interfaces';
 
 @Component({
   selector: 'comfeco-register-user',
@@ -19,8 +21,8 @@ export class RegisterUserComponent implements OnInit, OnDestroy {
 
   registerForm:FormGroup = this.fb.group({
     user: [ , [ ValidateComponent.user ] ],
-    email: [ , [ ValidateComponent.email ] ],
-    password: [ , [ ValidateComponent.password ] ],
+    email: [ , [ ValidateComponent.emailRequired ] ],
+    password: [ , [ ValidateComponent.passwordRequired ] ],
     confirm: [ , [ ValidateComponent.matchPasswords('password') ] ],
   });
 
@@ -39,32 +41,25 @@ export class RegisterUserComponent implements OnInit, OnDestroy {
   constructor(
     private fb: FormBuilder,
     private header: HeaderAuthService,
-    private authService: SocialAuthService,
+    private spinner: SpinnerService,
     private _service: AuthService,
-    private _route: Router
+    private _router: Router
   ) {
     header.buttonLogin = false;
   }
 
-    suscriber$:Subscription;
-
   ngOnInit(): void {
     this.procesingRequest = false;
 
-    this.suscriber$ = this.authService.authState.subscribe((user) => {
-      this.user = user;
-      this.loggedIn = (user != null);
-    });
     this.subscriptionMatchValues$ = ValidateComponent.subscriptionMatchValues(this.registerForm, 'password', 'confirm');
   }
 
   ngOnDestroy(): void {
-    this.suscriber$.unsubscribe();
     this.subscriptionMatchValues$.unsubscribe();
   }
 
-  register() {
-    this.cleanErrors();
+  onRegister() {
+    this._cleanErrors();
 
     if(this.registerForm.invalid) {
       this.errorUser = this.registerForm.controls?.user.errors?.error[0];
@@ -74,56 +69,48 @@ export class RegisterUserComponent implements OnInit, OnDestroy {
       return;
     }
 
-    this.procesingRequest = true;
     const { user, email, password } = this.registerForm.value;
 
+    this._prepareInvocation();
+
     this._service.register(user, email, password)
-      .subscribe((resp:any) => {
-        if(!resp.success) {
-          this.errorResponse = resp.message;
-
-        } else {
-          this._route.navigate(['/app/dashboard']);
-          this.errorResponse = 'Usuario registrado exitosamente';
-        }
-
-        this.procesingRequest = false;
-      });
+      .subscribe((resp:TokenDto) => this._validateRegister(resp));
   }
 
   registerFacebook() {
-    this.cleanErrors();
-    this.procesingRequest = true;
-    this._service.accessFacebook()
-      .subscribe((resp:any) => {
-        if(!resp.success) {
-          this.errorResponse = resp.message;
-        } else {
-          this._route.navigate(['/app/dashboard']);
-          this.errorResponse = 'Usuario registrado exitosamente';
-        }
+    this._prepareInvocation();
 
-        this.procesingRequest = false;
-      });
+    this._service.accessFacebook()
+      .subscribe((resp:TokenDto) => this._validateRegister(resp));
   }
 
   registerGoogle() {
-    this.cleanErrors();
-    this.procesingRequest = true;
-    this._service.accessGoogle()
-      .subscribe((resp:any) => {
-        if(!resp.success) {
-          this.errorResponse = resp.message;
-        } else {
-          this._route.navigate(['/app/dashboard']);
-          this.errorResponse = 'Usuario registrado exitosamente';
-        }
+    this._prepareInvocation();
 
-        this.procesingRequest = false;
-      });
+    this._service.accessGoogle()
+      .subscribe((resp:TokenDto) => this._validateRegister(resp));
   }
 
-  cleanErrors() {
+  private _prepareInvocation() {
+    this._cleanErrors();
+    this.procesingRequest = true;
+    this.spinner.show();
+  }
+
+  private _validateRegister(resp:TokenDto) {
+    if(!resp.success) {
+      this.errorResponse = resp.code==401
+          ? 'Credenciales incorrectas'
+          : resp.message;
+    } else {
+      this._router.navigate(['/app/dashboard']);
+    }
+
+    this.procesingRequest = false;
+    this.spinner.hidde();
+  }
+
+  private _cleanErrors() {
     this.errorUser = '';
     this.errorEmail = '';
     this.errorPassword = '';

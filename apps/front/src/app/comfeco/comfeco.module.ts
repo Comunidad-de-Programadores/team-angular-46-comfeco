@@ -3,14 +3,14 @@ import { CommonModule } from '@angular/common';
 
 import { ComfecoRoutingModule, Components } from './comfeco-routing.module';
 import { ThemeComfecoModule } from './@theme/theme.module';
-import { DashboardService } from './pages/page-dashboard/page-dashboard.service';
+import { LogoutService } from '../auth/@core/services/logout.service';
 
 @NgModule({
   declarations: [
     ...Components
   ],
   providers: [
-    DashboardService,
+    LogoutService,
   ],
   imports: [
     CommonModule,

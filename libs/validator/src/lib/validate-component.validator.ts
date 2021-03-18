@@ -61,12 +61,16 @@ export class ValidateComponent {
         return new ValidateComponent()._validate(control, 'password', false);
     }
 
-    static passwordRequired(control:FormControl) {
-        return new ValidateComponent()._validate(control, 'password', true);
-    }
-    
     static token(control:FormControl) {
         return new ValidateComponent()._validate(control, 'token', false);
+    }
+
+    static emailRequired(control:FormControl) {
+        return new ValidateComponent()._validate(control, 'email', true);
+    }
+
+    static passwordRequired(control:FormControl) {
+        return new ValidateComponent()._validate(control, 'password', true);
     }
 
     private _validate(control:FormControl, component:string, required:boolean) {

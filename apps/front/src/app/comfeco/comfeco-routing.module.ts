@@ -5,7 +5,7 @@ import { AgeUserPipe } from './@core/pipes/age-user.pipe';
 import { SocialNetworkPipe } from './@core/pipes/social-network.pipe';
 
 import { ComfecoComponent } from './comfeco.component';
-import { AuthGuard } from './guards/auth.guard';
+import { AuthGuard } from './@core/guards/auth.guard';
 import { ArticleContainerComponent } from './pages/article-container/article-container.component';
 import { CardCommunityComponent } from './pages/card-community/card-community.component';
 import { CardCreatorComponent } from './pages/card-creator/card-creator.component';
@@ -49,9 +49,6 @@ export const Components = [
   TabItemComponent,
   TabsComponent,
   
-  PageProfileComponent,
-  
-
   SocialNetworkPipe,
   ActivityTimePipe,
   AgeUserPipe,
@@ -62,9 +59,8 @@ export const Components = [
   UserInsigniasComponent,
   UserRecentActivityComponent,
 
-  PageProfileUserComponent,
   EditProfileComponent,
-
+  
   CardCommunityComponent,
   CardWorkshopComponent,
   CardCreatorComponent,
@@ -80,7 +76,9 @@ export const Components = [
   SponsorComponent,
   WorkshopComponent,
   WorkshopListComponent,
-
+  
+  PageProfileUserComponent,
+  PageProfileComponent,
   PageDashboardComponent,
   PageCommunitiesComponent,
   PageWorkshopsComponent,
@@ -91,8 +89,7 @@ export const Components = [
 ];
 
 const routes: Routes = [
-  { path: '', component: ComfecoComponent,
-   canActivate: [AuthGuard],
+  { path: '', component: ComfecoComponent, canActivate: [AuthGuard],
   children: [
       { path: 'dashboard', component: PageDashboardComponent }, // app/dashboard
       { path: 'communities', component: PageCommunitiesComponent }, // app/communities

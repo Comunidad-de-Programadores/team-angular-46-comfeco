@@ -7,6 +7,7 @@ import { ValidateComponent } from '@comfeco/validator';
 
 import { AuthService } from '../../@core/services/auth.service';
 import { HeaderAuthService } from '../../@theme/@components/header/header.service';
+import { SpinnerService } from '@comfeco/api';
 
 @Component({
   selector: 'comfeco-set-password',
@@ -17,7 +18,7 @@ import { HeaderAuthService } from '../../@theme/@components/header/header.servic
 export class SetPasswordComponent implements OnInit, OnDestroy {
 
   setPasswordForm:FormGroup = this.fb.group({
-    password: [ , [ ValidateComponent.password ] ],
+    password: [ , [ ValidateComponent.passwordRequired ] ],
     confirm: [ , [ ValidateComponent.matchPasswords('password') ] ],
   });
 
@@ -33,9 +34,10 @@ export class SetPasswordComponent implements OnInit, OnDestroy {
   constructor(
     private fb: FormBuilder,
     private header: HeaderAuthService,
-    private router: Router,
+    private spinner: SpinnerService,
     private activatedRoute: ActivatedRoute,
-    private _service: AuthService
+    private _service: AuthService,
+    private _router: Router,
   ) {
     header.buttonLogin = true;
   }
@@ -51,7 +53,7 @@ export class SetPasswordComponent implements OnInit, OnDestroy {
   }
 
   renewPassword() {
-    this.cleanErrors();
+    this._cleanErrors();
 
     if(this.setPasswordForm.invalid) {
       this.errorPassword = this.setPasswordForm.controls?.password.errors?.error[0];
@@ -62,20 +64,18 @@ export class SetPasswordComponent implements OnInit, OnDestroy {
     this.procesingRequest = true;
     const { password } = this.setPasswordForm.value;
 
+    this.spinner.show();
     this._service.changePassword(password, this.token)
       .subscribe(
         resp => {
           this.errorResponse = resp.message;
           this.procesingRequest = false;
-
-          if(resp.success) {
-            this.router.navigateByUrl('/auth/login');
-          }
+          this.spinner.hidde();
         }
       );
   }
 
-  cleanErrors() {
+  private _cleanErrors() {
     this.errorResponse = '';
     this.errorPassword = '';
     this.errorConfirm = '';
