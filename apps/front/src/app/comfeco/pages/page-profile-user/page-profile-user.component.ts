@@ -1,11 +1,12 @@
 import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 import { Subscription } from 'rxjs';
 
+import { SpinnerService } from '@comfeco/api';
+
 import { EventDayDto, InsigniaDto, RecentActivityDto, UserDto } from '@comfeco/interfaces';
 
 import { TypeAlertNotification } from '../../@theme/@components/alert-notification/alert-notification.enum';
 import { Modal } from '../../@theme/@components/modal/modal.interface';
-import { SpinnerService } from '../../@theme/@components/spinner/spinner.service';
 import { LayoutComfecoService } from '../../@theme/layout/layout-comfeco.service';
 
 import { PageProfileService } from '../page-profile/page-profile.service';
@@ -28,6 +29,7 @@ export class PageProfileUserComponent implements OnInit, OnDestroy {
   eventSelected:EventDayDto;
   
   messageActivities:string;
+  messageErrorEvents:string;
   
   modalSubscription$:Subscription;
   addedEventsSubscription$:Subscription;
@@ -91,16 +93,24 @@ export class PageProfileUserComponent implements OnInit, OnDestroy {
 
   subscriptionEvents() {
     this.addedEventsSubscription$ = this._serviceProfile.addedEvent$.subscribe(eventsChanged => {
-      this.events.push(eventsChanged);
+      if(!this.events) {
+        this.events = [];
+      }
+      
+      this.events = [ ...this.events, eventsChanged ];
       this.completeRecentActivity();
     });
-
+    
     this.deletedEventsSubscription$ = this._serviceProfile.deletedEvent$.subscribe(eventsChanged => {
       let newEvents:EventDayDto[] = [];
       for(let i=0; i<this.events.length; i++) {
         if(this.events[i].id!==eventsChanged.id) {
           newEvents.push(this.events[i]);
         }
+      }
+
+      if(newEvents.length==0) {
+        this.messageErrorEvents = 'No te has inscrito en ningún evento';
       }
 
       this.events = newEvents;
@@ -154,7 +164,7 @@ export class PageProfileUserComponent implements OnInit, OnDestroy {
           if(resp.success) {
             this.events = resp.events;
           } else {
-            this.notification.alertNotification({message: resp.message});
+            this.messageErrorEvents = resp.message;
           }
         }
       );

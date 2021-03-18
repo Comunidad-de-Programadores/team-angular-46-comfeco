@@ -8,7 +8,6 @@ import { RecoveryPasswordComponent } from './pages/recovery-password/recovery-pa
 import { RegisterUserComponent } from './pages/register-user/register-user.component';
 import { SetPasswordComponent } from './pages/set-password/set-password.component';
 import { TermsAndConditionsComponent } from './pages/terms-and-conditions/terms-and-conditions.component';
-import { ViewLoginComponent } from './pages/view-login/view-login.component';
 
 /** Componentes a registrar dentro del Modulo de Login */
 export const Components = [
@@ -20,7 +19,7 @@ export const Components = [
   RegisterUserComponent,
 
   /** Vistas de la aplicación para el Login */
-  ViewLoginComponent,
+  LoginUserComponent,
   RecoveryPasswordComponent,
   SetPasswordComponent,
 ];
@@ -28,15 +27,14 @@ export const Components = [
 /** Rutas del Modulo de Login */
 const routes: Routes = [
   { path: '', component: LoginComponent, children: [
-      { path: 'login', component: ViewLoginComponent }, // login/login
-      { path: 'register', component: RegisterUserComponent},
+      { path: 'login', component: LoginUserComponent }, // login/login
+      { path: 'register', component: RegisterUserComponent}, // login/register
       { path: 'recoverypassword', component: RecoveryPasswordComponent  }, // login/recoverypassword
-      { path: 'setpassword/:token', component: SetPasswordComponent }, // // login/setpassword
-      { path: 'terminos-condiciones', component: TermsAndConditionsComponent },
-      { path: 'politica-privacidad', component: PrivacyPolicyComponent },
+      { path: 'setpassword/:token', component: SetPasswordComponent }, // login/setpassword/{token-recovery}
+      { path: 'terms-and-conditions', component: TermsAndConditionsComponent }, // login/terms-and-conditions
+      { path: 'privacy-policy', component: PrivacyPolicyComponent }, // login/privacy-policy
       { path: '', redirectTo: 'login', pathMatch: 'full' },
       { path: '**', redirectTo: 'login' },
-      // { path: '**', pathMatch: 'full', redirectTo: 'login' },
     ],
   },
 ];

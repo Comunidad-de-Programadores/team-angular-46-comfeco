@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { components } from './theme-components';
+import { ApiModule } from '@comfeco/api';
 
 @NgModule({
   declarations: [
@@ -10,6 +11,7 @@ import { components } from './theme-components';
   imports: [
     CommonModule,
     RouterModule,
+    ApiModule
   ],
   exports: [
     CommonModule,

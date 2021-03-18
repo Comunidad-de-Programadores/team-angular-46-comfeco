@@ -2,6 +2,8 @@ import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Subscription } from 'rxjs';
 
+import { SpinnerService } from '@comfeco/api';
+
 import { CountryDto, GenderDto, KnowledgeAreaDto, UserChangeInformationDto, UserDto, UserSocialNetworksDto } from '@comfeco/interfaces';
 import { ValidateComponent } from '@comfeco/validator';
 
@@ -9,7 +11,6 @@ import { TypeAlertNotification } from '../../@theme/@components/alert-notificati
 import { HeaderService } from '../../@theme/@components/header/header.service';
 import { InsigniaType } from '../../@theme/@components/insignia/insignia.enum';
 import { InsigniaService } from '../../@theme/@components/insignia/insignia.service';
-import { SpinnerService } from '../../@theme/@components/spinner/spinner.service';
 import { LayoutComfecoService } from '../../@theme/layout/layout-comfeco.service';
 import { PageProfileService } from '../page-profile/page-profile.service';
 import { EditProfileService } from './edit-profile.service';

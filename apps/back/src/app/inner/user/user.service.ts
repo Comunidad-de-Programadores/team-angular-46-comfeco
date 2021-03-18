@@ -68,11 +68,6 @@ export class UserService {
     
     async insignias(id:string): Promise<InsigniasDto | GenericResponse> {
         const insigniasEntity:InsigniaUserEntity[] = await this._userRepository.insignias(id);
-
-        if(insigniasEntity==null) {
-            return UtilResponse.genericResponse('',['El usuario no cuenta con insignias obtenidas'], HttpStatus.NOT_FOUND);
-        }
-        
         let insigniasTemp:InsigniaDto[] = [];
         
         insigniasEntity.forEach(insigniaUser => {
@@ -93,8 +88,8 @@ export class UserService {
     async events(id:string): Promise<EventsDayDto | GenericResponse> {
         const eventsEntity:EventDayUserDto[] = await this._userRepository.events(id);
         
-        if(eventsEntity==null) {
-            return UtilResponse.genericResponse('',['El usuario no tiene calendarizado ningún evento'], HttpStatus.NOT_FOUND);
+        if(eventsEntity.length==0) {
+            return UtilResponse.genericResponse('',['No te has inscrito en ningún evento'], HttpStatus.NOT_FOUND);
         }
         
         let eventsTemp:EventDayDto[] = [];
@@ -300,14 +295,26 @@ export class UserService {
         const eventsEntity = await this._userRepository.allEvents(userEntity.id);
         const belongGroup:boolean = !!userEntity.group;
         const belongEvents:boolean = eventsEntity.length>0;
-
+        const insigniasEntity:InsigniaUserEntity[] = await this._userRepository.insignias(userEntity.id);
+        const obtainsSocial:boolean = this._validateObtainSocialInsignia(insigniasEntity);
         let insignia:InsigniaDto;
 
-        if(belongGroup && belongEvents) {
+        if(obtainsSocial && belongGroup && belongEvents) {
             insignia = await this._validInsignia(userEntity, 2);
         }
 
         return insignia;
+    }
+
+    private _validateObtainSocialInsignia(insigniasEntity:InsigniaUserEntity[]) {
+        let contains:boolean = false;
+
+        if(insigniasEntity.length>0) {
+            const insigniaSocial:InsigniaUserEntity[] = insigniasEntity.filter(insigniaEntity => insigniaEntity.insignia.order===1);
+            contains = !!insigniaSocial;
+        }
+
+        return contains;
     }
 
     async leaveGroup(idUser:string): Promise<GenericResponse> {

@@ -6,5 +6,5 @@
   <comfeco-user-recent-activity [activities]="activities" [message]="messageActivities"></comfeco-user-recent-activity>
 </div>
 <div class="secion-events">
-  <comfeco-user-events [events]="events" (onLeaveEvent)="onLeaveEvent($event)"></comfeco-user-events>
+  <comfeco-user-events [events]="events" [message]="messageErrorEvents" (onLeaveEvent)="onLeaveEvent($event)"></comfeco-user-events>
 </div>

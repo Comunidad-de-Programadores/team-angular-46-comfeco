@@ -43,7 +43,6 @@ export class AuthService {
           if(res.code === 200){
             this.authuser.setIsLogget(true);
             localStorage.getItem('auth');
-            // localStorage.setItem('auth2', `${true}`);
           }
           else{
            this.authuser.setIsLogget(false);
@@ -52,10 +51,6 @@ export class AuthService {
          else{
           if(res.code === 200){
             this.authuser.setIsLogget(true);
-            this.user.pipe( map( userr => {
-              console.log(userr);
-            }))
-
           }
           else{
            this.authuser.setIsLogget(false);

@@ -4,6 +4,9 @@
     <div class="link" (click)="viewEvents()">Ver más</div>
   </section>
   <section class="events-info scrollbar-auto">
+    <div class="events-empty" *ngIf="!events || events.length==0 && !!message">
+      {{message}}
+    </div>
     <comfeco-user-event
       *ngFor="let event of events"
       [event]="event"
@@ -12,3 +15,5 @@
     ></comfeco-user-event>
   </section>
 </div>
+
+

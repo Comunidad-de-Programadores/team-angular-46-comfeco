@@ -1,13 +1,14 @@
 import { Component, OnInit, ViewEncapsulation, OnDestroy } from '@angular/core';
 import { Subject, Subscription } from 'rxjs';
 
+import { SpinnerService } from '@comfeco/api';
+
 import { EventDayDto } from '@comfeco/interfaces';
 
 import { TypeAlertNotification } from '../../@theme/@components/alert-notification/alert-notification.enum';
 import { InsigniaType } from '../../@theme/@components/insignia/insignia.enum';
 import { InsigniaService } from '../../@theme/@components/insignia/insignia.service';
 import { Modal } from '../../@theme/@components/modal/modal.interface';
-import { SpinnerService } from '../../@theme/@components/spinner/spinner.service';
 import { LayoutComfecoService } from '../../@theme/layout/layout-comfeco.service';
 import { PageProfileService } from '../page-profile/page-profile.service';
 import { PageEventsService } from './page-events.service';
