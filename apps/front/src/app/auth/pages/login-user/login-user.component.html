@@ -1,0 +1,114 @@
+<div class="background-auth">
+  <div class="card-auth">
+    <section class="section-secondary">
+      <div class="image">
+        <img src="assets/login/shapes_other_section.svg">
+      </div>
+      <div class="section-secondary__container">
+        <div class="section-logo-small">
+          <img src="assets/login/logo_comfeco.svg" alt="logo">
+        </div>
+        <div class="welcome">
+          <span class="text-big">
+            Hola! Bienvenido a la plataforma de la comunidad más grande de Latinoamérica exclusiva para desarrolladores
+          </span>
+          <span class="text-small">¿Todavía no tienes una cuenta?</span>
+        </div>
+        <div class="action">
+          <button
+            [routerLink]="['/auth/register']"
+            class="btn-quaternary">
+            Regístrate
+          </button>
+        </div>
+        <img src="assets/login/login.svg" alt="login">
+      </div>
+    </section>
+    <section class="section-principal">
+      <div class="bg-top">
+        <img src="assets/login/shapes_form_top.svg">
+      </div>
+      <div class="bg-bottom">
+        <img src="assets/login/shapes_form_bottom.svg">
+      </div>
+      <div class="section-principal__container">
+        <div class="section-principal__container-box-form">
+          <div>
+            <div class="section-logo-full">
+              <img src="assets/img/logo_font.svg" alt="logo">
+            </div>
+            <div class="section-title">
+              <h2>Iniciar Sesión</h2>
+            </div>
+            <form
+              autocomplete="off"
+              class="form-control"
+              [formGroup]="loginForm"
+              (ngSubmit)="onlogin()"
+            >
+              <div class="form-input">
+                <input
+                  type="email"
+                  placeholder="Correo electronico"
+                  formControlName="email"
+                  autocomplete="off"
+                />
+              </div>
+              <div class="form-input">
+                <input
+                  type="password"
+                  autocomplete="off"
+                  placeholder="Contraseña"
+                  formControlName="password"
+                />
+              </div>
+              <div>
+                <a
+                  [routerLink]="['/auth/recoverypassword']"
+                  routerLinkActive="router-link-active"
+                  class="link-special">
+                  ¿Olvidaste tu Contraseña?
+                </a>
+              </div>
+              <div class="keep-connection">
+                <input type="checkbox" id="sesion" value="first_checkbox" formControlName="sesion">
+                <label for="sesion">Mantenerme conectado</label>
+              </div>
+              <button type="submit" class="btn-quaternary">Ingresar</button>
+              <div class="btn-secondary-action">
+                <button
+                  [routerLink]="['/auth/register']"
+                  class="btn-quaternary-light">
+                  Regístrate
+                </button>
+              </div>
+            </form>
+          </div>
+          <div class="section-soacial-network">
+            <p>Tambien puedes iniciar con tus redes</p>
+            <div class="buttons">
+              <button
+                type="button"
+                (click)="registerFacebook()"
+                [disabled]="procesingRequest"
+                class="btn-facebook"
+              >
+                <div><img src="assets/login/logo_facebook_extended.svg" alt="iniciar con facebook" /></div>
+                <span>Conectarme con Facebook</span>
+              </button>
+              <button
+                type="button"
+                (click)="registerGoogle()"
+                [disabled]="procesingRequest"
+                class="btn-google"
+              >
+                <div><img src="assets/login/logo_google.svg" alt="iniciar con google" /></div>
+                <span>Conectarme con  Google</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>
