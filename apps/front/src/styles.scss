@@ -47,6 +47,15 @@
     }
   }
 
+  .link-special {
+    @apply h-4 fill-current text-xs cursor-pointer hover:underline focus:outline-none;
+    color: var(--color-tertiary);
+
+    &:hover {
+      color: var(--color-tertiary-hover);
+    }
+  }
+
   .title-section {
     @apply my-12 mx-auto font-bold text-xl;
   }
