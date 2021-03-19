@@ -1,1 +1,17 @@
-<p>sponsor works!</p>
+
+<swiper
+[slidesPerView]="5"
+[spaceBetween]="50"
+(swiper)="onSwiper($event)"
+(slideChange)="onSlideChange()"
+[navigation]="true"
+[pagination]="{ clickable: true }"
+
+>
+<ng-template swiperSlide><img  style="border-radius: 50px;" src="../../../../assets/img/huawei.png" alt=""></ng-template>
+<ng-template swiperSlide><img style="border-radius: 50px;" src="../../../../assets/img/tekki.png" alt=""></ng-template>
+<ng-template swiperSlide><img style="border-radius: 50px;"  src="../../../../assets/img/fernando.jpg" alt=""></ng-template>
+<ng-template swiperSlide><img style="border-radius: 50px;" src="../../../../assets/img/domini code.jpg" alt=""></ng-template>
+<ng-template swiperSlide><img style="border-radius: 50px;" src="../../../../assets/img/codigo facilito.png" alt=""></ng-template>
+
+</swiper>

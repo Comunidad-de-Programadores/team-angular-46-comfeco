@@ -10,7 +10,7 @@
   </div>
 
   <div class="space"></div>
-  
+
   <div class="communities">
     <comfeco-article-container title="Comunidades" viewMore="/app/communities" class="w-full">
       <div class="error" [ngClass]="{'hidden' : !messageErrorCommunities}">{{messageErrorCommunities}}</div>
@@ -24,8 +24,14 @@
   </div>
 
   <div class="sliders">
-    <comfeco-slider></comfeco-slider> <!-- expositores -->
-    <comfeco-slider></comfeco-slider> <!-- patrocinadores -->
+    <h3 class="mt-2 text-center mb-5"><strong>Ellos ya creen en esta Iniciativa</strong></h3>
+    <div>
+      <comfeco-slider></comfeco-slider> <!-- expositores -->
+    </div>
+    <h2 class="mt-10 mb-5">Sponsors</h2>
+    <div class="">
+      <comfeco-sponsor></comfeco-sponsor> <!-- patrocinadores -->
+    </div>
   </div>
 
   <div class="workshops">
