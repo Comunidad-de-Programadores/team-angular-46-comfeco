@@ -1,14 +1,9 @@
 import { ChangeDetectionStrategy, Component, Input, ViewEncapsulation } from '@angular/core';
 import { SponsorDto } from '@comfeco/interfaces';
 
-import SwiperCore, { Navigation, Pagination, Autoplay, Virtual } from "swiper/core";
+import SwiperCore, { Navigation, Pagination } from "swiper/core";
 
-SwiperCore.use([
-  Navigation,
-  Pagination,
-  Autoplay,
-  Virtual
-]);
+SwiperCore.use([ Navigation, Pagination ]);
 
 @Component({
   selector: 'comfeco-slider-sponsor',

@@ -1,14 +1,9 @@
 import { ChangeDetectionStrategy, Component, Input, ViewEncapsulation } from '@angular/core';
 import { ExhibitorDto } from '@comfeco/interfaces';
 
-import SwiperCore, { Navigation, Pagination, Autoplay, Virtual } from "swiper/core";
+import SwiperCore, { Navigation, Pagination, Autoplay } from "swiper/core";
 
-SwiperCore.use([
-  Navigation,
-  Pagination,
-  Autoplay,
-  Virtual
-]);
+SwiperCore.use([ Navigation, Pagination, Autoplay ]);
 
 @Component({
   selector: 'comfeco-slider-exhibitor',

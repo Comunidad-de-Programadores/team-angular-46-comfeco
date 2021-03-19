@@ -18,8 +18,6 @@ export class WorkshopListComponent implements OnChanges {
   futureWorkshops:WorkshopAreaDto[] = [];
   pastWorkshops:WorkshopAreaDto[] = [];
 
-  constructor() { }
-
   ngOnChanges(changes: SimpleChanges) {
     const workshops = changes.workshops?.currentValue;
     const message = changes.message?.currentValue;

@@ -34,7 +34,22 @@ export class PageDashboardComponent implements OnInit, OnDestroy {
     private spinner: SpinnerService
   ) {}
 
+  
+
   ngOnInit(): void {
+    this.completeCommunities();
+    this.completeKnowledgeArea();
+    this.completeExhibitors();
+    this.completeSponsors();
+    this.completeEventInfo(); 
+  }
+
+  ngOnDestroy(): void {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+  }
+
+  completeCommunities() {
     this.spinner.show();
     this._service.communities()
       .subscribe(
@@ -49,7 +64,9 @@ export class PageDashboardComponent implements OnInit, OnDestroy {
           this.spinner.hidde();
         }
       );
+  }
 
+  completeKnowledgeArea() {
     this.spinner.show();
     this._service.knowledgeArea()
       .subscribe(
@@ -69,30 +86,36 @@ export class PageDashboardComponent implements OnInit, OnDestroy {
           }
         }
       );
+  }
 
-      this.spinner.show();
-      this._service.exhibitors()
-        .subscribe(
-          (resp:any) => {
-            if(resp.success) {
-              this.exhibitors = resp.exhibitors;
-              this.spinner.hidde();
-            }
+  completeExhibitors() {
+    this.spinner.show();
+    this._service.exhibitors()
+      .subscribe(
+        (resp:any) => {
+          if(resp.success) {
+            this.exhibitors = resp.exhibitors;
+            this.spinner.hidde();
           }
-        );
+        }
+      );
+  }
 
+  completeSponsors() {
     this.spinner.show();
     this._service.sponsors()
-        .subscribe(
-          (resp:any) => {
-            if(resp.success) {
-              console.log(resp)
-              this.sponsors = resp.sponsors;
-              this.spinner.hidde();
-            }
+      .subscribe(
+        (resp:any) => {
+          if(resp.success) {
+            console.log(resp)
+            this.sponsors = resp.sponsors;
+            this.spinner.hidde();
           }
-        );
+        }
+      );
+  }
 
+  completeEventInfo() {
     this.spinner.show();
     this._service.eventInfo()
       .subscribe(
@@ -105,12 +128,7 @@ export class PageDashboardComponent implements OnInit, OnDestroy {
         }
       );
   }
-
-  ngOnDestroy(): void {
-    this.unsubscribe$.next();
-    this.unsubscribe$.complete();
-  }
-
+  
   changeWorkshops(idArea:string) {
     this.spinner.show();
     this._service.workshops(idArea)

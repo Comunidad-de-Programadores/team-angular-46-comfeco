@@ -23,6 +23,10 @@ export class PageCommunitiesComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.completeCommunities();
+  }
+
+  completeCommunities() {
     this.spinner.show();
     this._service.communities()
       .subscribe(

@@ -258,4 +258,5 @@ export class PageProfileUserComponent implements OnInit, OnDestroy {
       this.spinner.hidde();
     }
   }
+  
 }

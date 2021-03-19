@@ -26,4 +26,5 @@ export class CardWorkshopComponent {
       ComponentConfeco.goToLink(this.workshop.urlSocialNetwork);
     }
   }
+  
 }

@@ -23,6 +23,10 @@ export class PageCreatorsComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.completeExhibitors();
+  }
+
+  completeExhibitors() {
     this.spinner.show();
     this._service.exhibitors()
       .subscribe(

@@ -15,8 +15,6 @@ export class WorkshopComponent {
 
   @Input() workshop:WorkshopAreaDto;
 
-  constructor() { }
-
   goToWorkshop() {
     ComponentConfeco.goToLink(this.workshop.urlWorkshop);
   }
