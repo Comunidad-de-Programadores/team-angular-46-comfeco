@@ -26,11 +26,12 @@
   @apply md:col-span-3 lg:col-span-7;
 
   & .title {
-    @apply text-2xl text-center mt-2 lg:mt-4;
+    @apply text-2xl font-extrabold text-center mt-2 lg:mt-4;
   }
 
   & .subtitle {
     @apply text-xl text-center;
+    color: var(--color-gray);
   }
 }
 
@@ -38,7 +39,7 @@
   @apply md:col-span-3 lg:col-span-3 lg:col-start-3;
   
   & .text {
-    @apply text-sm mt-4 lg:my-6;
+    @apply text-base mt-4 lg:my-6;
   }
 }
 
@@ -67,8 +68,9 @@
   @apply my-4 md:col-span-3 lg:col-span-7;
   
   & p {
-    @apply my-2 text-center;
+    @apply my-2 text-lg font-extrabold text-center;
   }
+
   &-content {
     @apply bg-local bg-cover bg-no-repeat bg-center;
     @extend .background-counterdown;

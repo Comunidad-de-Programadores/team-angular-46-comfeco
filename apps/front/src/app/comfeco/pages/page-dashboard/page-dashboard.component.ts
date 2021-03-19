@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewEncapsulation, OnDestroy } from '@angular/core';
 import { Subject } from "rxjs";
 
-import { AreaWorkshopDto, ComboInterface, CommunityDto, DayEvent, EventDto, KnowledgeAreaDto, WorkshopAreaDto } from '@comfeco/interfaces';
+import { AreaWorkshopDto, ComboInterface, CommunityDto, DayEvent, EventDto, ExhibitorDto, KnowledgeAreaDto, WorkshopAreaDto } from '@comfeco/interfaces';
 
 import { DashboardService } from './page-dashboard.service';
 import { takeUntil } from 'rxjs/operators';
@@ -19,6 +19,7 @@ export class PageDashboardComponent implements OnInit, OnDestroy {
   comboKnowledgeArea:ComboInterface[] = [];
   workshops:WorkshopAreaDto[] = [];
   idArea:string;
+  exhibitors: ExhibitorDto[];
   eventInfo:EventDto;
   dayEvent:DayEvent;
 
@@ -67,6 +68,17 @@ export class PageDashboardComponent implements OnInit, OnDestroy {
           }
         }
       );
+
+      this.spinner.show();
+      this._service.exhibitors()
+        .subscribe(
+          (resp:any) => {
+            if(resp.success) {
+              this.exhibitors = resp.exhibitors;
+              this.spinner.hidde();
+            }
+          }
+        );
 
     this.spinner.show();
     this._service.eventInfo()

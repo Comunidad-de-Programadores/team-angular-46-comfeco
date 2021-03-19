@@ -10,15 +10,16 @@ import { ArticleContainerComponent } from './pages/article-container/article-con
 import { CardCommunityComponent } from './pages/card-community/card-community.component';
 import { CardCreatorComponent } from './pages/card-creator/card-creator.component';
 import { CardEventComponent } from './pages/card-event/card-event.component';
+import { CardExhibitorComponent } from './pages/card-exhibitor/card-exhibitor.component';
 import { CardGroupComponent } from './pages/card-group/card-group.component';
 import { CardInsigniaComponent } from './pages/card-insignia/card-insignia.component';
 import { CardMyGroupComponent } from './pages/card-my-group/card-my-group.component';
+import { CardSponsorComponent } from './pages/card-sponsor/card-sponsor.component';
 import { CardWorkshopComponent } from './pages/card-workshop/card-workshop.component';
 import { ComboComponent } from './pages/combo/combo.component';
 import { CommunityComponent } from './pages/community/community.component';
 import { CounterdownComponent } from './pages/counterdown/counterdown.component';
 import { EditProfileComponent } from './pages/edit-profile/edit-profile.component';
-import { ExhibitorComponent } from './pages/exhibitor/exhibitor.component';
 import { PageCommunitiesComponent } from './pages/page-communities/page-communities.component';
 import { PageCreatorsComponent } from './pages/page-creators/page-creators.component';
 import { PageDashboardComponent } from './pages/page-dashboard/page-dashboard.component';
@@ -28,8 +29,8 @@ import { PageInsigniasComponent } from './pages/page-insignias/page-insignias.co
 import { PageProfileUserComponent } from './pages/page-profile-user/page-profile-user.component';
 import { PageProfileComponent } from './pages/page-profile/page-profile.component';
 import { PageWorkshopsComponent } from './pages/page-workshops/page-workshops.component';
-import { SliderComponent } from './pages/slider/slider.component';
-import { SponsorComponent } from './pages/sponsor/sponsor.component';
+import { SliderExhibitorComponent } from './pages/slider-exhibitor/slider-exhibitor.component';
+import { SliderSponsorComponent } from './pages/slider-sponsor/slider-sponsor.component';
 import { TabBodyComponent } from './pages/tabs/tab-body.component';
 import { TabItemComponent } from './pages/tabs/tab-item.component';
 import { TabsComponent } from './pages/tabs/tabs.component';
@@ -59,8 +60,13 @@ export const Components = [
   UserInsigniasComponent,
   UserRecentActivityComponent,
 
+  SliderExhibitorComponent,
+  SliderSponsorComponent,
+  
   EditProfileComponent,
   
+  CardExhibitorComponent,
+  CardSponsorComponent,
   CardCommunityComponent,
   CardWorkshopComponent,
   CardCreatorComponent,
@@ -71,9 +77,6 @@ export const Components = [
   ArticleContainerComponent,
   CommunityComponent,
   CounterdownComponent,
-  ExhibitorComponent,
-  SliderComponent,
-  SponsorComponent,
   WorkshopComponent,
   WorkshopListComponent,
   

@@ -1,0 +1,16 @@
+<div class="title">Ellos ya creen en esta iniciativa:</div>
+<main>
+	<swiper
+    [loop]="true"
+    [autoplay]="true"
+    [navigation]="true"
+		[breakpoints]="breakpoints"
+		[pagination]="{ clickable: true }">
+    <ng-container *ngFor="let exhibitor of exhibitors; index as i">
+      <ng-template swiperSlide>
+        <comfeco-card-exhibitor [exhibitor]="exhibitor"></comfeco-card-exhibitor>
+      </ng-template>
+    </ng-container>
+		<div slot="container-end" class="swiper-pagination"></div>
+	</swiper>
+</main>

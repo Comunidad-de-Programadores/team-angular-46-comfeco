@@ -1,0 +1,23 @@
+<div class="exhibitor">
+  <div class="exhibitor__container">
+    <img
+      [src]="exhibitor.photoUrl || 'assets/img/user_question_card.svg'"
+      class="exhibitor__user"/>
+    <div class="tecnologies">
+      <div *ngIf="exhibitor.technologies.length>0; else tecnologyQuestion">
+        <img 
+          *ngFor="let technology of exhibitor.technologies"
+          [src]="'assets/img/'+technology.photoUrl+'.svg'"
+        >
+      </div>
+    </div>
+    <div class="exhibitor__name">{{exhibitor.name}}</div>
+  </div>
+</div>
+
+<ng-template #tecnologyQuestion>
+  <img 
+    class="tecnology-question"
+    src="assets/img/tecnology_question.svg"
+  >
+</ng-template>

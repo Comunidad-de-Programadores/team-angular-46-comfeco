@@ -6,7 +6,7 @@
   </div>
 
   <div class="description">
-    <div class="text sentence">{{eventInfo?.description}}</div>
+    <div class="text">{{eventInfo?.description}}</div>
   </div>
 
   <div class="space"></div>
@@ -24,8 +24,8 @@
   </div>
 
   <div class="sliders">
-    <comfeco-slider></comfeco-slider> <!-- expositores -->
-    <comfeco-slider></comfeco-slider> <!-- patrocinadores -->
+    <comfeco-slider-exhibitor [exhibitors]="exhibitors"></comfeco-slider-exhibitor>
+    <!--<comfeco-slider></comfeco-slider> --> <!-- expositores -->
   </div>
 
   <div class="workshops">

@@ -1,0 +1,19 @@
+:host {
+  @apply relative block px-4 h-full;
+}
+
+.swiper-container {
+  width: 100%;
+  height: 363px;
+  margin: 20px auto;
+}
+
+.title {
+  @apply text-lg font-extrabold text-center;
+}
+
+@media (min-width: 768px) {
+  .swiper-container {
+    height: 267px;
+  }
+}

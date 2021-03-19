@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { timer } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { AreasDto, CommunitiesDto, DayEvent, EventDto, WorkshopsAreaDto } from '@comfeco/interfaces';
+import { AreasDto, CommunitiesDto, DayEvent, EventDto, ExhibitorsDto, WorkshopsAreaDto } from '@comfeco/interfaces';
 import { ValidatorService } from '@comfeco/validator';
 
 @Injectable({
@@ -32,6 +32,10 @@ export class DashboardService {
     return this.http.get<WorkshopsAreaDto>(url).pipe(ValidatorService.changeBasicResponse());
   }
 
+  exhibitors() {
+    return this.http.get<ExhibitorsDto>('/exhibitors').pipe(ValidatorService.changeBasicResponse());
+  }
+  
   eventInfo() {
     return this.http.get<EventDto>('/events').pipe(ValidatorService.changeBasicResponse());
   }
