@@ -1,0 +1,15 @@
+<div class="title">Sponsors</div>
+<main>
+	<swiper class="small"
+    [loop]="true"
+    [navigation]="true"
+		[breakpoints]="breakpoints"
+		[pagination]="{ clickable: true }">
+    <ng-container *ngFor="let sponsor of sponsors">
+      <ng-template swiperSlide>
+        <comfeco-card-sponsor [sponsor]="sponsor"></comfeco-card-sponsor>
+      </ng-template>
+    </ng-container>
+    <div slot="container-end" class="swiper-pagination"></div>
+	</swiper>
+</main>

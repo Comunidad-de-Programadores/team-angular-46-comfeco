@@ -25,6 +25,11 @@
   z-index: 1;
 }
 
+.small .swiper-button-prev::before,
+.small .swiper-button-next::before {
+  height: 215px;
+}
+
 .swiper-button-prev::before,
 .swiper-button-next::before {
   content: '';
@@ -49,5 +54,15 @@
   .swiper-button-next::before {
     height: 241px;
     top: -124px;
+  }
+}
+
+@media (min-width: 768px) {
+  .small {
+    & .swiper-button-prev::before,
+    & .swiper-button-next::before {
+      height: 178px;
+      top: -124px;
+    }
   }
 }
