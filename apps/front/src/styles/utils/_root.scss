@@ -34,6 +34,7 @@
   --color-gray-icon:              #{mapGet($base, gray-4)};
   --color-gray-light:             #{mapGet($base, gray-5)};
   --color-gray-hover:             #{mapGet($base, gray-2)};
+  --color-gray-dark:              #{mapGet($base, gray-2)};
 
   --background-modal:             #{mapGet($colors, background-modal)};
 }

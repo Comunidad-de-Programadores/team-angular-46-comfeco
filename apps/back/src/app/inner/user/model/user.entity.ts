@@ -28,6 +28,7 @@ export interface UserEntity {
     tokenRefreshApi?: string,
     user?:string,
     modify?:boolean,
+    editProfile?:boolean,
     insignias?:InsigniaUserEntity[],
     level?:string;
 }

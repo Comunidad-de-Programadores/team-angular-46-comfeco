@@ -1,0 +1,84 @@
+:host {
+  display: block;
+}
+
+.background-counterdown {
+  background-image: linear-gradient(rgb(76 29 149 / 70%), rgb(247 219 84 / 50%)), url(https://icdn7.digitaltrends.com/image/digitaltrends_es/microsoft-gratis-20200626-pexels-416x416.jpg);
+}
+
+@media(min-width: 768px) {
+  .screen {
+    height: 100vh;
+    margin-bottom: 95px !important;
+  }
+}
+
+@media (min-width: 1024px) {
+  .screen {
+    height: 100vh;
+    margin-bottom: 140px !important;
+  }
+}
+
+.dashboard {
+  @apply screen md:grid md:grid-cols-3 lg:grid-cols-7;
+}
+
+.welcome {
+  @apply md:col-span-3 lg:col-span-7;
+
+  & .title {
+    @apply text-2xl font-extrabold text-center mt-2 lg:mt-4;
+  }
+
+  & .subtitle {
+    @apply text-xl text-center;
+    color: var(--color-gray-dark);
+  }
+}
+
+.description {
+  @apply md:col-span-3 lg:col-span-3 lg:col-start-3;
+  
+  & .text {
+    @apply text-base mt-4 lg:my-6;
+  }
+}
+
+.space {
+  @apply md:col-span-3 lg:col-span-2 lg:col-start-6;
+}
+
+.communities {
+  @apply my-4 col-span-1 lg:col-span-2 flex items-center;
+
+  & .error {
+    @apply pl-2;
+    color: var(--color-error);
+  }
+
+  & .full {
+    @apply w-full;
+  }
+}
+
+.sliders {
+  @apply my-4 col-span-1 lg:col-span-3;
+}
+
+.workshops {
+  @apply my-4 col-span-1 lg:col-span-2 flex items-center;
+}
+
+.counterdown {
+  @apply m-4 md:col-span-3 lg:col-span-7;
+  
+  & p {
+    @apply my-2 text-lg font-extrabold text-center;
+  }
+
+  &-content {
+    @apply bg-local bg-cover bg-no-repeat bg-center;
+    @extend .background-counterdown;
+  }
+}

@@ -1,4 +1,4 @@
-import { Controller, Get, HttpCode, HttpStatus, Param, Res, UseGuards } from '@nestjs/common';
+import { Controller, Get, HttpCode, HttpStatus, Query, Param, Res, UseGuards } from '@nestjs/common';
 import { ApiBadRequestResponse, ApiBearerAuth, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { Response } from 'express';
 
@@ -35,8 +35,8 @@ export class GroupsController {
 	}
 
     @ApiOperation({
-        summary: 'Grupos del evento por nombre',
-        description: 'Busqueda de grupos activos en el evento por nombre'
+        summary: 'Grupos del evento por nombre y/o lenguaje',
+        description: 'Busqueda de grupos activos en el evento por nombre y/o lenguaje'
     })
     @ApiOkResponse({
         description: 'Detalle de los grupos',
@@ -46,28 +46,14 @@ export class GroupsController {
         description: "No se manda un token válido",
         type: GenericResponse,
     })
-    @Get('/name/:name')
+    @Get('/search')
     @HttpCode(HttpStatus.OK)
-	async groupContainsName(@Res() res:Response, @IdUser() idUser:string, @Param('name') name:string): Promise<void> {
-        res.send(await this._groupsService.groupContainsName(idUser, name));
-	}
-
-    @ApiOperation({
-        summary: 'Grupo del evento por id',
-        description: 'Busqueda de un grupo por id'
-    })
-    @ApiOkResponse({
-        description: 'Detalle del grupo',
-        type: GroupsDto,
-    })
-    @ApiBadRequestResponse({
-        description: "No se manda un token válido",
-        type: GenericResponse,
-    })
-    @Get('/language/:id')
-    @HttpCode(HttpStatus.OK)
-	async groupContainsId(@Res() res:Response, @IdUser() idUser:string, @Param('id') id:string): Promise<void> {
-        res.send(await this._groupsService.groupByLanguage(idUser, id));
+	async groupContainsName(
+        @Res() res:Response,
+        @IdUser() idUser:string,
+        @Query("name") name:string,
+        @Query("language") language:string): Promise<void> {
+        res.send(await this._groupsService.groupNameAndLanguage(idUser, name, language));
 	}
 
 }

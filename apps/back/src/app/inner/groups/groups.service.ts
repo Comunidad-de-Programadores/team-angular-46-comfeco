@@ -19,6 +19,26 @@ export class GroupsService {
         return this._filterGroup(groupsEntity);
     }
 
+    async groupNameAndLanguage(idUser:string, name:string, languageId:string) {
+        if(!!name && languageId==='-1') {
+            return this.groupContainsName(idUser, name);
+        }
+        
+        if(!name) {
+            return this.groupByLanguage(idUser, languageId);
+        }
+
+        const nameGroup:string = name.toLowerCase();
+
+        const groupsEntity:GroupDto[] = await this._groupsRepository.groupNameAndLanguage(idUser, nameGroup, languageId);
+        
+        if(groupsEntity==null) {
+            return UtilResponse.genericResponse('',['No hay coincidencias con ese nombre de grupo y lenguaje'], HttpStatus.NOT_FOUND);
+        }
+        
+        return this._filterGroup(groupsEntity);
+    }
+
     async groupContainsName(idUser:string, name:string) {
         if(!name) {
             return UtilResponse.genericResponse('',['Es necesario enviar un nombre para poder realizar la busqueda'], HttpStatus.NOT_FOUND);

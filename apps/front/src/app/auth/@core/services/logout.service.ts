@@ -4,6 +4,7 @@ import { tap } from 'rxjs/operators';
 
 import { GenericResponse } from '@comfeco/interfaces';
 import { ValidatorService } from '@comfeco/validator';
+import { CleanService } from '../../../comfeco/@core/services/clean.service';
 
 @Injectable({
   providedIn: 'root'
@@ -18,6 +19,7 @@ export class LogoutService {
 
   constructor(
     private http: HttpClient,
+    private _cleanService: CleanService,
   ) {}
 
   logout() {
@@ -27,6 +29,7 @@ export class LogoutService {
           if(resp.success) {
             this._stopRefreshTokenTimer();
           }
+          this._cleanService.clean();
 
           return resp;
         })
@@ -48,7 +51,7 @@ export class LogoutService {
   }
 
   startRefreshTokenTimer() {
-    const miliseconds = 14 * 60 * 1000;
+    const miliseconds = 10 * 60 * 1000;
     this.isActiveRefreshTokenTimeout = true;
     this.refreshTokenTimeout = setTimeout(() => this.refreshToken().subscribe(), miliseconds);
   }

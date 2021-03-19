@@ -13,8 +13,8 @@
       </div>
     </section>
     <section class="modal-container-footer">
-      <button class="btn btn-secondary" (click)="onCancelAction()">{{modal.btnNo || 'No'}}</button>
-      <button class="btn btn-primary" (click)="onConfirmAction()">{{modal.btnYes || 'Si'}}</button>
+      <button class="btn btn-secondary" (click)="onCancelAction()" aria-label="Opciòn no">{{modal.btnNo || 'No'}}</button>
+      <button class="btn btn-primary" (click)="onConfirmAction()" aria-label="Opciòn si">{{modal.btnYes || 'Si'}}</button>
     </section>
   </div>
 </div>

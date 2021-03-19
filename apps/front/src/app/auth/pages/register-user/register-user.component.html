@@ -2,10 +2,10 @@
   <div class="card-auth">
     <section class="section-principal">
       <div class="bg-top">
-        <img src="assets/login/shapes_form_top.svg">
+        <img src="assets/login/shapes_form_top.svg" alt="fondo superior">
       </div>
       <div class="bg-bottom">
-        <img src="assets/login/shapes_form_bottom.svg">
+        <img src="assets/login/shapes_form_bottom.svg" alt="fondo inferior">
       </div>
       <div class="section-principal__container">
         <div class="section-principal__container-box-form">
@@ -64,13 +64,17 @@
                 type="button"
                 (click)="onRegister()"
                 [disabled]="procesingRequest"
-                class="btn-quaternary">
+                class="btn-quaternary"
+                aria-label="Registrate"
+              >
                 Regístrate
               </button>
               <div class="btn-secondary-action">
                 <button
                   [routerLink]="['/auth/login']"
-                  class="btn-quaternary-light">
+                  class="btn-quaternary-light"
+                  aria-label="Iniciar sesiòn"
+                >
                   Iniciar Sesión
                 </button>
               </div>
@@ -90,6 +94,7 @@
                 (click)="registerFacebook()"
                 [disabled]="procesingRequest"
                 class="btn-facebook"
+                aria-label="Registrarme con facebook"
               >
                 <div><img src="assets/login/logo_facebook_extended.svg" alt="iniciar con facebook" /></div>
                 <span>Registrarme con Facebook</span>
@@ -99,6 +104,7 @@
                 (click)="registerGoogle()"
                 [disabled]="procesingRequest"
                 class="btn-google"
+                aria-label="Registrarme con google"
               >
                 <div><img src="assets/login/logo_google.svg" alt="iniciar con google" /></div>
                 <span>Registrarme con  Google</span>
@@ -110,7 +116,7 @@
     </section>
     <section class="section-secondary">
       <div class="image">
-        <img src="assets/login/shapes_other_section.svg">
+        <img src="assets/login/shapes_other_section.svg" alt="fondo secundario">
       </div>
       <div class="section-secondary__container">
         <div>
@@ -121,7 +127,9 @@
           <div class="action">
             <button
               [routerLink]="['/auth/login']"
-              class="btn-quaternary">
+              class="btn-quaternary"
+              aria-label="Iniciar sesiòn"
+            >
               Iniciar Sesión
             </button>
           </div>

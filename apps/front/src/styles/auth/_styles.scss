@@ -127,7 +127,7 @@
   &-google {
     @apply w-full rounded my-4 flex;
     background-color: var(--color-white);
-    color: var(--color-gray);
+    color: var(--color-gray-dark);
 
     & div {
       @apply px-2 w-10 h-10 flex items-center inline-block;

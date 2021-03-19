@@ -48,6 +48,7 @@ export class AuthService {
   }
 
   public accessGoogle() {
+    const preserveSession:boolean = true;
     const url:string = `${this.urlAuth}/google/verify`;
 
     return from(this.authService.signIn(GoogleLoginProvider.PROVIDER_ID))
@@ -61,11 +62,12 @@ export class AuthService {
 
           return this.http.post(url, google);
         }),
-        this._evaluationRecord(true)
+        this._evaluationRecord(preserveSession)
       );
   }
 
   public accessFacebook() {
+    const preserveSession:boolean = true;
     const url:string = `${this.urlAuth}/facebook/verify`;
 
     return from(this.authService.signIn(FacebookLoginProvider.PROVIDER_ID))
@@ -79,7 +81,7 @@ export class AuthService {
 
           return this.http.post(url, facebook);
         }),
-        this._evaluationRecord(true)
+        this._evaluationRecord(preserveSession)
       );
   }
 

@@ -154,7 +154,7 @@ export class BasicService {
 
         baseUser.tokenApi = accessToken.token;
         baseUser.tokenRefreshApi = refreshToken.token;
-
+        
         await this._userRepository.updateTokenApi(baseUser);
 
         return tokenResponse;

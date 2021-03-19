@@ -31,7 +31,6 @@ export class AccessTokenStrategy extends PassportStrategy(Strategy, 'jwt') {
     }
 
     async validate(request: Request, payload:JwtPayload) {
-        const accessToken:string = JwtUtil.getTokenCookie(request, CookieGuard.AUTHENTICATION);
         let validation:GenericResponse;
         const { id } = payload;
         
@@ -42,12 +41,6 @@ export class AccessTokenStrategy extends PassportStrategy(Strategy, 'jwt') {
         const baseUser = await this._userRepository.idExists(id);
         
         if(baseUser==null || !baseUser || baseUser.status!=Status.ACTIVE || baseUser.tokenApi==='') {
-            throw new UnauthorizedException();
-        }
-
-        const validAccessToken:boolean = accessToken===baseUser.tokenApi;
-
-        if(!validAccessToken) {
             throw new UnauthorizedException();
         }
 
