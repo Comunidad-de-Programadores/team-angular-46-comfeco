@@ -1,0 +1,13 @@
+:host {
+  @apply block px-4;
+}
+
+.swiper-container {
+  width: 100%;
+  height: 125px;
+  margin: 20px auto;
+}
+
+.title {
+  @apply text-lg font-extrabold;
+}

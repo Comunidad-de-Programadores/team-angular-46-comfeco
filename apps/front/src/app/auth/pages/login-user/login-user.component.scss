@@ -1,0 +1,47 @@
+@import '../../../../styles/auth/styles';
+
+:host {
+  display: block;
+}
+
+.section-principal {
+  & .btn-quaternary-light {
+    @apply my-4;
+  }
+}
+
+.section-secondary {
+  & .welcome {
+    color: var(--color-white);
+
+    & .text-big,
+    & .text-small {
+      @apply block text-center;
+    }
+      
+    & .text-big {
+      @apply text-lg font-semibold my-4;
+    }
+
+    & .text-small {
+      @apply text-sm;
+    }
+  }
+}
+
+.keep-connection {
+  @apply flex items-center justify-center text-sm my-2;
+  color: var(--color-white);
+
+  & label {
+    @apply ml-2;
+  }
+}
+
+.section-soacial-network p {
+  @apply mt-8;
+}
+
+.section-logo-small {
+  @apply my-4;
+}

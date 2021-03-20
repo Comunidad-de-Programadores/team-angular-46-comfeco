@@ -1,0 +1,365 @@
+<form class="form-control profile-edit" [formGroup]="editForm">
+  <div class="profile-container">
+    <section class="profile-title">Editar Perfil</section>
+
+    <section class="profile-image">
+      <div class="profile-image__ring">
+        <div class="profile-image__container">
+          <img
+            [src]="imageSrc || 'assets/img/user_question_card.svg'"
+            alt="avatar"
+          >
+          <label>
+            <i class="icon-comfeco-camera"></i>
+            <input
+              type="file"
+              class="hidden"
+              (change)="readURL($event)"
+            >
+          </label>
+        </div>
+      </div>
+    </section>
+
+    <section class="profile-information">
+      <div class="form-group-row errors">
+        <div class="form-group-input">
+          <label class="form-label" for="nickname">Usuario</label>
+          <div class="form-input">
+            <input
+              type="text"
+              formControlName="user"
+              autocomplete="nope"
+              id="nickname"
+              placeholder="Usuario"
+              [ngClass]="{'error-form':errorUser}"
+            />
+            <div class="container-icon">
+              <i
+                class="icon icon-comfeco-user"
+                [ngClass]="{'error-form':errorUser}"
+              ></i>
+            </div>
+          </div>
+          <span class="error">{{errorUser}}</span>
+        </div>
+        <div class="form-group-input">
+          <label class="form-label" for="email">Correo</label>
+          <div class="form-input">
+            <input
+              type="email"
+              formControlName="email"
+              autocomplete="nope"
+              id="email"
+              placeholder="Correo electrónico"
+              [ngClass]="{'error-form':errorEmail}"
+            />
+            <div class="container-icon">
+              <i
+                class="icon icon-comfeco-email"
+                [ngClass]="{'error-form':errorEmail}"
+              ></i>
+            </div>
+          </div>
+          <span class="error">{{errorEmail}}</span>
+        </div>
+      </div>
+
+      <div class="form-group-row error">
+        <div class="form-group-input">
+          <span>{{errorUser}}</span>
+        </div>
+        <div class="form-group-input">
+          <span>{{errorEmail}}</span>
+        </div>
+      </div>
+
+      <div class="form-group-row">
+        <div class="form-group-input-gender">
+          <div class="description">
+            <label class="form-label">Genero</label>
+          </div>
+          <div class="options">
+            <label
+              *ngFor="let gender of genders"
+              class="gender"
+            >
+              <span>{{gender.prefix}}</span>
+              <input
+                type="radio"
+                name="gender"
+                [value]="gender.id"
+                formControlName="gender"
+              />
+            </label>
+          </div>
+        </div>
+        
+        <div class="form-group-input">
+          <label class="form-label" for="birthday">Fecha de Nacimiento</label>
+          <span class="form-date-picker">
+            <input
+              type="text"
+              [value]="newBirdthDate"
+              class="form-date-picker__text"
+              placeholder="dd/mm/aaaa"
+            >
+            <button class="calendar" aria-label="Calendario"></button>
+            <input
+              type="date"
+              formControlName="birdthDate"
+              class="form-date-picker__input"
+            >
+          </span>
+        </div>
+      </div>
+
+      <div class="form-group-row errors">
+        <div class="form-group-input">
+          <label class="form-label">País</label>
+          <div class="form-input form-select">
+            <div class="options scrollbar">
+              <div class="option">
+                <input
+                  type="radio"
+                  name="country"
+                  value=""
+                  id="country-"
+                  [attr.country-name]=""
+                  [attr.country-flag]=""
+                  formControlName="country"
+                  #country
+                  checked
+                />
+                <label for="country-">
+                  <span>Seleciona una opción</span>
+                </label>
+              </div>
+
+              <div
+                
+                *ngFor="let country of countries; let i = index"
+                class="option"
+              >
+                <input
+                  type="radio"
+                  name="country"
+                  [value]="i"
+                  [id]="'country-'+i"
+                  [attr.country-name]="country.name"
+                  [attr.country-flag]="country.flag"
+                  formControlName="country"
+                />
+                <label [for]="'country-'+i">
+                  <img [src]="country.flag" [alt]="country.name" />
+                  <span>{{country.name}}</span>
+                </label>
+              </div>
+            </div>
+            <div class="form-input__icon">
+              <i class="icon icon-comfeco-arrow_down"></i>
+            </div>
+          </div>
+        </div>
+        <div class="form-group-input">
+          <label class="form-label" for="password">Contraseña actual</label>
+          <div class="form-input">
+            <input
+              type="password"
+              formControlName="password"
+              autocomplete="nope"
+              id="password"
+              placeholder="Contraseña"
+              [ngClass]="{'error-form':errorPassword}"
+            />
+            <div class="container-icon">
+              <i
+                class="icon icon-comfeco-lock"
+                [ngClass]="{'error-form':errorPassword}"
+              ></i>
+            </div>
+          </div>
+          <span class="error">{{errorPassword}}</span>
+        </div>
+      </div>
+
+      <div class="form-group-row error">
+        <div class="form-group-input"></div>
+        <div class="form-group-input">
+          <span>{{errorPassword}}</span>
+        </div>
+      </div>
+
+      <div class="form-group-row errors">
+        <div class="form-group-input">
+          <label class="form-label" for="new-password">Nueva Contraseña</label>
+          <div class="form-input">
+            <input
+              type="password"
+              formControlName="newPassword"
+              autocomplete="nope"
+              id="new-password"
+              placeholder="Nueva contraseña"
+              [ngClass]="{'error-form':errorNewPassword}"
+            />
+            <div class="container-icon">
+              <i
+                class="icon icon-comfeco-lock"
+                [ngClass]="{'error-form':errorNewPassword}"
+              ></i>
+            </div>
+          </div>
+          <span class="error">{{errorNewPassword}}</span>
+        </div>
+        <div class="form-group-input">
+          <label class="form-label" for="confirm-password">Repetir Nueva Contraseña</label>
+          <div class="form-input">
+            <input
+              type="password"
+              formControlName="confirmPassword"
+              autocomplete="nope"
+              id="confirm-password"
+              placeholder="Confirmación de contraseña"
+              [ngClass]="{'error-form':errorConfirmPassword}"
+            />
+            <div class="container-icon">
+              <i
+                class="icon icon-comfeco-lock"
+                [ngClass]="{'error-form':errorConfirmPassword}"
+              ></i>
+            </div>
+          </div>
+          <span class="error">{{errorConfirmPassword}}</span>
+        </div>
+      </div>
+
+      <div class="form-group-row error">
+        <div class="form-group-input">
+          <span>{{errorNewPassword}}</span>
+        </div>
+        <div class="form-group-input">
+          <span>{{errorConfirmPassword}}</span>
+        </div>
+      </div>
+
+      <div class="form-group-row social">
+        <div class="form-group-social">
+          <div class="form-group-social__url">
+            <label for="facebook">facebook.com/</label>
+          </div>
+          <div class="form-group-social__input form-input">
+            <input
+              type="text"
+              formControlName="facebook"
+              autocomplete="nope"
+              id="facebook"
+              placeholder="Usuario"
+            />
+            <div class="container-icon">
+              <i class="icon icon-comfeco-facebook"></i>
+            </div>
+          </div>
+        </div>
+        <div class="form-group-social">
+          <div class="form-group-social__url">
+            <label for="github">github.com/</label>
+          </div>
+          <div class="form-group-social__input form-input">
+            <input
+              type="text"
+              formControlName="github"
+              autocomplete="nope"
+              id="github"
+              placeholder="Usuario"
+            />
+            <div class="container-icon">
+              <i class="icon icon-comfeco-github"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group-row social">
+        <div class="form-group-social">
+          <div class="form-group-social__url">
+            <label for="linkedin">linkedin.com/in/</label>
+          </div>
+          <div class="form-group-social__input form-input">
+            <input
+              type="text"
+              formControlName="linkedin"
+              autocomplete="nope"
+              id="linkedin"
+              placeholder="Usuario"
+            />
+            <div class="container-icon">
+              <i class="icon icon-comfeco-linkedin"></i>
+            </div>
+          </div>
+        </div>
+        <div class="form-group-social">
+          <div class="form-group-social__url">
+            <label for="twitter">twitter.com/</label>
+          </div>
+          <div class="form-group-social__input form-input">
+            <input
+              type="text"
+              formControlName="twitter"
+              autocomplete="nope"
+              id="twitter"
+              placeholder="Usuario"
+            />
+            <div class="container-icon">
+              <i class="icon icon-comfeco-twitter"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group-speciality">
+        <label class="form-label">Especialidades</label>
+        <div class="items">
+          <div class="group-list" *ngFor="let groupSpeciality of specialities; let i=index;">
+            <div class="item" *ngFor="let speciality of groupSpeciality; let j=index;" formArrayName="specialities">
+              <span [formGroupName]="speciality.element"></span>
+              <input
+                type="checkbox"
+                name="speciality"
+                [formControlName]="speciality.element"
+                [value]="speciality.id"
+                [attr.area]="speciality.area"
+                [id]="'speciality-'+speciality.id"
+              />
+              <label [for]="'speciality-'+speciality.id">{{speciality.area}}</label>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group-biography">
+        <label for="biography" class="form-label">Biografía</label>
+        <textarea
+          formControlName="biography"
+          id="biography"
+          autocomplete="nope"
+          placeholder="Descripción personal"
+          maxlength="140"
+        ></textarea>
+        <div class="number-characters">Máximo {{numberCharactersBiography}} caracteres</div>
+      </div>
+    </section>
+
+    <section class="profile-actions">
+      <div class="form-group-buttons">
+        <button class="btn-secondary" (click)="returnUserInformation()" aria-label="Regresar al perfil">
+          <i class="icon icon-comfeco-return"></i>
+          <span>Regresar</span>
+        </button>
+        <button class="btn-primary" (click)="editInformation()" aria-label="Guardar cambios">
+          <i class="icon icon-comfeco-save"></i>
+          <span>Guardar Cambios</span>
+        </button>
+      </div>
+    </section>
+  </div>
+</form>

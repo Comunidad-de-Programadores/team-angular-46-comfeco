@@ -1,0 +1,40 @@
+<div class="workshop">
+
+  <article class="workshop-card active">
+
+    <header (click)="goToWorkshop()">
+      <div
+        class="topic"
+        [ngClass]="{'topic-link':!!workshop.urlWorkshop}">
+        <h1>
+          <a>
+            {{workshop?.topic}}
+          </a>
+        </h1>
+        <i [ngClass]="{'icon-comfeco-video':!!workshop.urlWorkshop}"></i>
+      </div>
+      <div class="date">
+        <p>{{workshop?.startTime | date: 'dd/MM/yy h:mm:ss a'}} - {{workshop?.endTime | date: 'h:mm:ss a'}}</p>
+      </div>
+      <div
+        *ngIf="workshop?.description"
+        class="description"
+      >
+        {{workshop?.description}}
+      </div>
+    </header>
+    <footer
+      [ngClass]="{'social':!!workshop.urlSocialNetwork}"
+      (click)="goToSocialNetwork()">
+      <a>
+        <img
+          alt="{{workshop?.author}}"
+          src="assets/img/avatar_user.svg">
+        <p>{{workshop?.author}}</p>
+      </a>
+      <i *ngIf="workshop?.urlSocialNetwork" class="icon-comfeco-twitter"></i>
+    </footer>
+
+  </article>
+
+</div>

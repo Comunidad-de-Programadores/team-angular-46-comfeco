@@ -1,36 +1,41 @@
-import { Controller, Get, HttpStatus, Req, Res, UseGuards } from '@nestjs/common';
-import { ApiExcludeEndpoint, ApiOperation, ApiTags } from '@nestjs/swagger';
-import { AuthGuard } from '@nestjs/passport';
-import { Request, Response } from "express";
+import { Body, Controller, HttpCode, HttpStatus, Post, Res } from '@nestjs/common';
+import { ApiOkResponse, ApiOperation, ApiTags, ApiUnauthorizedResponse } from '@nestjs/swagger';
+import { Response } from "express";
+
+import { GenericResponse, GoogleLoginDto, TokenDto } from '@comfeco/interfaces';
 
 import { GoogleService } from './google.service';
+import { TokenResponseDto } from '../tokensResponse';
+import { AuthService } from '../auth.service';
 
 @ApiTags('Autenticación')
 @ApiTags('Google')
 @Controller('auth/google')
 export class GoogleController {
 
-    constructor( private _googleService: GoogleService ){}
-
+    constructor(
+        private readonly _googleService: GoogleService,
+        private readonly _authService: AuthService
+    ){}
 
     @ApiOperation({
-        summary: 'Ingresar con google',
-        description: 'Muestra la pantalla para ingresar con una cuenta de google'
+        summary: 'Verificación de autenticación con google',
+        description: 'Se realiza verificación de los datos obtenidos por el usuario directamente en el api de google'
     })
-    @Get()
-    @UseGuards(AuthGuard('google'))
-    pageLogin(@Res() resp:Response): void {
-        resp.status(HttpStatus.OK);
+    @ApiOkResponse({
+        description: 'Token de acceso al aplicativo',
+        type: TokenDto,
+    })
+    @ApiUnauthorizedResponse({
+        description: "No se autentica correctamente el usuario",
+        type: GenericResponse,
+    })
+    @Post("verify")
+    @HttpCode(HttpStatus.OK)
+    async verify(@Res() res:Response, @Body() googleDto:GoogleLoginDto): Promise<void> {
+        const tokens:TokenResponseDto = await this._googleService.login(googleDto);
+        this._authService.setCookies(res, tokens, HttpStatus.OK);
     }
 
-    
-    @Get('respuesta')
-    @ApiExcludeEndpoint()
-    @UseGuards(AuthGuard('google'))
-    async login(@Req() req:Request, @Res() res:Response): Promise<void> {
-        const user = await this._googleService.login(req)
-
-        res.status(user.code).send(user);
-    }
-    
 }
+

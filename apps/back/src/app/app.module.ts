@@ -1,22 +1,20 @@
-import { Module } from '@nestjs/common';
-import { Logger } from '@nestjs/common';
+import { Module, Logger } from '@nestjs/common';
 
 import { AuthModule } from './auth/auth.module';
 import { environment } from '../environments/environment';
 import { ConfigModule } from '../config/config.module';
 import { ConfigService } from '../config/config.service';
 import { Configuration } from '../config/config.keys';
-import { UserModule } from './user/user.module';
+import { JwtUtilModule } from '../util/jwt/jwt.module';
+import { InnerModule } from './inner/inner.module';
 
 @Module({
     imports: [
+        JwtUtilModule,
         ConfigModule,
         AuthModule,
-        UserModule,
+        InnerModule,
     ],
-    providers: [
-        ConfigService,
-    ]
 })
 export class AppModule {
     private readonly logger = new Logger(AppModule.name);

@@ -1,0 +1,40 @@
+@charset 'utf-8';
+
+
+
+:root {
+  --color-white:                  #{mapGet($base, gray-7)};
+  --color-black:                  #{mapGet($base, gray-1)};
+  --color-primary:                #{mapGet($colors, primary)};
+  --color-primary-hover:          #{mapGet($colors, primary-hover)};
+  --color-primary-hover-light:    #{mapGet($colors, primary-hover-light)};
+  --color-secondary:              #{mapGet($colors, secondary)};
+  --color-secondary-hover:        #{mapGet($colors, secondary-hover)};
+  --color-secondary-hover-light:  #{mapGet($colors, secondary-hover-light)};
+  --color-tertiary:               #{mapGet($colors, tertiary)};
+  --color-tertiary-hover:         #{mapGet($colors, tertiary-hover)};
+
+  --color-twitter:                #{mapGet($colors, twitter)};
+  --color-twitter-hover:          #{mapGet($colors, twitter-hover)};
+  --color-facebook:               #{mapGet($colors, facebook)};
+  --color-facebook-hover:         #{mapGet($colors, facebook-hover)};
+  --color-github:                 #{mapGet($colors, github)};
+  --color-github-hover:           #{mapGet($colors, github-hover)};
+  --color-linkedin:               #{mapGet($colors, linkedin)};
+  --color-linkedin-hover:         #{mapGet($colors, linkedin-hover)};
+  --color-google-hover:           #{mapGet($colors, google-hover)};
+  
+  --color-link:                   #{mapGet($colors, link)};
+  --color-success:                #{mapGet($colors, success)};
+  --color-error:                  #{mapGet($colors, error)};
+  --color-error-light:            #{mapGet($colors, error-light)};
+
+  --color-icon:                   #{mapGet($base, gray-4)};
+  --color-gray:                   #{mapGet($base, gray-3)};
+  --color-gray-icon:              #{mapGet($base, gray-4)};
+  --color-gray-light:             #{mapGet($base, gray-5)};
+  --color-gray-hover:             #{mapGet($base, gray-2)};
+  --color-gray-dark:              #{mapGet($base, gray-2)};
+
+  --background-modal:             #{mapGet($colors, background-modal)};
+}

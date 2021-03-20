@@ -1,0 +1,20 @@
+:host {
+  @apply block md:grid md:grid-cols-3 lg:grid-cols-4 py-6;
+  min-height: 100vh;
+}
+
+@media (min-width: 768px) {
+  :host {
+    min-height: calc(100vh - 19rem);
+  }
+}
+
+.secion-user,
+.secion-records,
+.secion-events {
+  @apply md:col-span-1;
+}
+
+.secion-records {
+  @apply lg:col-span-2;
+}

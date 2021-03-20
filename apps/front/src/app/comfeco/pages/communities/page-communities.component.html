@@ -1,0 +1,12 @@
+<div class="title-section">Comunidades</div>
+
+<section class="container-page">
+  <div class="container-page__content">
+    <comfeco-card-community
+      *ngFor="let community of communities"
+      [image]="community.iconUrl"
+      [community]="community.name"
+      [link]="community.link">
+    </comfeco-card-community>
+  </div>
+</section>

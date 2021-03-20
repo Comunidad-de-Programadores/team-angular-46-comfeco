@@ -1,0 +1,12 @@
+<div class="medals">
+  <div class="title">Insignias</div>
+  <div class="insignias">
+    <div
+      *ngFor="let insignia of insignias"
+      class="insignia"
+      [ngClass]="{'incomplete' : !insignia.complete}"
+    >
+      <img [src]="'assets/img/'+(insignia.complete ? insignia.image : 'medal_question')+'.svg'" alt="insignia.name">
+    </div>
+  </div>
+</div>

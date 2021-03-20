@@ -1,0 +1,56 @@
+:host {
+  display: block;
+}
+
+.tabs-header {
+  @apply flex items-center justify-center;
+}
+
+.tab-label {
+  @apply font-bold py-2 px-2 mx-4 md:px-8 md:mx-6 lg:py-4 lg:px-10 lg:mx-8 rounded flex items-center flex-col cursor-pointer;
+  color: var(--color-gray);
+  
+  &:hover {
+    color: var(--color-primary-hover);
+  }
+
+  &.active {
+    color: var(--color-primary);
+    border: 1px solid var(--color-primary);
+
+    &:hover {
+      @apply cursor-default;
+    }
+  }
+
+  & i {
+    @apply text-3xl pb-2;
+  }
+
+  & span {
+    @apply pt-2;
+    border-top: 1px solid var(--color-gray);
+
+    &.active {
+      border-top: 1px solid var(--color-primary);
+    }
+  }
+}
+
+.tabs-body {
+  @apply mt-8;
+}
+
+.hidden {
+  display: none;
+}
+
+.label-item {
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .label-item {
+    display:block;
+  }
+}

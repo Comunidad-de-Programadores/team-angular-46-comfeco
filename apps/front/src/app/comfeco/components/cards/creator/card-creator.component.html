@@ -1,0 +1,27 @@
+<div class="creator">
+  <div class="creator__container">
+    <img
+      [src]="creator.photoUrl || 'assets/img/user_question_card.svg'"
+      class="creator__user"
+      alt="foto"
+    />
+    <div class="tecnologies">
+      <div *ngIf="creator.technologies.length>0; else tecnologyQuestion">
+        <img 
+          *ngFor="let technology of creator.technologies"
+          [src]="'assets/img/'+technology.photoUrl+'.svg'"
+          alt="tecnología"
+        >
+      </div>
+    </div>
+    <div class="creator__name">{{creator.name}}</div>
+  </div>
+</div>
+
+<ng-template #tecnologyQuestion>
+  <img 
+    class="tecnology-question"
+    src="assets/img/tecnology_question.svg"
+    alt="logo tecnología"
+  >
+</ng-template>

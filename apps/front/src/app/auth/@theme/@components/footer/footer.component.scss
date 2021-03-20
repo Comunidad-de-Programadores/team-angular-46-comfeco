@@ -1,0 +1,13 @@
+:host {
+  @apply block fixed bottom-0 h-16 w-full;
+  background-color: var(--color-black);
+}
+
+footer {
+  @apply relative flex items-center justify-center w-full;
+}
+
+span {
+  @apply hidden lg:block absolute left-32 text-sm;
+  color: var(--color-white);
+}

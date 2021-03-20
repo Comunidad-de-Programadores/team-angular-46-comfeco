@@ -1,0 +1,14 @@
+:host {
+  display: block;
+}
+
+.message {
+  @apply pl-2;
+  color: var(--color-error);
+}
+
+.section {
+  @apply mt-3 pl-2 p-1;
+  background-color: var(--color-primary);
+  color: var(--color-white);
+}

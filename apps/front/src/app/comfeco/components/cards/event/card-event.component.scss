@@ -1,0 +1,23 @@
+:host {
+  @apply col-span-1 my-8 md:my-4 mx-4 p-4 bg-white rounded-md shadow-md;
+}
+
+.event {
+  @apply flex justify-between flex-col h-full;
+}
+
+.image {
+  @apply p-4;
+}
+
+.description {
+  @apply my-8;
+}
+
+.buttons {
+  @apply flex justify-between;
+}
+
+.bloqued {
+  filter: grayscale(100%);
+}

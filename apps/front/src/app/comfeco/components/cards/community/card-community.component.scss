@@ -1,0 +1,28 @@
+:host {
+  display: contents;
+}
+
+.community {
+  @apply my-2 w-full;
+}
+
+article {
+  @apply overflow-hidden rounded-lg shadow-md p-4;
+  background-color: var(--color-white);
+}
+
+.community__content {
+  @apply flex items-center justify-between;
+
+  & .title {
+    @apply flex items-center justify-between;
+
+    & img {
+      @apply rounded-full h-10 w-10;
+    }
+
+    & h1 {
+      @apply px-5 text-lg;
+    }
+  }
+}

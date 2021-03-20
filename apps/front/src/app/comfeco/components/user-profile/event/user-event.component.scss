@@ -1,0 +1,15 @@
+:host {
+  @apply flex flex-col items-center justify-center;
+}
+
+.name {
+  @apply my-5 text-center text-sm;
+}
+
+.buttons {
+  @apply flex items-center justify-center;
+}
+
+.btn-primary {
+  @apply m-4;
+}

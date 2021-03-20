@@ -5,7 +5,7 @@ import { SentMessageInfo } from 'nodemailer';
 import { environment } from './../../environments/environment';
 import { ConfigService } from '../config.service';
 import { Configuration } from '../config.keys';
-import { UserEntity } from '../../app/user/user.entity';
+import { UserEntity } from '../../app/inner/user/model/user.entity';
 
 @Injectable()
 export class EmailService {
@@ -15,13 +15,13 @@ export class EmailService {
         private readonly _mailerService: MailerService) {}
     
     async recoverAccount(baseUser:UserEntity): Promise<SentMessageInfo> {
-        const { email, user, name, lastname='', lastname_m='', tokenApi } = baseUser;
-        const username = name ? `${name} ${lastname} ${lastname_m}` : user;
+        const { email, user, name, lastname='', tokenApi } = baseUser;
+        const username = name ? `${name} ${lastname}` : user;
         
         return await this._mailerService.sendMail({
             to: email,
             from: this._configService.get(Configuration.GOOGLE_EMAIL),
-            subject: `Recuperación de acceso al aplicativo ${environment.title}`,
+            subject: `Recuperación de acceso al aplicativo ${environment.titleEmail}`,
             template: 'recover_account',
             context: { username, url: `${environment.url_recover_account}${tokenApi}` },
         });

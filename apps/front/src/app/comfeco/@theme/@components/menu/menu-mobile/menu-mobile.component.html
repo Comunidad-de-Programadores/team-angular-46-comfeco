@@ -1,0 +1,15 @@
+<div [ngClass]="{'hidden': !showMenu}" class="menu" id="mobile-menu">
+  <div class="options">
+    <a *ngFor="let option of options; index as i"
+      class="option"
+      [routerLink]="[option.link]"
+      routerLinkActive="active"
+    >
+      <i
+        class="icon"
+        [ngClass]="option.icon"
+      ></i>
+      <span>{{option.option}}</span>
+    </a>
+  </div>
+</div>

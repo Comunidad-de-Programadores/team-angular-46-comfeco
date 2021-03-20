@@ -1,0 +1,104 @@
+@charset 'utf-8';
+
+
+
+.buttonSocialNetwork {
+  transition-property: color;
+  transition-duration: 0.5s, 1s;
+  font-size: 1.2rem;
+  color: var(--color-icon);
+  @apply cursor-pointer m-3 focus:outline-none;
+
+  &:hover {
+    color: var(--color-white);
+  }
+}
+
+.icon-social.icon-comfeco-twitter,
+.icon-social.icon-comfeco-facebook,
+.icon-social.icon-comfeco-discord,
+.icon-social.icon-comfeco-youtube,
+.icon-social.icon-comfeco-github,
+.icon-social.icon-comfeco-patreon,
+.icon-header.icon-comfeco-bell {
+  @extend .buttonSocialNetwork;
+}
+
+.btn-icon {
+  @apply cursor-pointer focus:outline-none;
+}
+
+// Botones aplicativo
+.btn {
+  @apply rounded-md shadow;
+
+  & button {
+    @apply w-full flex items-center justify-center px-5 py-2 border border-transparent text-base font-medium rounded-md text-white;
+  }
+
+  & span {
+    @apply ml-2;
+  }
+}
+
+.btn-primary,
+.btn-secondary,
+.btn-tertiary,
+.btn-quaternary,
+.btn-quaternary-light {
+  @apply inline-flex items-center justify-center py-2 px-4 rounded focus:outline-none;
+
+  & .icon {
+    @apply block h-6 w-6 pr-2;
+  }
+
+  &:hover {
+    background-color: var(--color-primary-hover);
+    color: var(--color-white);
+  }
+}
+
+.btn-primary {
+  background-color: var(--color-primary);
+  color: var(--color-white);
+}
+
+.btn-secondary {
+  @apply bg-transparent py-2 px-4 border rounded;
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+
+  &.text-white {
+    border-color: var(--color-white);
+    color: var(--color-white);
+  }
+}
+
+.btn-tertiary {
+  @apply bg-transparent py-2 px-4 border-0;
+  color: var(--color-primary);
+
+  &.text-white {
+    color: var(--color-white);
+  }
+}
+
+.btn-quaternary {
+  background-color: var(--color-tertiary);
+  color: var(--color-black);
+
+  &:hover {
+    background-color: var(--color-tertiary-hover);
+    color: var(--color-black);
+  }
+}
+
+.btn-quaternary-light {
+  border: 1px solid var(--color-tertiary);
+  color: var(--color-tertiary);
+
+  &:hover {
+    background-color: var(--color-tertiary-hover);
+    color: var(--color-black);
+  }
+}

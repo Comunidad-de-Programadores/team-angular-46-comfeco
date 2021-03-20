@@ -1,0 +1,28 @@
+:host {
+  display: block;
+}
+
+.article-component,
+.article-container {
+  @apply w-full;
+}
+
+.article-component {
+  @apply flex justify-center;
+}
+
+.article-container {
+  @apply m-4 shadow-md rounded-md p-2 bg-white;
+
+  & .header {
+    @apply flex justify-between items-center py-1;
+    
+    &_title {
+      @apply text-base font-bold;
+    }
+  }
+
+  & .scrollbar {
+    @apply overflow-x-hidden text-sm mt-2 overflow-auto h-48;
+  }
+}

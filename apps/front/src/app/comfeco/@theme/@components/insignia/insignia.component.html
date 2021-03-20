@@ -1,0 +1,59 @@
+<div
+  *ngIf="service.insignia$ | async"
+  class="insignia-winner"
+  [ngClass]="{'hide-insignia': service.hidden$ | async}"
+>
+  <div class="insignia-background"></div>
+  <div
+    class="insignia-card"
+    [ngClass]="{'show':service.insignia$ | async}"
+  >
+    <div
+      class="insignia-accessories"
+      [ngClass]="{'show':service.insignia$ | async}"
+    >
+      <div
+        class="lights"
+        [ngClass]="{'show':service.insignia$ | async}"
+      >
+        <img
+          *ngFor="let light of [1,2,3,4,5,6]"
+          class="light"
+          [ngClass]="'light-'+light"
+          src="assets/img/medal_flash_light.svg"
+          alt="destello"
+        >
+      </div>
+      <div
+        [ngClass]="{'show':service.insignia$ | async}"
+        class="stars"
+      >
+        <img
+          *ngFor="let star of [1,2,3,4,5,6,7,8]"
+          class="star"
+          [ngClass]="'star-'+star"
+          src="assets/img/medal_star_light.svg"
+          alt="estrella"
+        >
+      </div>
+    </div>
+    <div
+      [ngClass]="{'show':service.insignia$ | async}"
+      class="medal"
+    >
+      <img
+        [src]="'assets/img/medal_'+(service.medal$ | async)+'.svg'"
+        alt="service.medal$ | async"
+      >
+    </div>
+    <div
+      [ngClass]="{'show':service.insignia$ | async}"
+      class="headband"
+    >
+      <img
+        [src]="'assets/img/medal_headband_'+(service.medal$ | async)+'.svg'"
+        alt="service.medal$ | async"
+      >
+    </div>
+  </div>
+</div>

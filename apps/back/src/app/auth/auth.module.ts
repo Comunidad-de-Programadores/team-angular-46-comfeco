@@ -3,20 +3,21 @@ import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 
 import { AuthService } from './auth.service';
-import { JwtStrategy } from '../../config/guard/jwt.strategy';
+import { AccessTokenStrategy } from '../../config/guard/access_token.strategy';
 import { ConfigModule } from '../../config/config.module';
 import { ConfigService } from '../../config/config.service';
 import { Configuration } from '../../config/config.keys';
 import { EmailModule } from '../../config/email/email.module';
-import { UserModule } from '../user/user.module';
 import { BasicController } from './basic/basic.controller';
 import { BasicService } from './basic/basic.service';
 import { GoogleController } from './google/google.controller';
 import { GoogleService } from './google/google.service';
-import { GoogleStrategy } from './google/google.strategy';
 import { FacebookController } from './facebook/facebook.controller';
 import { FacebookService } from './facebook/facebook.service';
-import { FacebookStrategy } from './facebook/facebook.strategy';
+import { RefreshTokenStrategy } from '../../config/guard/refresh_token.strategy';
+import { InnerModule } from '../inner/inner.module';
+import { GoogleLogoutService } from './google/google-logout.service';
+import { FacebookLogoutService } from './facebook/facebook-logout.service';
 
 const passportModule: DynamicModule = PassportModule.register({
     defaultStrategy: 'jwt'
@@ -27,9 +28,9 @@ const jwtModule: DynamicModule = JwtModule.registerAsync({
     inject: [ ConfigService ],
     useFactory(config: ConfigService) {
         return {
-            secret: config.get(Configuration.JWT_SECRET),
+            secret: config.get(Configuration.JWT_TOKEN_SECRET),
             signOptions: {
-                expiresIn: config.get(Configuration.JWT_TIME_EXPIRATION)
+                algorithm: "HS256"
             }
         };
     }
@@ -39,25 +40,30 @@ const jwtModule: DynamicModule = JwtModule.registerAsync({
     controllers: [
         BasicController,
         GoogleController,
-        FacebookController],
+        FacebookController
+    ],
     providers: [
-        JwtStrategy,
+        RefreshTokenStrategy,
+        AccessTokenStrategy,
         ConfigService,
         BasicService,
-        GoogleService, GoogleStrategy,
-        FacebookService, FacebookStrategy,
-        AuthService
+        GoogleService, GoogleLogoutService,
+        FacebookService, FacebookLogoutService,
+        AuthService,
     ],
     imports: [
         passportModule,
         jwtModule,
         HttpModule,
         EmailModule,
-        UserModule
+        InnerModule,
     ],
     exports: [
-        JwtStrategy,
-        PassportModule
+        RefreshTokenStrategy,
+        AccessTokenStrategy,
+        PassportModule,
+        JwtModule,
+        jwtModule
     ]
 })
 export class AuthModule {}
