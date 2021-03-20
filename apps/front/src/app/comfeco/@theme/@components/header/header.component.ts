@@ -6,6 +6,8 @@ import { MenuDto } from '@comfeco/interfaces';
 
 import { LayoutComfecoService } from '../../layout/layout-comfeco.service';
 import { HeaderService } from './header.service';
+import { LogoutService } from '../../../../auth/@core/services/logout.service';
+import { SpinnerService } from '@comfeco/api';
 
 @Component({
   selector: 'comfeco-header',
@@ -31,7 +33,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
   constructor(
     private _router: Router,
     private _domref: ElementRef,
+    private spinner: SpinnerService,
     public service: HeaderService,
+    private _serviceLogout: LogoutService,
     private notification: LayoutComfecoService,
   ) {}
 
@@ -50,6 +54,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
       this.photoUrl = photoNew;
     });
 
+    this.spinner.show();
     this.service.optionsMenu()
       .subscribe(
         (resp:any) => {
@@ -58,9 +63,12 @@ export class HeaderComponent implements OnInit, OnDestroy {
           } else {
             this.notification.alertNotification({message: resp.message});
           }
+
+          this.spinner.hidde();
         }
       );
 
+    this.spinner.show();
     this.service.user()
       .subscribe(
         (resp:any) => {
@@ -71,6 +79,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
           } else {
             this.notification.alertNotification({message: resp.message});
           }
+          this.spinner.hidde();
         }
       );
   }
@@ -88,18 +97,19 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   logout() {
-    this.service.logout().subscribe(resp =>{
-      if(resp.success){
-        localStorage.clear();
-        this._router.navigate(['/login/login']);
-      }
+    this.spinner.show();
+    this._serviceLogout.logout().subscribe(_ => {
+      this._router.navigate(['/auth/login']);
+      this.spinner.hidde();
     });
     this.toggleProfileOptions();
   }
 
   myProfile() {
+    this.spinner.show();
     this._router.navigateByUrl('/app/my-profile');
     this.toggleProfileOptions();
+    this.spinner.hidde();
   }
 
 }

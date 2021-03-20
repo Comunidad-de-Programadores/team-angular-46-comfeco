@@ -1,6 +1,8 @@
 import { Pipe, PipeTransform } from '@angular/core';
+
 import { UserSocialNetworksDto } from '@comfeco/interfaces';
-import { SocialNetworkInterface } from '../../pages/user-information/social.interface';
+
+import { SocialNetworkInterface } from '../../components/user-profile/information/social.interface';
 
 @Pipe({
   name: 'socialNetworks'

@@ -39,6 +39,38 @@ export class GroupsRepository {
         return groups;
     }
 
+    async groupNameAndLanguage(idUser:string, name:string, languageId:string) {
+        const languageRef:any = await this.db.collection('technologies').doc(languageId);
+        const groupsBase = await this.db.collection(this._coleccion)
+                    .where('active', '==', true)
+                    .where('keywords', 'array-contains', name)
+                    .where('language','==',languageRef)
+                    .orderBy('name', 'asc')
+                    .get();
+        const groupsDocuments = await this.db.returnDocuments(groupsBase);
+
+        if(groupsDocuments.length==0) {
+            return null;
+        }
+
+        let groups: GroupDto[] = [];
+        const groupUser:number = await this._groupUser(idUser);
+        
+        groupsDocuments.forEach((group:any) => {
+            const { id, name, language, penality, description } = group;
+            groups.push({
+                id,
+                name,
+                language,
+                penality,
+                description,
+                belong: groupUser!==0 && group.order==groupUser
+            });
+        });
+
+        return groups;
+    }
+
     async groupContainsName(idUser:string, name:string) {
         const groupsBase = await this.db.collection(this._coleccion)
                     .where('active', '==', true)

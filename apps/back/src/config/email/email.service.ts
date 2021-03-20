@@ -21,7 +21,7 @@ export class EmailService {
         return await this._mailerService.sendMail({
             to: email,
             from: this._configService.get(Configuration.GOOGLE_EMAIL),
-            subject: `Recuperación de acceso al aplicativo ${environment.title}`,
+            subject: `Recuperación de acceso al aplicativo ${environment.titleEmail}`,
             template: 'recover_account',
             context: { username, url: `${environment.url_recover_account}${tokenApi}` },
         });

@@ -4,7 +4,7 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
-import { ServiceInterceptor } from './comfeco/@core/service.interceptor';
+import { ServiceInterceptor } from './comfeco/@core/interceptors/service.interceptor';
 
 @NgModule({
   declarations: [AppComponent],

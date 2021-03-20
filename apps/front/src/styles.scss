@@ -1,7 +1,7 @@
 @charset 'utf-8';
 
+@import "~swiper/swiper-bundle";
 @import 'styles/index';
-@import '~swiper/swiper-bundle';
 
 @layer utilities {
   .scrollbar-auto {
@@ -43,6 +43,15 @@
 
     &:hover {
       color: var(--color-primary-hover);
+    }
+  }
+
+  .link-special {
+    @apply h-4 fill-current text-xs cursor-pointer hover:underline focus:outline-none;
+    color: var(--color-tertiary);
+
+    &:hover {
+      color: var(--color-tertiary-hover);
     }
   }
 

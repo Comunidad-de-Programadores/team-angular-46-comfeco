@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 
-import { GenericResponse, MenuDto, UserDto } from '@comfeco/interfaces';
+import { MenuDto, UserDto } from '@comfeco/interfaces';
 import { ValidatorService } from '@comfeco/validator';
 
 @Injectable({
@@ -26,10 +26,6 @@ export class HeaderService {
 
   user() {
     return this.http.get<UserDto>('/user').pipe(ValidatorService.changeBasicResponse());
-  }
-
-  logout() {
-    return this.http.get<GenericResponse>('/auth/logout').pipe(ValidatorService.changeBasicResponse());
   }
 
   changeUser(user:string) {

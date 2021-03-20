@@ -40,9 +40,10 @@ export class UserService {
     }
 
     async profileInformation(id:string, token:string): Promise<UserDto> {
+        const typeAccount:AccountType = JwtUtil.tokenType(token, this._configService.get(Configuration.JWT_TOKEN_SECRET));
         const userEntity:UserEntity = await this._userRepository.idExists(id);
 
-        const { user, email, roles, description, birdth_date, specialities, gender, country } = userEntity;
+        const { user, email, roles, description, birdth_date, specialities, gender, country, editProfile } = userEntity;
         let genderEntity:Gender;
         
         if(gender) {
@@ -61,6 +62,8 @@ export class UserService {
             birdth_date,
             specialities,
             roles,
+            typeAccount,
+            edit: !!editProfile
         };
         
         return userInformation;
@@ -68,11 +71,6 @@ export class UserService {
     
     async insignias(id:string): Promise<InsigniasDto | GenericResponse> {
         const insigniasEntity:InsigniaUserEntity[] = await this._userRepository.insignias(id);
-
-        if(insigniasEntity==null) {
-            return UtilResponse.genericResponse('',['El usuario no cuenta con insignias obtenidas'], HttpStatus.NOT_FOUND);
-        }
-        
         let insigniasTemp:InsigniaDto[] = [];
         
         insigniasEntity.forEach(insigniaUser => {
@@ -93,8 +91,8 @@ export class UserService {
     async events(id:string): Promise<EventsDayDto | GenericResponse> {
         const eventsEntity:EventDayUserDto[] = await this._userRepository.events(id);
         
-        if(eventsEntity==null) {
-            return UtilResponse.genericResponse('',['El usuario no tiene calendarizado ningún evento'], HttpStatus.NOT_FOUND);
+        if(eventsEntity.length==0) {
+            return UtilResponse.genericResponse('',['No te has inscrito en ningún evento'], HttpStatus.NOT_FOUND);
         }
         
         let eventsTemp:EventDayDto[] = [];
@@ -300,14 +298,26 @@ export class UserService {
         const eventsEntity = await this._userRepository.allEvents(userEntity.id);
         const belongGroup:boolean = !!userEntity.group;
         const belongEvents:boolean = eventsEntity.length>0;
-
+        const insigniasEntity:InsigniaUserEntity[] = await this._userRepository.insignias(userEntity.id);
+        const obtainsSocial:boolean = this._validateObtainSocialInsignia(insigniasEntity);
         let insignia:InsigniaDto;
 
-        if(belongGroup && belongEvents) {
+        if(obtainsSocial && belongGroup && belongEvents) {
             insignia = await this._validInsignia(userEntity, 2);
         }
 
         return insignia;
+    }
+
+    private _validateObtainSocialInsignia(insigniasEntity:InsigniaUserEntity[]) {
+        let contains:boolean = false;
+
+        if(insigniasEntity.length>0) {
+            const insigniaSocial:InsigniaUserEntity[] = insigniasEntity.filter(insigniaEntity => insigniaEntity.insignia.order===1);
+            contains = !!insigniaSocial;
+        }
+
+        return contains;
     }
 
     async leaveGroup(idUser:string): Promise<GenericResponse> {
@@ -386,11 +396,15 @@ export class UserService {
     }
 
     async changeInformation(file:any, id:string, changeInformation:UserChangeInformationDto, token:string): Promise<UserDto | GenericResponse> {
-        const validation = ValidatorService.password(changeInformation.password, null);
-        if(validation!=null) throw new ParametersExcepcion(validation);
-
+        const type:AccountType = JwtUtil.tokenType(token, this._configService.get(Configuration.JWT_TOKEN_SECRET));
         const actualUser:UserEntity = await this._userRepository.idExists(id);
-        const validateErrors = await this._validateErrorsChangeInformation(actualUser, changeInformation);
+
+        if(type===AccountType.EMAIL || actualUser.editProfile) {
+            const validation = ValidatorService.password(changeInformation.password, null);
+            if(validation!=null) throw new ParametersExcepcion(validation);
+        }
+
+        const validateErrors = await this._validateErrorsChangeInformation(actualUser, changeInformation, type);
         if(validateErrors!==null) {
             return validateErrors;
         }
@@ -435,10 +449,10 @@ export class UserService {
         const socialTwitter:any = await await this._userRepository.getSocialNetworkUser(user.id, 'twitter');
         const socialLinkedin:any = await await this._userRepository.getSocialNetworkUser(user.id, 'linkedin');
         
-        if(!socialFacebook) return false;
-        if(!socialGithub) return false;
-        if(!socialTwitter) return false;
-        if(!socialLinkedin) return false;
+        if(!socialFacebook?.url) return false;
+        if(!socialGithub?.url) return false;
+        if(!socialTwitter?.url) return false;
+        if(!socialLinkedin?.url) return false;
 
         return true;
     }
@@ -477,6 +491,7 @@ export class UserService {
         if(!!changeInformation?.password_new) {
             const encryptedPassword = await bcrypt.hash(changeInformation.password_new, environment.salt_rounds);
             newInformationUser.password = encryptedPassword;
+            newInformationUser.editProfile = true;
         }
 
         if(!!pictureUrl) {
@@ -528,7 +543,7 @@ export class UserService {
         return socialNetwoks;
     }
 
-    private async _validateErrorsChangeInformation(actualUser:UserEntity, changeInformation:UserChangeInformationDto): Promise<UserDto | GenericResponse> {
+    private async _validateErrorsChangeInformation(actualUser:UserEntity, changeInformation:UserChangeInformationDto, type:AccountType): Promise<UserDto | GenericResponse> {
         const errors:string[] = [];
         let error:string;
 
@@ -536,7 +551,7 @@ export class UserService {
             return UtilResponse.genericResponse('',['El usuario no existe en la base de datos'], HttpStatus.BAD_REQUEST);
         }
         
-        if(actualUser.password) {
+        if((type===AccountType.EMAIL || actualUser.editProfile) && !!actualUser.password) {
             const errorPassword:string = 'Es necesario introducir las credenciales correctas para actualizar la información';
             let errorData:boolean = false;
 
@@ -594,16 +609,6 @@ export class UserService {
 
         return error;
     }
-
-    /*async upload(file:any, name:string, user:string): Promise<string | GenericResponse> {
-        const userEntity:UserEntity = await this._userRepository.userExists(user);
-        
-        if(userEntity==null) {
-            return UtilResponse.genericResponse('',['El usuario no tiene información en la base de datos'], HttpStatus.BAD_REQUEST);
-        }
-        
-        return await this._userRepository.upload(file, userEntity.id);
-    }*/
 
     private async _urlUser(userEntity:UserEntity, token:string): Promise<string> {
         const type:AccountType = JwtUtil.tokenType(token, this._configService.get(Configuration.JWT_TOKEN_SECRET));

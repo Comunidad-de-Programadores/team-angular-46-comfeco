@@ -1,0 +1,62 @@
+:host {
+  @apply mb-3 mx-0 md:m-3 p-4 rounded-md shadow-md;
+  background-color: var(--color-white);
+}
+
+.group {
+  @apply flex flex-col justify-between h-full;
+}
+
+.group-information {
+  @apply mb-4;
+
+  &.not-participate {
+    filter: grayscale(70%);
+
+    & .tecnologie img {
+      filter: blur(1px);
+    }
+  }
+}
+
+.group-btns {
+  @apply flex justify-center;
+
+  & .btn-primary {
+    @apply w-full;
+
+    & .icon {
+      @apply mr-2;
+    }
+  }
+}
+
+.tecnologie {
+  @apply flex justify-center w-full;
+  max-height: 117px;
+
+  & img {
+    @apply w-1/4 md:w-3/4;
+  }
+}
+
+.language {
+  @apply text-sm py-2 px-1 pl-2 my-4;
+  background-color: var(--color-tertiary);
+  color: var(--color-black);
+  clip-path: polygon(0 0, 75% 0, 88% 50%, 75% 100%, 0 100%);
+}
+
+.title {
+  @apply font-bold my-4;
+
+  & .penality {
+    @apply block w-full text-right text-xs mt-1;
+    color: var(--color-error);
+    border-bottom: 1px solid var(--color-error);
+  }
+}
+
+.description {
+  @apply text-sm text-gray-600;
+}

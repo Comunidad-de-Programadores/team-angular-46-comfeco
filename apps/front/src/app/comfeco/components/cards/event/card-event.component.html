@@ -1,0 +1,28 @@
+<div
+  class="event"
+  [ngClass]="{'bloqued':!!event?.date_aborted}"
+>
+  <div>
+    <div class="image">
+      <img
+        [src]="'assets/img/'+event.image+'.svg'"
+        [alt]="'image-'+event.image"
+      >
+    </div>
+    <div class="description">{{event.description}}</div>
+  </div>
+  <div *ngIf="!event?.date_aborted" class="buttons">
+    <button class="btn-secondary" aria-label="Màs informaciòn">Más información</button>
+    <button
+      class="btn-primary"
+      (click)="event.participating ? leave() : participate()"
+      [aria-label]="event.participating ? 'Abandonar' : 'Participar'"
+    >
+      <i
+        class="icon"
+        [ngClass]="event.participating ? 'icon-comfeco-leave' : 'icon-comfeco-exhibitor'"
+      ></i>
+      <span>{{event.participating ? 'Abandonar' : 'Participar'}}</span>
+    </button>
+  </div>
+</div>

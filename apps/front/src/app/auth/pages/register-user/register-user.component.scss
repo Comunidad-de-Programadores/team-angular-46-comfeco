@@ -1,0 +1,28 @@
+@import '../../../../styles/auth/styles';
+
+:host {
+  display: block;
+}
+
+.section-principal {
+  & .btn-quaternary {
+    @apply my-2;
+  }
+
+  & .btn-quaternary-light {
+    @apply my-4;
+  }
+}
+
+.section-secondary {
+  & .account {
+    @apply text-center text-sm;
+    color: var(--color-white);
+  }
+}
+
+.terms-and-conditions {
+  @apply mt-3 text-center text-sm;
+  color: var(--color-white);
+}
+

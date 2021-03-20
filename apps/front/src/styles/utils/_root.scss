@@ -22,6 +22,7 @@
   --color-github-hover:           #{mapGet($colors, github-hover)};
   --color-linkedin:               #{mapGet($colors, linkedin)};
   --color-linkedin-hover:         #{mapGet($colors, linkedin-hover)};
+  --color-google-hover:           #{mapGet($colors, google-hover)};
   
   --color-link:                   #{mapGet($colors, link)};
   --color-success:                #{mapGet($colors, success)};
@@ -33,6 +34,7 @@
   --color-gray-icon:              #{mapGet($base, gray-4)};
   --color-gray-light:             #{mapGet($base, gray-5)};
   --color-gray-hover:             #{mapGet($base, gray-2)};
+  --color-gray-dark:              #{mapGet($base, gray-2)};
 
   --background-modal:             #{mapGet($colors, background-modal)};
 }

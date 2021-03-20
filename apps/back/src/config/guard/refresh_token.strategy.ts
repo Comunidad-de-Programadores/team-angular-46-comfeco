@@ -31,7 +31,6 @@ export class RefreshTokenStrategy extends PassportStrategy(Strategy, 'jwt-refres
     }
 
     async validate(request: Request, payload:JwtPayload) {
-        const refreshToken:string = JwtUtil.getTokenCookie(request, CookieGuard.REFRESH);
         let validation:GenericResponse;
         const { id } = payload;
         
@@ -42,12 +41,6 @@ export class RefreshTokenStrategy extends PassportStrategy(Strategy, 'jwt-refres
         const baseUser = await this._userRepository.idExists(id);
         
         if(baseUser==null || !baseUser || baseUser.status!=Status.ACTIVE || baseUser.tokenRefreshApi==='') {
-            throw new UnauthorizedException();
-        }
-
-        const validRefreshToken:boolean = refreshToken===baseUser.tokenRefreshApi;
-        
-        if(!validRefreshToken) {
             throw new UnauthorizedException();
         }
 

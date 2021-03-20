@@ -283,7 +283,7 @@ export class UserRepository {
         if(emailBase!==null) {
             const types = await this.db.collection('type_account').where('type', 'in', emailBase.type).get();
             const typesReferences:any = await this.db.referenceDocument('type_account', types);
-            type = [AccountType.EMAIL];
+            type = [...new Set([...typesReferences, typeReferences])];
         } else {
             type = [ typeReferences ];
         }
@@ -299,7 +299,7 @@ export class UserRepository {
             type
         }
 
-        await emailBase!==null
+        await emailBase!==null 
             ? this.db.collection(this._coleccion).doc(emailBase.id).update(entity)
             : this.db.collection(this._coleccion).add(entity);
     }
@@ -342,7 +342,7 @@ export class UserRepository {
         if(google===undefined) delete entity.google;
         if(facebook===undefined) delete entity.facebook;
         if(userBase!==null) delete entity.user;
-
+        
         await userBase!==null
             ? userReferences.set(entity, { merge: true})
             : this.db.collection(this._coleccion).add(entity);
@@ -352,15 +352,17 @@ export class UserRepository {
         const userDocument = await this.db.collection(this._coleccion).where('user', '==', userDetail.user).get();
         const userReferences = await this.db.referenceDocument(this._coleccion, userDocument);
 
-        const entity = {
-            tokenApi: userDetail.tokenApi,
-            tokenRefreshApi: userDetail.tokenRefreshApi,
-            password: userDetail.password
-        };
+        if(userReferences!==null) {
+            const entity = {
+                tokenApi: userDetail.tokenApi,
+                tokenRefreshApi: userDetail.tokenRefreshApi,
+                password: userDetail.password
+            };
 
-        if(entity.password===undefined) delete entity.password;
+            if(entity.password===undefined) delete entity.password;
 
-        await userReferences.update(entity);
+            await userReferences.update(entity);
+        }
     }
 
 }

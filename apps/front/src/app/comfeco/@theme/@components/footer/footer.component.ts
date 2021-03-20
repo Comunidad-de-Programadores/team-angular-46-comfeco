@@ -1,6 +1,7 @@
 import { Component, ViewEncapsulation } from '@angular/core';
 
 import { ComponentConfeco } from '../../../@core/utils.component';
+import { environment } from '../../../../../environments/environment';
 
 @Component({
   selector: 'comfeco-footer',
@@ -11,27 +12,27 @@ import { ComponentConfeco } from '../../../@core/utils.component';
 export class FooterComponent {
 
   twitter() {
-    ComponentConfeco.goToLink('https://twitter.com/comfeco');
+    ComponentConfeco.goToLink(environment.communityTwitter);
   }
 
   facebook() {
-    ComponentConfeco.goToLink('https://www.facebook.com/groups/2637132626546045');
+    ComponentConfeco.goToLink(environment.communityFacebook);
   }
 
   discord() {
-    ComponentConfeco.goToLink('https://discord.com/invite/5Bb5yvzNPr');
+    ComponentConfeco.goToLink(environment.communityDiscord);
   }
 
   youtube() {
-    ComponentConfeco.goToLink('https://www.youtube.com/channel/UC0oi8uH1vxDcyt7b_3iByew');
+    ComponentConfeco.goToLink(environment.communityYoutube);
   }
 
   github() {
-    ComponentConfeco.goToLink('https://github.com/Comunidad-de-Programadores');
+    ComponentConfeco.goToLink(environment.communityGithub);
   }
 
   patreon() {
-    ComponentConfeco.goToLink('https://www.patreon.com/comfeco');
+    ComponentConfeco.goToLink(environment.communityPatreon);
   }
 
 }

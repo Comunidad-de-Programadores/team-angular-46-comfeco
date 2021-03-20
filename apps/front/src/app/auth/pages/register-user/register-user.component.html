@@ -1,0 +1,141 @@
+<div class="background-auth">
+  <div class="card-auth">
+    <section class="section-principal">
+      <div class="bg-top">
+        <img src="assets/login/shapes_form_top.svg" alt="fondo superior">
+      </div>
+      <div class="bg-bottom">
+        <img src="assets/login/shapes_form_bottom.svg" alt="fondo inferior">
+      </div>
+      <div class="section-principal__container">
+        <div class="section-principal__container-box-form">
+          <div>
+            <div class="section-logo-full">
+              <img src="assets/img/logo_font.svg" alt="logo">
+            </div>
+            <div class="section-title">
+              <h2>Registro de Usuario</h2>
+            </div>
+            <form
+              autocomplete="off"
+              class="form-control"
+              [formGroup]="registerForm"
+            >
+              <div class="form-input">
+                <input
+                  type="text"
+                  id="user"
+                  placeholder="Nick"
+                  formControlName="user"
+                  autocomplete="off"
+                >
+                <span class="request-error">{{errorUser}}</span>
+              </div>
+              
+              <div class="form-input">
+                <input type="email"
+                  id="email"
+                  placeholder="Correo Electronico"
+                  formControlName="email"
+                  autocomplete="off"
+                >
+                <span class="request-error">{{errorEmail}}</span>
+              </div>
+              <div class="form-input">
+                <input type="password"
+                  id="password"
+                  placeholder="Contraseña"
+                  formControlName="password"
+                  autocomplete="off"
+                >
+                <span class="request-error">{{errorPassword}}</span>
+              </div>
+              <div class="form-input">
+                <input type="password"
+                  id="confirm"
+                  placeholder="Confirmar Contraseña"
+                  formControlName="confirm"
+                  autocomplete="off"
+                >
+                <span class="request-error">{{errorConfirm}}</span>
+              </div>
+              <span class="request-error">{{ errorResponse }}</span>
+              <button
+                type="button"
+                (click)="onRegister()"
+                [disabled]="procesingRequest"
+                class="btn-quaternary"
+                aria-label="Registrate"
+              >
+                Regístrate
+              </button>
+              <div class="btn-secondary-action">
+                <button
+                  [routerLink]="['/auth/login']"
+                  class="btn-quaternary-light"
+                  aria-label="Iniciar sesiòn"
+                >
+                  Iniciar Sesión
+                </button>
+              </div>
+              <p class="terms-and-conditions">
+                Al registrarte estás aceptando los
+                <a [routerLink] =" ['/auth/terms-and-conditions'] " target="_blank" class="link-special">Términos y condiciones</a> y la
+                <a [routerLink] ="['/auth/privacy-policy']" target="_blank" class="link-special">Política de privacidad y protección de datos</a>
+                de COMFECO
+              </p>
+            </form>
+          </div>
+          <div class="section-soacial-network">
+            <p>o registrate con:</p>
+            <div class="buttons">
+              <button
+                type="button"
+                (click)="registerFacebook()"
+                [disabled]="procesingRequest"
+                class="btn-facebook"
+                aria-label="Registrarme con facebook"
+              >
+                <div><img src="assets/login/logo_facebook_extended.svg" alt="iniciar con facebook" /></div>
+                <span>Registrarme con Facebook</span>
+              </button>
+              <button
+                type="button"
+                (click)="registerGoogle()"
+                [disabled]="procesingRequest"
+                class="btn-google"
+                aria-label="Registrarme con google"
+              >
+                <div><img src="assets/login/logo_google.svg" alt="iniciar con google" /></div>
+                <span>Registrarme con  Google</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="section-secondary">
+      <div class="image">
+        <img src="assets/login/shapes_other_section.svg" alt="fondo secundario">
+      </div>
+      <div class="section-secondary__container">
+        <div>
+          <div class="section-logo-small">
+            <img src="assets/login/logo_comfeco.svg" alt="logo">
+          </div>
+          <div class="account">¿Ya tienes una cuenta?</div>
+          <div class="action">
+            <button
+              [routerLink]="['/auth/login']"
+              class="btn-quaternary"
+              aria-label="Iniciar sesiòn"
+            >
+              Iniciar Sesión
+            </button>
+          </div>
+        </div>
+        <img src="assets/login/register.svg" alt="register">
+      </div>
+    </section>
+  </div>
+</div>

@@ -1,0 +1,29 @@
+<div class="group">
+  <div
+    class="group-information"
+    [ngClass]="{'not-participate': !group?.belong}"
+  >
+    <div class="tecnologie">
+      <img [src]="'assets/img/'+(!!group?.language.photoUrl ? group?.language.photoUrl : 'tecnology_question')+'.svg'" alt="tecnologia">
+    </div>
+    <div class="language">{{group?.language.name}} - {{group?.language.languaje}}</div>
+    <div class="title">
+      <span>{{group?.name}}</span>
+      <span class="penality" *ngIf="group?.penality">Penalizado</span>
+    </div>
+    <div class="description">{{group?.description}}</div>
+  </div>
+  <div class="group-btns">
+    <button
+      class="btn-primary"
+      (click)="group?.belong ? onLeave() : onJoin()"
+      aria-label="Unirse"
+    >
+      <i
+        class="icon icon-comfeco-community"
+        [ngClass]="group?.belong ? 'icon-comfeco-leave': 'icon-comfeco-community'"
+      ></i>
+      <span>{{group?.belong ? 'Abandonar' : 'Unirse'}}</span>
+    </button>
+  </div>
+</div>

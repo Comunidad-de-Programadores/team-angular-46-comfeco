@@ -191,7 +191,6 @@
       "projectType": "library",
       "root": "libs/api",
       "sourceRoot": "libs/api/src",
-      "prefix": "comfeco",
       "architect": {
         "lint": {
           "builder": "@nrwl/linter:eslint",

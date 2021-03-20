@@ -1,3 +1,4 @@
+import { AccountType } from '../enum/account_type.enum';
 import { Gender } from '../enum/gender.enum';
 import { Rol } from '../enum/roles.enum';
 import { CountryDto } from './country_response.dto';
@@ -19,4 +20,5 @@ export class UserDto extends GenericResponse {
     readonly gender?: Gender;
     readonly insignia?: InsigniaDto;
     readonly edit?:boolean;
+    readonly typeAccount?:AccountType;
 }

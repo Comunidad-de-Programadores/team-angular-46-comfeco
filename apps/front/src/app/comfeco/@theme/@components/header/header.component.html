@@ -3,13 +3,13 @@
     <div class="section">
       <comfeco-menu-desktop (onShowMenu)="toggleMenu($event)" [options]="options"></comfeco-menu-desktop>
       <div class="header-options">
-        <button class="notification btn-icon">
+        <button class="notification btn-icon" aria-label="Notificaciones">
           <i class="icon-header icon-comfeco-bell"></i>
         </button>
 
         <div class="menu_profile">
           <div>
-            <button class="user__btn" id="user-menu" (click)="toggleProfileOptions()">
+            <button class="user__btn" id="user-menu" (click)="toggleProfileOptions()" aria-label="Menù de usuario">
               <img class="user__picture" id="user-photo-profile" [src]="photoUrl" alt="avatar-default">
               <span class="user__nickname">{{service.user$ | async}}</span>
               <i class="user__btn_options icon-comfeco-arrow_down"></i>

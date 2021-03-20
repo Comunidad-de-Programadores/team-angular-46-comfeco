@@ -1,0 +1,54 @@
+:host {
+  @apply block mx-4;
+}
+
+.exhibitor {
+  @apply rounded-md shadow-md bg-white w-52 md:w-28 lg:w-32;
+
+  &,
+  &__container {
+    height: 327px;
+  }
+  
+  &__container {
+    @apply rounded rounded-t-lg overflow-hidden shadow;
+    background-color: var(--color-white);
+  }
+
+  &__user {
+    @apply w-full object-cover object-top;
+    height: 238px;
+  }
+}
+
+.tecnologies {
+  @apply flex justify-center -mt-4;
+
+  & img {
+    @apply rounded-full border-solid border-white border-2 -mt-3 w-12 h-12 mx-1;
+    background-color: var(--color-white);
+  }
+}
+
+.exhibitor__name {
+  @apply truncate text-center px-3 pb-6 pt-2 text-sm font-bold;
+}
+
+.tecnology-question {
+  @apply rounded-full border-solid border-2 -mt-3 w-12 h-12 mx-1;
+  background-color: var(--color-white);
+  border-color: var(--color-white);
+}
+
+@media (min-width: 768px) {
+  .exhibitor {
+    &,
+    &__container {
+      height: 227px;
+    }
+
+    &__user {
+      height: 155px;
+    }
+  }
+}

@@ -1,0 +1,21 @@
+<header>
+  <nav>
+    <div class="header-container">
+      <div>
+        <div class="logo">
+          <img class="image-small" src="assets/img/logo_white.svg" alt="confeco-logo-mobile">
+          <img class="image-big" src="assets/img/logo_fonts.svg" alt="Workflow">
+        </div>
+      </div>
+      <div *ngIf="service.buttonLogin">
+        <button
+          [routerLink]="['/auth/login']"
+          class="btn-quaternary"
+          aria-label="Iniciar Sesiòn"
+        >
+          Iniciar sesión
+        </button>
+      </div>
+    </div>
+  </nav>
+</header>
