@@ -229,13 +229,14 @@ export class PageEditProfileComponent implements OnInit, OnDestroy {
     this.imageSrc = resp.photoUrl;
     this.editForm.controls['user'].setValue(resp.user);
     this.editForm.controls['email'].setValue(resp.email);
-    this.editForm.controls['birdthDate'].setValue(date);
     this.editForm.controls['facebook'].setValue(resp.social_networks?.facebook);
     this.editForm.controls['github'].setValue(resp.social_networks?.github);
     this.editForm.controls['linkedin'].setValue(resp.social_networks?.linkedin);
     this.editForm.controls['twitter'].setValue(resp.social_networks?.twitter);
     this.editForm.controls['biography'].setValue(resp.description);
-    this.editForm.controls['gender'].setValue(resp.gender.id);
+    
+    if(!!date) this.editForm.controls['birdthDate'].setValue(date);
+    if(!!resp.gender?.id) this.editForm.controls['gender'].setValue(resp.gender.id);
     
     if(!!resp?.country?.flag) {
       this.countries?.forEach((country, index) => {
@@ -300,6 +301,9 @@ export class PageEditProfileComponent implements OnInit, OnDestroy {
             message: 'Información de perfil actualizada correctamente',
             type: TypeAlertNotification.SUCCESS
           });
+          this.editForm.controls['password'].setValue('');
+          this.editForm.controls['newPassword'].setValue('');
+          this.editForm.controls['confirmPassword'].setValue('');
           this._serviceProfile.userInformation$.next(resp);
           this.showInsignia(resp);
         } else {

@@ -68,10 +68,6 @@
   @apply ml-4 items-center;
   display: flex;
   
-  & span {
-    @apply mr-4;
-  }
-
   & input {
     height: 30px;
     width: 60px;
