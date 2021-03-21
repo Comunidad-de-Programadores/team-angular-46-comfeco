@@ -12,9 +12,9 @@ import { GroupDto } from '@comfeco/interfaces';
 export class CardGroupComponent {
 
   @Input() group:GroupDto;
-  
-  @Output() onJoinGroup: EventEmitter<GroupDto> = new EventEmitter();
-  @Output() onLeaveGroup: EventEmitter<GroupDto> = new EventEmitter();
+
+  @Output() onJoinGroup: EventEmitter<GroupDto> = new EventEmitter<GroupDto>();
+  @Output() onLeaveGroup: EventEmitter<GroupDto> = new EventEmitter<GroupDto>();
 
   onJoin() {
     this.onJoinGroup.emit(this.group);

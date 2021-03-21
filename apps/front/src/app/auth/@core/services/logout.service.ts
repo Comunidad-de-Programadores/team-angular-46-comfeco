@@ -11,9 +11,9 @@ import { CleanService } from '../../../comfeco/@core/services/clean.service';
 })
 export class LogoutService {
 
-  urlAuth:string = '/auth';
+  urlAuth = '/auth';
 
-  isActiveRefreshTokenTimeout:boolean = false;
+  isActiveRefreshTokenTimeout = false;
 
   private refreshTokenTimeout;
 
@@ -37,7 +37,7 @@ export class LogoutService {
   }
 
   refreshToken() {
-    const url:string = `${this.urlAuth}/refresh_token`;
+    const url = `${this.urlAuth}/refresh_token`;
     return this.http.get<GenericResponse>(url).pipe(
         ValidatorService.changeBasicResponse(),
         tap(resp => {

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { tap } from 'rxjs/operators';
@@ -16,9 +17,9 @@ export class CountrysService {
   constructor(
     private http: HttpClient
   ) {}
-  
+
   countrys() {
-    if(!!this._allCountrys) {
+    if(this._allCountrys) {
       return of(this._allCountrys);
     }
 

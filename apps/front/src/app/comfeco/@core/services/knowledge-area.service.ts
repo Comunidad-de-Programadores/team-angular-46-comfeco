@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { tap } from 'rxjs/operators';
@@ -16,9 +17,9 @@ export class KnowledgeAreaService {
   constructor(
     private http: HttpClient
   ) {}
-  
+
   knowledgeArea() {
-    if(!!this._allKnowledgeArea) {
+    if(this._allKnowledgeArea) {
       return of(this._allKnowledgeArea);
     }
 

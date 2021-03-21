@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { tap } from 'rxjs/operators';
@@ -16,9 +17,9 @@ export class LanguagesService {
   constructor(
     private http: HttpClient
   ) {}
-  
+
   languages() {
-    if(!!this._allLanguages) {
+    if(this._allLanguages) {
       return of(this._allLanguages);
     }
 

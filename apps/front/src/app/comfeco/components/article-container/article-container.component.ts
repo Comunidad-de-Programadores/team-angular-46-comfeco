@@ -13,11 +13,11 @@ export class ArticleContainerComponent {
 
   @Input() title:string;
   @Input() viewMore:string;
-  @Input() comboBox:boolean = false;
+  @Input() comboBox = false;
   @Input() comboData:ComboInterface[] = [];
   @Input() comboTitleDefault:string;
-  @Output() onComboOptionSelected: EventEmitter<string> = new EventEmitter();
-  
+  @Output() onComboOptionSelected: EventEmitter<string> = new EventEmitter<string>();
+
   showWorkshop:boolean;
 
   toggleWorkshop() {

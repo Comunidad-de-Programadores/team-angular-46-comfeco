@@ -10,19 +10,18 @@ import { Modal } from './modal.interface';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ModalComponent {
-
   @Input() open:boolean;
   @Input() modal:Modal;
-  @Output() onConfirm: EventEmitter<Modal> = new EventEmitter();
+  @Output() onConfirm: EventEmitter<Modal> = new EventEmitter<Modal>();
 
   onCancelAction() {
     const newModal = {...this.modal, confirm:false};
     this.onConfirm.emit(newModal);
   }
-  
+
   onConfirmAction() {
     const newModal = {...this.modal, confirm:true};
     this.onConfirm.emit(newModal);
   }
-  
+
 }

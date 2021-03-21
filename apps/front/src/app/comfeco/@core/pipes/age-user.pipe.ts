@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
@@ -7,9 +8,9 @@ export class AgeUserPipe implements PipeTransform {
 
   transform(value: any):string {
     const age:number = !!value && this.ageUser(parseInt(value._seconds)*1000);
-    
+
     if(!age) return '';
-    
+
     return !!age && `${age} Años`;
   }
 

@@ -1,10 +1,10 @@
-import { Component, Input, ContentChild, } from "@angular/core";
+import { Component, Input, ContentChild, } from '@angular/core';
 
-import { TabBodyComponent } from "./tab-body.component";
+import { TabBodyComponent } from './tab-body.component';
 
 @Component({
-  selector: "app-tab-item",
-  template: "<ng-content></ng-content>",
+  selector: 'app-tab-item',
+  template: '<ng-content></ng-content>',
 })
 export class TabItemComponent {
 
@@ -17,5 +17,5 @@ export class TabItemComponent {
 
   @ContentChild(TabBodyComponent)
   bodyComponent: TabBodyComponent;
-  
+
 }

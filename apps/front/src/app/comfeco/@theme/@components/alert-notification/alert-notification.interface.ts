@@ -1,4 +1,4 @@
-import { TypeAlertNotification } from "./alert-notification.enum";
+import { TypeAlertNotification } from './alert-notification.enum';
 
 export interface AlertNotification {
   id?:number;

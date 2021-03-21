@@ -10,13 +10,10 @@ import { MenuDto } from '@comfeco/interfaces';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MenuDesktopComponent {
-
-  @Output() onShowMenu: EventEmitter<boolean> = new EventEmitter();
+  @Output() onShowMenu: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Input() options:MenuDto[];
-  
-  private showMenu:boolean = false;
 
-  constructor() { }
+  private showMenu = false;
 
   toggleMenu() {
     this.showMenu = !this.showMenu;

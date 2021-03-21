@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { tap } from 'rxjs/operators';
@@ -17,12 +18,12 @@ export class InsigniasService {
   constructor(
     private http: HttpClient
   ) {}
-  
+
   insignias() {
-    if(!!this.allInsignias) {
+    if(this.allInsignias) {
       return of(this.allInsignias);
     }
-    
+
     return this.http.get<InsigniasDto>('/insignias')
       .pipe(
         ValidatorService.changeBasicResponse(),
@@ -33,7 +34,7 @@ export class InsigniasService {
   }
 
   userInsignias() {
-    if(!!this.allUserInsignias) {
+    if(this.allUserInsignias) {
       return of(this.allUserInsignias);
     }
 
@@ -48,7 +49,6 @@ export class InsigniasService {
   }
 
   clean() {
-    this.allInsignias = undefined;
     this.allInsignias = undefined;
   }
 

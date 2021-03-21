@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { tap } from 'rxjs/operators';
@@ -16,9 +17,9 @@ export class SponsorsService {
   constructor(
     private http: HttpClient
   ) {}
-  
+
   sponsors() {
-    if(!!this._allSponsors) {
+    if(this._allSponsors) {
       return of(this._allSponsors);
     }
 

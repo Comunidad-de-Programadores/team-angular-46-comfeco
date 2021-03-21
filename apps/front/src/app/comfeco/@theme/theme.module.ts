@@ -8,7 +8,7 @@ import { ApiModule } from '@comfeco/api';
 
 @NgModule({
   declarations: [
-    ...components
+    ...components,
   ],
   providers: [
     HeaderService,
@@ -16,13 +16,13 @@ import { ApiModule } from '@comfeco/api';
   imports: [
     CommonModule,
     RouterModule,
-    ApiModule
+    ApiModule,
   ],
   exports: [
     ReactiveFormsModule,
     CommonModule,
     RouterModule,
-    ...components
+    ...components,
   ],
 })
 export class ThemeComfecoModule { }

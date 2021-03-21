@@ -12,16 +12,16 @@ export class LayoutComfecoService {
 
   alertNotifications:AlertNotification[] = [];
   modals:Modal[] = [];
-  idNotification:number = 0;
-  idModal:number = 0;
+  idNotification = 0;
+  idModal = 0;
 
   private alertNotificationSource = new BehaviorSubject<AlertNotification[]>([]);
   public alertNotification$ = this.alertNotificationSource.asObservable();
   private modalSource = new BehaviorSubject<Modal[]>([]);
   public modal$ = this.modalSource.asObservable();
-  
+
   modalConfirm$:Subject<Modal> = new Subject();
-  
+
   alertNotification(alert:AlertNotification) {
     this.idNotification++;
     const id:number = this.idNotification;

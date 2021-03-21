@@ -16,9 +16,9 @@ export class ExhibitorsService {
   constructor(
     private http: HttpClient
   ) {}
-  
+
   exhibitors() {
-    if(!!this._allExhibitors) {
+    if(this._allExhibitors) {
       return of(this._allExhibitors);
     }
 

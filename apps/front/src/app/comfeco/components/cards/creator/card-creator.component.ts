@@ -10,7 +10,5 @@ import { ExhibitorDto } from '@comfeco/interfaces';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CardCreatorComponent {
-
   @Input() creator:ExhibitorDto;
-
 }

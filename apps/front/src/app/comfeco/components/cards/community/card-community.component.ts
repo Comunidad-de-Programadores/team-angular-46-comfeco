@@ -10,13 +10,11 @@ import { ComponentConfeco } from '../../../@core/utils.component';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CardCommunityComponent {
-
   @Input() image:string;
   @Input() community:string;
   @Input() link:string;
-  
+
   goToLink() {
     ComponentConfeco.goToLink(this.link);
   }
-
 }

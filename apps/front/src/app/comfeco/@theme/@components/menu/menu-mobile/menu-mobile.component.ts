@@ -1,5 +1,4 @@
-import { Component, Input, OnInit, ViewEncapsulation } from '@angular/core';
-
+import { Component, Input, ViewEncapsulation } from '@angular/core';
 import { MenuDto } from '@comfeco/interfaces';
 
 @Component({
@@ -8,14 +7,7 @@ import { MenuDto } from '@comfeco/interfaces';
   styleUrls: ['./menu-mobile.component.scss'],
   encapsulation: ViewEncapsulation.Emulated
 })
-export class MenuMobileComponent implements OnInit {
-
+export class MenuMobileComponent {
   @Input() showMenu:boolean;
   @Input() options:MenuDto[];
-  
-  constructor() { }
-
-  ngOnInit(): void {
-  }
-
 }

@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { SwiperModule } from "swiper/angular";
+import { SwiperModule } from 'swiper/angular';
 
 import { ThemeComfecoModule } from './@theme/theme.module';
 import { LogoutService } from '../auth/@core/services/logout.service';
@@ -13,7 +13,7 @@ import { Components } from './components';
   declarations: [
     ...PipesComponents,
     ...Components,
-    ...PageComponents
+    ...PageComponents,
   ],
   providers: [
     LogoutService,
@@ -22,7 +22,7 @@ import { Components } from './components';
     CommonModule,
     ComfecoRoutingModule,
     ThemeComfecoModule,
-    SwiperModule
+    SwiperModule,
   ]
 })
 export class ComfecoModule { }

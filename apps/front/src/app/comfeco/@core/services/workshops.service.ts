@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { tap } from 'rxjs/operators';
@@ -18,9 +19,9 @@ export class WorkshopsService {
   constructor(
     private http: HttpClient
   ) {}
-  
+
   workshops() {
-    if(!!this._allWorkshops) {
+    if(this._allWorkshops) {
       return of(this._allWorkshops);
     }
 
@@ -42,8 +43,8 @@ export class WorkshopsService {
       const index:number = (this._indexWorkshopsByArea.findIndex(item => item===idArea));
       return of(this._workshopsByArea[index]);
     }
-    
-    const url:string = `/workshops_area/${idArea}`;
+
+    const url = `/workshops_area/${idArea}`;
     return this.http.get<WorkshopsAreaDto>(url)
       .pipe(
         ValidatorService.changeBasicResponse(),

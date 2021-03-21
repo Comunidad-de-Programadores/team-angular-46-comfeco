@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators, } from "@angular/forms";
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 
 import { SpinnerService } from '@comfeco/api';
@@ -8,7 +8,6 @@ import { ValidateComponent } from '@comfeco/validator';
 import { AuthService } from '../../@core/services/auth.service';
 import { HeaderAuthService } from '../../@theme/@components/header/header.service';
 import { TokenDto } from '@comfeco/interfaces';
-import { SocialAuthService } from 'angularx-social-login';
 
 @Component({
   selector: 'comfeco-login-user',
@@ -19,8 +18,8 @@ import { SocialAuthService } from 'angularx-social-login';
 export class LoginUserComponent implements OnInit {
 
   loginForm:FormGroup = this.fb.group({
-    email: [ , [ ValidateComponent.emailRequired ] ],
-    password: [ , [ ValidateComponent.passwordRequired ] ],
+    email: ['' , [ ValidateComponent.emailRequired ] ],
+    password: ['' , [ ValidateComponent.passwordRequired ] ],
     sesion: new FormControl(false)
   });
 
@@ -46,13 +45,13 @@ export class LoginUserComponent implements OnInit {
 
   onLogin() {
     this._cleanErrors();
-    
+
     if(this.loginForm.invalid) {
       this.errorEmail = this.loginForm.controls?.email.errors?.error[0];
       this.errorPassword = this.loginForm.controls?.password.errors?.error[0];
       return;
     }
-    
+
     const { email, password, sesion } = this.loginForm.value;
 
     this._prepareInvocation();
@@ -69,7 +68,7 @@ export class LoginUserComponent implements OnInit {
 
   loginGoogle() {
     this._prepareInvocation();
-    
+
     this._service.accessGoogle()
       .subscribe((resp:TokenDto) => this._validateLogin(resp));
   }
@@ -82,9 +81,9 @@ export class LoginUserComponent implements OnInit {
 
   private _validateLogin(resp:TokenDto) {
     if(!resp.success) {
-      this.errorResponse = resp.code==401
+      this.errorResponse = ( resp.code === 401
           ? 'Credenciales incorrectas'
-          : resp.message;
+          : resp.message);
     } else {
       this._router.navigate(['/app/dashboard']);
     }

@@ -14,10 +14,10 @@ const providers = [
 
 @NgModule({
   declarations: [
-    ...components
+    ...components,
   ],
   providers: [
-    ...providers
+    ...providers,
   ],
   imports: [
     CommonModule,

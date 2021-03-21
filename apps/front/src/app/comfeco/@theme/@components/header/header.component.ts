@@ -1,3 +1,5 @@
+/* eslint-disable @angular-eslint/no-host-metadata-property */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Component, ViewEncapsulation, OnInit, ElementRef, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
@@ -19,8 +21,7 @@ import { SpinnerService } from '@comfeco/api';
   encapsulation: ViewEncapsulation.Emulated
 })
 export class HeaderComponent implements OnInit, OnDestroy {
-
-  photoDefault:string = 'assets/img/avatar_user.svg';
+  photoDefault = 'assets/img/avatar_user.svg';
   photoUrl:string;
 
   showMenu = false;
@@ -48,8 +49,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.photoUrl = this.photoDefault;
     this.photoUrlRef$ = this.service.photoUrl$.subscribe(resp => {
-      const photoRef:any = document.getElementById("user-photo-profile");
-      const photoNew:string = !!resp ? resp : this.photoDefault;
+      const photoRef:any = document.getElementById('user-photo-profile');
+      const photoNew:string = resp ? resp : this.photoDefault;
       photoRef.setAttribute('src', photoNew);
       this.photoUrl = photoNew;
     });
