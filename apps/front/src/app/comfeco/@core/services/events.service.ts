@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { tap } from 'rxjs/operators';
@@ -16,9 +17,9 @@ export class EventsService {
   constructor(
     private http: HttpClient
   ) {}
-  
+
   eventInfo() {
-    if(!!this._eventGlobal) {
+    if(this._eventGlobal) {
       return of(this._eventGlobal);
     }
 

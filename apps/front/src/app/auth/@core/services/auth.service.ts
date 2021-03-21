@@ -1,11 +1,27 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { pipe, Observable, of, from } from 'rxjs';
 import { catchError, switchMap, tap } from 'rxjs/operators';
-import { SocialAuthService, GoogleLoginProvider, FacebookLoginProvider, SocialUser } from 'angularx-social-login';
-
-import { ChangePasswordDto, RecoverAccountDto, ResponseService, GenericResponse, RegisterDto, TokenDto, GoogleLoginDto, FacebookLoginDto, LoginDto } from '@comfeco/interfaces';
+import {
+  SocialAuthService,
+  GoogleLoginProvider,
+  FacebookLoginProvider,
+  SocialUser,
+} from 'angularx-social-login';
+import {
+  ChangePasswordDto,
+  RecoverAccountDto,
+  ResponseService,
+  GenericResponse,
+  RegisterDto,
+  TokenDto,
+  GoogleLoginDto,
+  FacebookLoginDto,
+  LoginDto,
+} from '@comfeco/interfaces';
 import { ValidatorService } from '@comfeco/validator';
+import { HttpService } from '@comfeco/api';
 
 import { AuthUserService } from './authUser.service';
 import { LogoutService } from './logout.service';
@@ -14,9 +30,7 @@ import { LogoutService } from './logout.service';
   providedIn: 'root'
 })
 export class AuthService {
-
-  urlAuth:string = '/auth';
-
+  urlAuth = '/auth';
   socialUser: SocialUser;
   userLogged: SocialUser;
   isLogged: boolean;
@@ -27,18 +41,19 @@ export class AuthService {
     private authService: SocialAuthService,
     private authuser: AuthUserService,
     private _logoutService: LogoutService,
+    private _api: HttpService,
   ) {}
 
   register(user, email, password) {
-    const url:string = `${this.urlAuth}/register`;
+    const url = `${this.urlAuth}/register`;
     const registerUser:RegisterDto = { user, email, password, terms:true };
 
-    return this.http.post<TokenDto>(url, registerUser)
+    return this._api.post(url, registerUser)
       .pipe(this._evaluationRecord(false));
   }
 
   login(email, password, session) {
-    const url:string = `${this.urlAuth}/login`;
+    const url = `${this.urlAuth}/login`;
     const loginUser:LoginDto = {  email, password };
 
     this.user = this.http.post<TokenDto>(url, loginUser)
@@ -48,8 +63,8 @@ export class AuthService {
   }
 
   public accessGoogle() {
-    const preserveSession:boolean = true;
-    const url:string = `${this.urlAuth}/google/verify`;
+    const preserveSession = true;
+    const url = `${this.urlAuth}/google/verify`;
 
     return from(this.authService.signIn(GoogleLoginProvider.PROVIDER_ID))
       .pipe(
@@ -67,8 +82,8 @@ export class AuthService {
   }
 
   public accessFacebook() {
-    const preserveSession:boolean = true;
-    const url:string = `${this.urlAuth}/facebook/verify`;
+    const preserveSession = true;
+    const url = `${this.urlAuth}/facebook/verify`;
 
     return from(this.authService.signIn(FacebookLoginProvider.PROVIDER_ID))
       .pipe(
@@ -86,14 +101,14 @@ export class AuthService {
   }
 
   emailChangePassword(email:string): Observable<ResponseService> {
-    const url:string = `${this.urlAuth}/recover_user_account`;
+    const url = `${this.urlAuth}/recover_user_account`;
     const recover:RecoverAccountDto = { email };
 
     return this.http.patch<GenericResponse>(url, recover).pipe(ValidatorService.changeBasicResponse());
   }
 
   changePassword(password:string, token:string): Observable<ResponseService> {
-    const url:string = `${this.urlAuth}/change_password`;
+    const url = `${this.urlAuth}/change_password`;
     const change:ChangePasswordDto = { password, token };
 
     return this.http.put<GenericResponse>(url, change).pipe(ValidatorService.changeBasicResponse());
@@ -102,9 +117,9 @@ export class AuthService {
   private _evaluationRecord(check:boolean) {
     return pipe(
       ValidatorService.changeErrorAuthResponse(),
-      tap(response=> {
+      tap((response:any)=> {
         this.authuser.setIsLogged(response.success, check);
-        
+
         if(response.success) {
           this._logoutService.startRefreshTokenTimer();
         }

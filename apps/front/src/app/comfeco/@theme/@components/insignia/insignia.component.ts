@@ -9,7 +9,5 @@ import { InsigniaService } from './insignia.service';
   encapsulation: ViewEncapsulation.Emulated
 })
 export class InsigniaComponent {
-
   constructor(public service:InsigniaService) { }
-
 }

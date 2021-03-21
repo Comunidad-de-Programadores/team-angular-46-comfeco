@@ -11,17 +11,15 @@ import { AlertNotification } from './alert-notification.interface';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AlertNotificationComponent implements OnInit {
-
   @Input() notification:AlertNotification;
 
-  classNotification:string='alert-notification ';
-
+  classNotification='alert-notification ';
   icon:string;
   section:string;
   show:string;
 
   ngOnInit(): void {
-    this.show = this.classNotification+'alert-notification-show';
+    this.show = this.classNotification + 'alert-notification-show';
 
     if(this.notification.type === TypeAlertNotification.SUCCESS) {
       this.section = 'alert-notification-success';

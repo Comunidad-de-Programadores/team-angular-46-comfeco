@@ -18,12 +18,12 @@ export class ComboComponent implements OnInit {
   @Input() titleDefault:string;
   @Input() error:string;
   @Output() onOptionSelected: EventEmitter<string> = new EventEmitter();
-  
+
   showOptions:boolean;
-  optionSelected:string = '';
+  optionSelected = '';
 
   constructor(private _domref: ElementRef) { }
-  
+
   ngOnInit(): void {
     this.optionSelected = this.titleDefault;
   }
@@ -66,12 +66,12 @@ export class ComboComponent implements OnInit {
   private _deselectAll(element) {
     const parent = element.parentNode;
     const childrens = parent.childNodes;
-    
+
     for (let i=0; i<childrens.length; i++) {
       if(childrens[i].children) {
         const elementOption = childrens[i].children[0];
         const elementIcon = childrens[i].children[1];
-        
+
         const option = elementOption.children[0];
         const icon = elementIcon.children[0];
 
@@ -81,7 +81,7 @@ export class ComboComponent implements OnInit {
         if(!option.classList.contains('font-normal')) {
           option.classList.add('font-normal');
         }
-        
+
         if(icon.classList.contains('visible')) {
           icon.classList.remove('visible');
         }

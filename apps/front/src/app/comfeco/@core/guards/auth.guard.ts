@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Injectable } from '@angular/core';
 import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, Router, CanLoad, Route, UrlSegment } from '@angular/router';
 import { Observable } from 'rxjs';
@@ -15,16 +16,16 @@ export class AuthGuard implements CanActivate, CanLoad {
     private logout: LogoutService,
     private route: Router
   ) {}
-  
+
   canActivate(
-    route: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
+    _route: ActivatedRouteSnapshot,
+    _state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
     return this._validAccess();
   }
-  
+
   canLoad(
-    route: Route,
-    segments: UrlSegment[]): Observable<boolean> | Promise<boolean> | boolean {
+    _route: Route,
+    _segments: UrlSegment[]): Observable<boolean> | Promise<boolean> | boolean {
     return this._validAccess();
   }
 
@@ -33,7 +34,7 @@ export class AuthGuard implements CanActivate, CanLoad {
     auth = !auth || auth=='false' ? sessionStorage.getItem('auth') : auth;
 
     const dataReload:boolean = this.logout.isActiveRefreshTokenTimeout;
-    
+
     if(auth=='true' && !dataReload) {
       this.logout.refreshToken().subscribe();
       setTimeout(() => {

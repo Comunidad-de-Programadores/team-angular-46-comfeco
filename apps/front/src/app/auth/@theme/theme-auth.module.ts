@@ -6,17 +6,17 @@ import { ApiModule } from '@comfeco/api';
 
 @NgModule({
   declarations: [
-    ...components
+    ...components,
   ],
   imports: [
     CommonModule,
     RouterModule,
-    ApiModule
+    ApiModule,
   ],
   exports: [
     CommonModule,
     RouterModule,
-    ...components
+    ...components,
   ],
 })
 export class ThemeAuthModule { }

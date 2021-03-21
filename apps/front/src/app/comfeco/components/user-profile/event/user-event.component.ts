@@ -12,8 +12,8 @@ import { EventDayDto } from '@comfeco/interfaces';
 export class UserEventComponent {
 
   @Input() event:EventDayDto;
-  @Output() onLeaveEvent: EventEmitter<EventDayDto> = new EventEmitter();
-  
+  @Output() onLeaveEvent: EventEmitter<EventDayDto> = new EventEmitter<EventDayDto>();
+
   leave() {
     this.onLeaveEvent.emit( this.event );
   }

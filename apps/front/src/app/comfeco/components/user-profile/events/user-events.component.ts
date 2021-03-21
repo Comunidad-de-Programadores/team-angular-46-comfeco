@@ -13,10 +13,10 @@ export class UserEventsComponent {
 
   @Input() events:EventDayDto[];
   @Input() message:string;
-  @Output() onLeaveEvent: EventEmitter<EventDayDto> = new EventEmitter();
-  
+  @Output() onLeaveEvent: EventEmitter<EventDayDto> = new EventEmitter<EventDayDto>();
+
   viewEvents() {
-    let eventsRef:HTMLElement = document.getElementById('events') as HTMLElement;
+    const eventsRef:HTMLElement = document.getElementById('events') as HTMLElement;
     eventsRef.click();
   }
 

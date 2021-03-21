@@ -1,11 +1,11 @@
-import { Component, ContentChildren, QueryList, AfterContentInit, AfterContentChecked } from "@angular/core";
-import { Observable } from "rxjs";
+import { Component, ContentChildren, QueryList, AfterContentInit, AfterContentChecked } from '@angular/core';
+import { Observable } from 'rxjs';
 import { startWith, map, delay } from "rxjs/operators";
 
-import { TabItemComponent } from "./tab-item.component";
- 
+import { TabItemComponent } from './tab-item.component';
+
 @Component({
-  selector: "app-tabs",
+  selector: 'app-tabs',
   templateUrl: './tabs.component.html',
   styleUrls: ['./tabs.component.scss'],
 })
@@ -19,7 +19,7 @@ export class TabsComponent implements AfterContentInit, AfterContentChecked {
 
   ngAfterContentInit(): void {
     this.tabItems$ = this.tabs.changes
-      .pipe(startWith(""))
+      .pipe(startWith(''))
       .pipe(delay(0))
       .pipe(map(() => this.tabs.toArray()));
   }
@@ -45,5 +45,5 @@ export class TabsComponent implements AfterContentInit, AfterContentChecked {
 
     tabItem.isActive = true;
   }
-  
+
 }

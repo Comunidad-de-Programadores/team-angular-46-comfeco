@@ -11,9 +11,9 @@ export class SocialNetworkPipe implements PipeTransform {
 
   transform(value: UserSocialNetworksDto): SocialNetworkInterface[] {
     let socialNetworks:SocialNetworkInterface[];
-    if(!!value) {
+    if(value) {
       socialNetworks = [];
-      
+
       if(value.facebook) {
         socialNetworks.push({ name: 'facebook', clases: 'icon-comfeco-facebook', link: `https://facebook.com/${value.facebook}`});
       }
